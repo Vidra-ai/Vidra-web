@@ -1,9 +1,10 @@
 ---
 import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
 import { blogPageContent, type Locale } from '../lib/siteContent';
 
 const { post, locale } = Astro.props as {
-  post: any;
+  post: CollectionEntry<'blog'>;
   locale: Locale;
 };
 
@@ -22,7 +23,7 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
     <Image
       src={image || "/images/blog-placeholder.jpg"}
       alt={title}
-      loading="eager"
+      loading="lazy"
       width={800}
       height={450}
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -31,7 +32,7 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
 
   <div class="flex flex-1 flex-col p-6">
     <div class="mb-3 flex items-center gap-3">
-      <span class="rounded-full bg-blue/5 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-blue">
+      <span class="rounded-full bg-blue px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-ink">
         {t.categories[category as keyof typeof t.categories]}
       </span>
 
@@ -40,7 +41,7 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
       </time>
     </div>
 
-    <h3 class="mb-3 text-xl font-bold leading-snug text-ink group-hover:text-blue">
+    <h3 class="mb-3 text-lg font-bold leading-tight text-ink transition-colors group-hover:text-blue md:text-xl">
       <a href={postUrl}>{title}</a>
     </h3>
 

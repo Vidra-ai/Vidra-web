@@ -246,7 +246,7 @@ export const serviceContent = {
       title: "Servicios de IA diseñados para pasar del análisis a la ejecución.",
       metaTitle: "Servicios de Consultoría en IA | Vidra",
       description: "Cada servicio está estructurado para reducir incertidumbre, definir un alcance claro y entregar un resultado práctico que el equipo pueda adoptar.",
-      backLabel: "← Volver al resumen",
+      backLabel: "Volver al resumen",
     },
     services: [
       {
@@ -319,7 +319,7 @@ export const serviceContent = {
       },
     },
     detailShared: {
-        backLabel: "← Volver a servicios",
+        backLabel: "Volver a servicios",
         scopeCards: [
             {
             title: "Alcance",
@@ -352,7 +352,7 @@ export const serviceContent = {
       title: "AI services designed to move from assessment to execution.",
       metaTitle: "AI Consulting Services | Vidra",
       description: "Each service is structured to reduce uncertainty, define a clear scope, and deliver a practical outcome that the team can adopt.",
-      backLabel: "← Back to overview",
+      backLabel: "Back to overview",
     },
     services: [
       {
@@ -425,7 +425,7 @@ export const serviceContent = {
       },
     },
     detailShared: {
-        backLabel: "← Back to services",
+        backLabel: "Back to services",
         scopeCards: [
             {
             title: "Scope",
@@ -460,7 +460,7 @@ export const whoWeArePageContent = {
     description: "Conoce a nuestro equipo multidisciplinario. Combinamos ciencia de datos e ingeniería de software para entregar soluciones de IA escalables y transparentes.",
     hero: {
       eyebrow: "Sobre nosotros",
-      title: "IA aplicada para convertir datos en impacto operativo.",
+      title: "IA aplicada para convertir datos en impacto operativo",
       body: [
         "En Vidra combinamos ciencia de datos, ingeniería de software y consultoría estratégica para crear soluciones útiles, medibles y fáciles de adoptar.",
         "Trabajamos con empresas que quieren aplicar inteligencia artificial con rigor, claridad y foco en resultados reales.",
@@ -470,12 +470,12 @@ export const whoWeArePageContent = {
     },
     stats: {
           focus: {
-            number: "100%",
-            label: "Enfoque en soluciones aplicables y de impacto inmediato",
+            number: "Enfoque",
+            label: "En soluciones aplicables y de impacto inmediato",
         },
         approach: {
             number: "0",
-            label: "Independencia tecnológica total",
+            label: "Dependencia de proveedor",
         },
         expertise: {
             number: "3",
@@ -483,7 +483,7 @@ export const whoWeArePageContent = {
         },
         independence: {
             number: "100%",
-            label: "Asesoría 100% independiente y objetiva",
+            label: "Asesoría independiente y objetiva",
         },
     },
     difference: {
@@ -601,18 +601,18 @@ export const whoWeArePageContent = {
     description: "Meet our multidisciplinary team. We combine data science and software engineering to deliver scalable, transparent AI solutions for business.",
     hero: {
       eyebrow: "Who we are",
-      title: "We are a specialized AI consulting firm built to translate technical complexity into operational impact.",
+      title: "Applied AI to turn data into operational impact",
       body: [
-        "At Vidra, we combine the expertise of data scientists, software engineers, and strategic business consultants to deliver solutions that drive real, measurable returns.",
-        "We partner with forward-thinking organizations to build robust, scalable artificial intelligence solutions while keeping the work clear, practical, and accountable.",
+        "At Vidra, we combine data science, software engineering, and strategic consulting to create useful, measurable, and easy-to-adopt solutions.",
+        "We work with companies that want to apply artificial intelligence with rigor, clarity, and focus on real results.",
       ],
       imageKey: "analysis",
       imageAlt: "Team analyzing data in a modern workspace",
-    },
+    }, 
     stats: {
         focus: {
-            number: "100%",
-            label: "100% Focus on actionable solutions with immediate impact",
+            number: "Focus",
+            label: "On actionable solutions with immediate impact",
         },
         approach: {
             number: "0",
@@ -620,7 +620,7 @@ export const whoWeArePageContent = {
         },
         expertise: {
             number: "3",
-            label: "Core areas of expertise",
+            label: "Core areas of expertise", 
         },
         independence: {
             number: "100%",
@@ -1021,6 +1021,11 @@ export const blogPageContent = {
       "machine-learning": "Machine Learning",
       "deep-learning": "Deep Learning",
     },
+    ctaBlock: {
+      title: "¿Evaluando una iniciativa similar?",
+      description: "Podemos ayudarte a definir el alcance y la ruta técnica más práctica para tu proyecto de IA.",
+      cta: "Hablemos de tu proyecto"
+    }
   },
   en: {
     title: "AI & Data Strategy Blog | Vidra",
@@ -1034,5 +1039,10 @@ export const blogPageContent = {
       "machine-learning": "Machine Learning",
       "deep-learning": "Deep Learning",
     },
+    ctaBlock: {
+      title: "Evaluating a similar initiative?",
+      description: "We can help you define the scope and most practical technical path for your AI project.",
+      cta: "Let's discuss your project"
+    }
   },
 } as const;

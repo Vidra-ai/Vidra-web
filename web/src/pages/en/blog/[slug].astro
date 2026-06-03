@@ -19,37 +19,56 @@ const { Content } = await render(post);
 const { title, description, pubDate, category, image, lang } = post.data;
 const locale = lang as Locale;
 const t = blogPageContent[locale];
+const backHref = locale === 'en' ? '/en/blog/' : '/blog/';
+const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": title,
+  "description": description,
+  "image": image,
+  "datePublished": pubDate.toISOString(),
+  "author": { "@type": "Organization", "name": "Vidra" },
+};
 ---
 
-<Layout title={`${title} | Vidra`} description={description}>
-  <article class="relative px-4 pb-24 pt-32 md:px-6">
+<Layout 
+  title={`${title} | Vidra`} 
+  description={description}
+  ogImage={image}
+  ogType="article"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class="relative px-4 pb-24 pt-24 md:px-6 md:pt-32">
     <div class="mx-auto max-w-4xl">
-      <a href="/en/blog/" class="mb-10 inline-block text-sm font-medium text-ink/55 transition hover:text-blue">
+      <a href={backHref} class="mb-10 inline-block text-sm font-bold uppercase tracking-widest text-ink/40 transition hover:text-blue">
         ← {t.backToBlog}
       </a>
 
       <header class="mb-12">
         <div class="mb-6 flex items-center gap-4">
-          <span class="rounded-full bg-blue px-4 py-1.5 text-[10px] font-bold uppercase tracking-wider">
+          <span class="rounded-full bg-blue px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-ink">
             {t.categories[category]}
           </span>
 
           <time class="text-xs font-medium uppercase tracking-widest text-black/40">
-            {new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(pubDate)}
+            {new Intl.DateTimeFormat(dateLocale, { dateStyle: 'long' }).format(pubDate)}
           </time>
         </div>
 
-        <h1 class="mb-8 text-4xl font-bold leading-tight text-ink md:text-5xl">
+        <h1 class="mb-8 text-3xl font-bold leading-[1.1] text-ink md:text-5xl">
           {title}
         </h1>
 
-        <p class="max-w-3xl text-lg leading-8 text-ink/65">
+        <p class="max-w-3xl text-xl leading-relaxed text-ink/70">
           {description}
         </p>
       </header>
 
       {image && (
-        <div class="mb-16 aspect-video overflow-hidden rounded-[2rem] shadow-2xl">
+        <div class="mb-16 aspect-video overflow-hidden rounded-3xl shadow-2xl shadow-blue/5">
           <Image
             src={image}
             alt={title}
@@ -61,8 +80,23 @@ const t = blogPageContent[locale];
         </div>
       )}
 
-      <div class="prose mx-auto max-w-none prose-img:rounded-2xl prose-headings:text-ink prose-a:text-blue">
+      <div class="prose prose-lg mx-auto max-w-none prose-headings:font-bold prose-headings:text-ink prose-a:text-blue prose-img:rounded-2xl">
         <Content />
+      </div>
+
+      <!-- B2B Conversion Block -->
+      <div class="mt-24 rounded-[2rem] bg-[#0B2C4A] p-8 text-white shadow-[0_28px_90px_rgba(11,44,74,0.15)] md:p-12">
+        <div class="max-w-2xl">
+          <h2 class="mb-4 text-2xl font-bold leading-tight tracking-tight md:text-3xl">
+            {t.ctaBlock.title}
+          </h2>
+          <p class="mb-8 text-lg text-white/80">
+            {t.ctaBlock.description}
+          </p>
+          <a href={locale === 'en' ? '/en/#contact' : '/#contact'} class="inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-sm font-bold uppercase tracking-widest text-[#0B2C4A] transition-all hover:bg-blue hover:text-ink hover:scale-105">
+            {t.ctaBlock.cta} <span class="text-xl">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </article>

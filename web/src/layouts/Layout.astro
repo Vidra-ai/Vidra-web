@@ -1,5 +1,5 @@
 ---
-const { title = 'Vidra', description = 'AI consulting for strategy, delivery, and measurable business impact.' } = Astro.props;
+const { title = 'Vidra', description = 'AI consulting for strategy, delivery, and measurable business impact.', ogImage, ogType = 'website' } = Astro.props;
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 
@@ -14,6 +14,18 @@ const htmlLang = locale === 'es' ? 'es' : 'en';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    
+    <!-- Open Graph / LinkedIn -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.url)} />}
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,5 +39,50 @@ const htmlLang = locale === 'es' ? 'es' : 'en';
       <slot />
     </main>
     <Footer locale={locale} />
+
+    <button
+      id="scroll-top"
+      type="button"
+      aria-label="Volver al inicio"
+      class="fixed bottom-6 right-6 z-50 grid h-12 w-12 translate-y-4 place-items-center rounded-full bg-[#0B2C4A] text-white opacity-0 shadow-[0_18px_45px_rgba(11,44,74,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#00B2EB] hover:text-[#0B2C4A] pointer-events-none"
+    >
+      <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M12 19V5M5.5 11.5L12 5l6.5 6.5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <script>
+      (() => {
+        const button = document.getElementById('scroll-top');
+        if (!button) return;
+
+        const toggleButton = () => {
+          const show = window.scrollY > window.innerHeight * 0.6;
+
+          button.classList.toggle('opacity-0', !show);
+          button.classList.toggle('translate-y-4', !show);
+          button.classList.toggle('pointer-events-none', !show);
+
+          button.classList.toggle('opacity-100', show);
+          button.classList.toggle('translate-y-0', show);
+        };
+
+        button.addEventListener('click', () => {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+          });
+        });
+
+        toggleButton();
+        window.addEventListener('scroll', toggleButton, { passive: true });
+      })();
+    </script>
   </body>
 </html>

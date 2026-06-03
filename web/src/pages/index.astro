@@ -11,6 +11,7 @@ import { homeContent, type Locale } from "../lib/siteContent";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
+
 const areaImages = {
   analysis: analyticsImage,
   machineLearning: machineLearningImage,
@@ -47,27 +48,29 @@ const focusAreas = await Promise.all(
   <!-- WHAT WE DO -->
   <section id="what-we-do" class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
     <div class="mx-auto max-w-7xl">
-      <div class="grid gap-10 border-t border-[#071729]/12 pt-8 md:grid-cols-[0.82fr_1.18fr] md:pt-12">
-        <div>
-          <!-- FIX: eyebrow 0.875rem + tracking 0.25em (era 0.78rem / 0.22em) -->
+      <div class="grid gap-10 border-t border-[#071729]/12 pt-8 md:grid-cols-[1.18fr_0.82fr] md:pt-12">
+        <div class="order-1 text-left md:order-2 md:justify-self-end md:text-right" data-reveal="right">
           <p class="mb-6 text-[0.875rem] font-semibold uppercase tracking-[0.25em] text-[#0d3c78]">
             {content.whatWeDo.eyebrow}
           </p>
+
           <h2 class="max-w-2xl text-[clamp(2rem,3.8vw,3.6rem)] font-medium leading-[0.96] tracking-[-0.05em] text-[#071729]">
             {content.whatWeDo.title}
           </h2>
-          <!-- FIX: opacidad /68 unificada -->
+
           <p class="mt-5 max-w-xl text-[1rem] leading-7 text-[#071729]/68 md:text-[1.05rem]">
             {content.whatWeDo.description}
           </p>
         </div>
 
-        <div class="grid gap-4 md:grid-cols-3">
-          {focusAreas.map((area) => (
+        <div class="order-2 grid gap-4 md:order-1 md:grid-cols-3 md:[direction:rtl]">
+          {focusAreas.map((area, index) => (
             <a
               href={locale === "en" ? "/en/services" : "/services"}
               aria-label={`Saber más sobre el servicio de ${area.title}`}
-              class="group relative block min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[#071729] shadow-[0_20px_50px_rgba(7,23,41,0.12)]"
+              data-reveal="up"
+              style={`--reveal-delay: ${index * 90}ms`}
+              class="group relative block min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[#071729] shadow-[0_20px_50px_rgba(7,23,41,0.12)] transition duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(7,23,41,0.18)] md:[direction:ltr]"
             >
               <Image
                 src={area.imageAsset}
@@ -80,24 +83,26 @@ const focusAreas = await Promise.all(
                 loading="lazy"
                 decoding="async"
               />
-              <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/80 via-[#071729]/10 to-transparent"></div>
+
+              <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/82 via-[#071729]/18 to-transparent"></div>
+
               <div class="absolute inset-0 flex flex-col justify-between p-6">
-                <!-- FIX: eyebrow 0.75rem + tracking 0.25em (era 0.72rem / 0.22em) -->
                 <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/55">
                   {area.eyebrow}
                 </p>
+
                 <div class="flex items-end justify-between gap-3">
                   <div class="max-w-[14rem]">
                     <h3 class="text-[1.15rem] font-medium tracking-[-0.03em] text-white">
                       {area.title}
                     </h3>
-                    <!-- FIX: opacidad /75 — era /72, consistencia con token secundario en fondo oscuro -->
+
                     <p class="mt-2 text-sm leading-6 text-white/75">
                       {area.description}
                     </p>
                   </div>
-                  <!-- FIX: touch target h-10 w-10 mínimo en todos los viewports -->
-                  <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-base font-medium leading-none text-[#071729] transition duration-500 group-hover:scale-105">
+
+                  <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-base font-medium leading-none text-[#071729] transition duration-500 group-hover:scale-110 group-hover:bg-[#00B2EB]">
                     →
                   </span>
                 </div>
@@ -117,44 +122,53 @@ const focusAreas = await Promise.all(
     data-nav-theme="light"
     class="bg-[#0B2C4A] px-4 py-20 text-white md:px-6 md:py-28"
   >
-    <div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-start">
-      <div>
-        <!-- FIX: eyebrow 0.875rem + tracking 0.25em -->
-        <p class="mb-5 text-[0.875rem] font-semibold uppercase tracking-[0.25em] text-[#8ec8ff]">
-          {content.whoWeAre.eyebrow}
-        </p>
-        <h2 class="text-[clamp(2.1rem,4.5vw,4rem)] font-medium leading-[0.92] tracking-[-0.055em]">
-          {content.whoWeAre.title}
-        </h2>
-        <div class="mt-6 h-px w-20 bg-white/20"></div>
-      </div>
-
-      <div class="max-w-2xl space-y-5 text-[1.05rem] leading-8 md:text-[1.12rem]">
-        <!-- FIX: opacidad /75 — era /72, pasa AA en fondo oscuro -->
+    <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-start">
+      <div class="order-2 max-w-2xl space-y-5 text-[1.05rem] leading-8 md:order-1 md:text-[1.12rem]" data-reveal="left">
         <div class="space-y-5 text-white/75">
           {content.whoWeAre.body.map((paragraph) => <p>{paragraph}</p>)}
         </div>
 
         <div class="grid gap-4 pt-3 sm:grid-cols-3">
-          {content.whoWeAre.pillars.map((pillar) => (
-            <div class="rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
-              <!-- FIX: eyebrow /55 (tertiary) + tracking 0.25em -->
-              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/55">
+          {content.whoWeAre.pillars.map((pillar, index) => (
+            <div
+              data-reveal="up"
+              style={`--reveal-delay: ${index * 90}ms`}
+              class="rounded-[1.25rem] border border-white/10 bg-white/5 p-4 transition duration-500 hover:-translate-y-1 hover:border-white/25 hover:bg-white/8"
+            >
+              <div class="mb-5 flex items-center gap-3" aria-hidden="true">
+                <span class="h-2.5 w-2.5 rounded-full bg-[#8ec8ff]"></span>
+                <span class="h-px w-8 bg-[#8ec8ff]/50"></span>
+              </div>
+
+              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/60">
                 {pillar.title}
               </p>
-              <!-- FIX: opacidad /75 (secundario) — era /80, excesivo contraste en el contexto de la tarjeta -->
-              <p class="mt-2 text-sm leading-6 text-white/75">{pillar.text}</p>
+
+              <p class="mt-2 text-sm leading-6 text-white/75">
+                {pillar.text}
+              </p>
             </div>
           ))}
         </div>
 
-        <!-- FIX: py-3.5 para touch target cómodo -->
         <a
           href={locale === "en" ? "/en/who-we-are" : "/who-we-are"}
           class="inline-flex rounded-full bg-white px-6 py-3.5 text-sm font-medium text-[#071729] transition hover:bg-[#dcecff]"
         >
           {content.whoWeAre.ctaLabel}
         </a>
+      </div>
+
+      <div class="order-1 text-left md:order-2 md:justify-self-end md:text-right" data-reveal="right">
+        <p class="mb-5 text-[0.875rem] font-semibold uppercase tracking-[0.25em] text-[#8ec8ff]">
+          {content.whoWeAre.eyebrow}
+        </p>
+
+        <h2 class="text-[clamp(2.1rem,4.5vw,4rem)] font-medium leading-[0.92] tracking-[-0.055em]">
+          {content.whoWeAre.title}
+        </h2>
+
+        <div class="mt-6 h-px w-20 bg-white/20 md:ml-auto"></div>
       </div>
     </div>
   </section>
@@ -163,12 +177,12 @@ const focusAreas = await Promise.all(
   <section id="contact" data-nav-theme="light" class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
     <div class="mx-auto max-w-7xl">
       <a
-        href="/contact"
-        class="group block overflow-hidden rounded-[2rem] bg-[#0B2C4A] p-8 text-white shadow-[0_28px_90px_rgba(11,44,74,0.22)] transition-all duration-700 hover:rounded-[2.5rem] md:p-14"
+        href={locale === "en" ? "/en/contact" : "/contact"}
+        data-reveal="up"
+        class="group block overflow-hidden rounded-[2rem] bg-[#0B2C4A] p-8 text-white shadow-[0_28px_90px_rgba(11,44,74,0.22)] transition-all duration-700 hover:rounded-[2.5rem] hover:shadow-[0_34px_110px_rgba(11,44,74,0.28)] md:p-14"
       >
         <div class="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
           <div>
-            <!-- FIX: tracking 0.25em — era 0.26em -->
             <p class="mb-5 text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/55">
               {content.contact.eyebrow}
             </p>
@@ -177,11 +191,11 @@ const focusAreas = await Promise.all(
               {content.contact.title}
             </h2>
 
-            <div class="grid mt-4 max-h-64 overflow-hidden opacity-100 transition-all duration-700 ease-out md:mt-0 md:max-h-0 md:opacity-0 md:group-hover:mt-4 md:group-hover:max-h-64 md:group-hover:opacity-100">
+            <div class="mt-4 grid max-h-64 overflow-hidden opacity-100 transition-all duration-700 ease-out md:mt-0 md:max-h-0 md:opacity-0 md:group-hover:mt-4 md:group-hover:max-h-64 md:group-hover:opacity-100">
               <h3 class="max-w-4xl text-[clamp(2.2rem,5vw,4.2rem)] font-medium leading-[0.98] tracking-[-0.045em] text-[#00B2EB]">
                 {content.contact.highlight}
               </h3>
-              <!-- FIX: opacidad /75 — era /70 -->
+
               <p class="mt-8 max-w-2xl text-[1.05rem] leading-7 text-white/75 md:text-[1.15rem]">
                 {content.contact.description}
               </p>
@@ -189,12 +203,11 @@ const focusAreas = await Promise.all(
           </div>
 
           <div class="flex items-center gap-4">
-            <!-- FIX: opacidad /55 (tertiary) — era /60 -->
             <span class="hidden text-sm font-medium text-white/55 transition-opacity duration-500 group-hover:opacity-100 md:block">
               {content.contact.contactLabel}
             </span>
 
-            <span class="grid h-16 w-16 place-items-center rounded-full bg-white text-3xl text-[#0B2C4A] transition duration-500 group-hover:scale-110">
+            <span class="grid h-16 w-16 place-items-center rounded-full bg-white text-3xl text-[#0B2C4A] transition duration-500 group-hover:scale-110 group-hover:bg-[#00B2EB]">
               →
             </span>
           </div>
@@ -202,4 +215,58 @@ const focusAreas = await Promise.all(
       </a>
     </div>
   </section>
+
+  <script is:inline>
+    const revealItems = document.querySelectorAll("[data-reveal]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+        });
+      },
+      { threshold: 0.16 }
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+  </script>
+
+  <style>
+    [data-reveal] {
+      opacity: 0;
+      transform: translate3d(var(--reveal-x, 0), var(--reveal-y, 24px), 0);
+      transition:
+        opacity 800ms ease var(--reveal-delay, 0ms),
+        transform 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+
+    [data-reveal="left"] {
+      --reveal-x: -42px;
+      --reveal-y: 18px;
+    }
+
+    [data-reveal="right"] {
+      --reveal-x: 42px;
+      --reveal-y: 18px;
+    }
+
+    [data-reveal="up"] {
+      --reveal-x: 0;
+      --reveal-y: 34px;
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-reveal] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+  </style>
 </BaseLayout>

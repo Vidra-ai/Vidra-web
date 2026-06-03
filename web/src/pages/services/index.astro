@@ -43,7 +43,6 @@ const optimizedServices = await Promise.all(
   <main class="bg-[#eef4fb] pt-24">
     <section class="px-4 py-12 md:px-6 md:py-16">
       <div class="mx-auto max-w-7xl">
-        <!-- FIX: back link con padding vertical más cómodo -->
         <a
           href={locale === "en" ? "/en/#what-we-do" : "/#what-we-do"}
           class="mb-10 inline-flex items-center gap-2 py-1 text-sm font-medium text-[#0B2C4A]/68 transition hover:text-[#0B2C4A]"
@@ -59,12 +58,12 @@ const optimizedServices = await Promise.all(
           </p>
 
           <!-- FIX: max-w-3xl explícito (era clase inválida "max-3xl") -->
-          <h1 class="max-3xl text-[clamp(2rem,4vw,3.2rem)] font-medium leading-[1] tracking-[-0.04em] text-[#0B2C4A]">
+          <h1 class="max-w-3xl text-[clamp(2rem,4vw,3.2rem)] font-medium leading-[1] tracking-[-0.04em] text-[#0B2C4A]">
             {content.index.title}
           </h1>
 
           <!-- FIX: max-w-2xl explícito (era "max-2xl" inválido) + opacidad /68 -->
-          <p class="mt-6 max-2xl text-[1.05rem] leading-8 text-[#0B2C4A]/68">
+          <p class="mt-6 max-w-2xl text-[1.05rem] leading-8 text-[#0B2C4A]/68">
             {content.index.description}
           </p>
 
@@ -76,7 +75,7 @@ const optimizedServices = await Promise.all(
               >
                 <Image
                   src={service.imageSrc}
-                  alt={`Servicio de ${service.title} - Vidra`}
+                  alt={locale === "en" ? `${service.title} Service - Vidra` : `Servicio de ${service.title} - Vidra`}
                   width={640}
                   height={480}
                   format="webp"
