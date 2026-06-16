@@ -4,6 +4,8 @@ const {
   description = 'AI consulting for strategy, delivery, and measurable business impact.',
   ogImage,
   ogType = 'website',
+  noindex = false,
+  alternates,
 } = Astro.props;
 
 import Navbar from '../components/Navbar.astro';
@@ -13,6 +15,25 @@ import '../styles.css';
 
 const pathname = Astro.url.pathname;
 const locale = pathname.startsWith('/en') ? 'en' : 'es';
+
+const siteOrigin = (Astro.site?.toString() ?? 'https://vidra-ia.com').replace(/\/$/, '');
+const canonicalUrl = `${siteOrigin}${pathname}`;
+const absoluteOgImage = ogImage ? new URL(ogImage, Astro.url).toString() : undefined;
+
+// alternates: undefined = auto-compute from path, [] = skip hreflang, [{...}] = explicit
+const hreflangLinks: { hreflang: string; href: string }[] =
+  alternates !== undefined
+    ? (alternates as { hreflang: string; href: string }[])
+    : (() => {
+        const isEn = locale === 'en';
+        const esPath = isEn ? pathname.slice(3) || '/' : pathname;
+        const enPath = isEn ? pathname : `/en${pathname}`;
+        return [
+          { hreflang: 'es', href: `${siteOrigin}${esPath}` },
+          { hreflang: 'en', href: `${siteOrigin}${enPath}` },
+          { hreflang: 'x-default', href: `${siteOrigin}${esPath}` },
+        ];
+      })();
 ---
 
 <!DOCTYPE html>
@@ -21,15 +42,23 @@ const locale = pathname.startsWith('/en') ? 'en' : 'es';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="canonical" href={canonicalUrl} />
+    {hreflangLinks.map(({ hreflang, href }) => (
+      <link rel="alternate" hreflang={hreflang} href={href} />
+    ))}
 
     <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.url)} />}
+    {absoluteOgImage && <meta property="og:image" content={absoluteOgImage} />}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    {absoluteOgImage && <meta name="twitter:image" content={absoluteOgImage} />}
 
     <title>{title}</title>
 

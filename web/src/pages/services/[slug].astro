@@ -31,9 +31,48 @@ if (!service) {
 
 const contactHref = locale === "es" ? "/#contact" : "/en/#contact";
 const servicesHref = locale === "es" ? "/services" : "/en/services";
+
+const siteOrigin = 'https://vidra-ia.com';
+const pageUrl = locale === 'es'
+  ? `${siteOrigin}/services/${slug}`
+  : `${siteOrigin}/en/services/${slug}`;
+
+const serviceSchema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": service.title,
+  "description": service.description,
+  "url": pageUrl,
+  "provider": {
+    "@type": "Organization",
+    "name": "Vidra",
+    "url": siteOrigin,
+  },
+  "areaServed": "ES",
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem", "position": 1,
+      "name": locale === 'en' ? "Home" : "Inicio",
+      "item": locale === 'en' ? `${siteOrigin}/en/` : `${siteOrigin}/`,
+    },
+    {
+      "@type": "ListItem", "position": 2,
+      "name": locale === 'en' ? "Services" : "Servicios",
+      "item": locale === 'en' ? `${siteOrigin}/en/services` : `${siteOrigin}/services`,
+    },
+    { "@type": "ListItem", "position": 3, "name": service.title, "item": pageUrl },
+  ],
+};
 ---
 
 <BaseLayout title={`${service.title} | Vidra`} description={service.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(serviceSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <main class="bg-[#eef4fb] pt-24">
     <section class="px-4 py-12 md:px-6 md:py-16">
       <div class="mx-auto max-w-7xl">

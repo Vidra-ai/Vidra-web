@@ -15,13 +15,11 @@ const homeHref = localeKey === 'en' ? '/en' : '/';
     <div class="grid gap-12 border-t border-white/15 pt-8 md:grid-cols-[1fr_auto] md:items-start">
 
       <div class="flex flex-col items-start">
-        <!-- FIX: tagline con opacidad /75 para jerarquía — destacar sin competir con el wordmark -->
         <p class="max-w-sm text-lg font-medium text-white/75">
           {footer.tagline}
         </p>
 
         <div class="mt-5 flex items-center gap-4">
-          <!-- FIX: touch targets explícitos h-10 w-10 en iconos sociales -->
           <a
             href="https://linkedin.com/company/vidra"
             target="_blank"
@@ -60,7 +58,6 @@ const homeHref = localeKey === 'en' ? '/en' : '/';
         </div>
       </div>
 
-      <!-- FIX: nav links con opacidad /55 (tertiary) y texto más legible en hover -->
       <nav class="grid gap-3 text-sm font-medium md:text-right">
         {links.map((link: { label: string; href: string }) => (
           <a href={link.href} class="text-white/55 transition hover:text-white">
@@ -70,14 +67,12 @@ const homeHref = localeKey === 'en' ? '/en' : '/';
       </nav>
     </div>
 
-    <!-- Wordmark — sin cambios, es el elemento de marca -->
     <div class="mt-20 md:mt-28">
       <h2 class="text-[clamp(4rem,16vw,10rem)] font-medium leading-[0.78] tracking-[-0.08em] text-white">
         <span>Vidra</span><span class="text-[#00B2EB]">IA</span>
       </h2>
     </div>
 
-    <!-- FIX: opacidad /45 mantenida para el legal — es tertiary en contexto de footer bottom -->
     <div class="mt-8 flex flex-col gap-3 border-t border-white/15 pt-5 text-xs text-white/45 md:flex-row md:items-center md:justify-between">
       <p>{copy.yearLabel.replace('{year}', String(currentYear))}</p>
       <p>{copy.tagline}</p>

@@ -8,7 +8,7 @@ const query = Astro.url.searchParams.get("q") ?? "";
 const homeHref = locale === "en" ? "/en" : "/";
 ---
 
-<BaseLayout title={content.title} description={content.description}>
+<BaseLayout title={content.title} description={content.description} noindex={true} alternates={[]}>
   <main class="bg-[#eef4fb] pt-24">
     <section class="px-4 pb-24 pt-14 md:px-6 md:pb-28 md:pt-20">
       <div class="mx-auto max-w-7xl">

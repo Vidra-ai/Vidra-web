@@ -20,6 +20,31 @@ const areaImages = {
 
 type AreaImageKey = keyof typeof areaImages;
 
+const siteOrigin = 'https://vidra-ia.com';
+
+const orgSchema = {
+  "@context": "https://schema.org",
+  "@type": ["Organization", "ProfessionalService"],
+  "@id": `${siteOrigin}/#organization`,
+  "name": "Vidra",
+  "url": siteOrigin,
+  "logo": { "@type": "ImageObject", "url": `${siteOrigin}/favicon.svg` },
+  "description": locale === 'en'
+    ? "AI consulting for strategy, delivery, and measurable business impact."
+    : "Consultoría de inteligencia artificial para estrategia, implantación y resultados empresariales medibles.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Calle Américo Vespucio, 5, B-2, 2ª planta",
+    "addressLocality": "Sevilla",
+    "postalCode": "41092",
+    "addressCountry": "ES",
+  },
+  "telephone": "+34955023256",
+  "email": "contacto@vidra-ia.com",
+  "areaServed": "ES",
+  "knowsAbout": ["Inteligencia Artificial", "Machine Learning", "Deep Learning", "Análisis de Datos"],
+};
+
 const focusAreas = await Promise.all(
   content.whatWeDo.areas.map(async (area) => {
     const imageKey = area.imageKey as AreaImageKey;
@@ -43,6 +68,8 @@ const focusAreas = await Promise.all(
 ---
 
 <BaseLayout title={content.title} description={content.description}>
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+
   <Hero locale={locale} />
 
   <!-- WHAT WE DO -->

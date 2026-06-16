@@ -5,41 +5,80 @@ import { Image } from 'astro:assets';
 import { blogPageContent, type Locale } from '../../../lib/siteContent';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => data.lang === 'en');
+  const enPosts = await getCollection('blog', ({ data }) => data.lang === 'en');
+  const esPosts = await getCollection('blog', ({ data }) => data.lang === 'es');
 
-  return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.md$/, '') },
-    props: { post },
-  }));
+  return enPosts.map((post) => {
+    const slug = post.id.replace(/\.md$/, '');
+    let esAlternateSlug: string | null = null;
+    if (post.data.translationKey) {
+      const match = esPosts.find((p) => p.data.translationKey === post.data.translationKey);
+      if (match) esAlternateSlug = match.id.replace(/\.md$/, '');
+    }
+    return { params: { slug }, props: { post, esAlternateSlug } };
+  });
 }
 
-const { post } = Astro.props;
+const { post, esAlternateSlug } = Astro.props;
 const { Content } = await render(post);
 
 const { title, description, pubDate, category, image, lang } = post.data;
 const locale = lang as Locale;
 const t = blogPageContent[locale];
-const backHref = locale === 'en' ? '/en/blog/' : '/blog/';
-const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
+const backHref = '/en/blog/';
+const dateLocale = 'en-US';
+const slug = post.id.replace(/\.md$/, '');
+
+const siteOrigin = 'https://vidra-ia.com';
+const canonicalUrl = `${siteOrigin}/en/blog/${slug}`;
+const absoluteImage = image ? new URL(image, Astro.url).toString() : undefined;
+
+const postAlternates = esAlternateSlug
+  ? [
+      { hreflang: 'en', href: canonicalUrl },
+      { hreflang: 'es', href: `${siteOrigin}/blog/${esAlternateSlug}` },
+      { hreflang: 'x-default', href: `${siteOrigin}/blog/${esAlternateSlug}` },
+    ]
+  : [];
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
   "headline": title,
   "description": description,
-  "image": image,
+  "image": absoluteImage,
   "datePublished": pubDate.toISOString(),
-  "author": { "@type": "Organization", "name": "Vidra" },
+  "inLanguage": "en-US",
+  "author": { "@type": "Organization", "name": "Vidra", "url": siteOrigin },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Vidra",
+    "url": siteOrigin,
+    "logo": { "@type": "ImageObject", "url": `${siteOrigin}/favicon.svg` },
+  },
+};
+
+const breadcrumbLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": `${siteOrigin}/en/` },
+    { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${siteOrigin}/en/blog` },
+    { "@type": "ListItem", "position": 3, "name": title, "item": canonicalUrl },
+  ],
 };
 ---
 
-<Layout 
-  title={`${title} | Vidra`} 
+<Layout
+  title={`${title} | Vidra`}
   description={description}
   ogImage={image}
   ogType="article"
+  alternates={postAlternates}
 >
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
 
   <article class="relative px-4 pb-24 pt-24 md:px-6 md:pt-32">
     <div class="mx-auto max-w-4xl">

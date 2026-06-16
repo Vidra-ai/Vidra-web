@@ -52,17 +52,14 @@ const optimizedServices = await Promise.all(
         </a>
 
         <div class="border-t border-[#0B2C4A]/12 pt-10">
-          <!-- FIX: eyebrow 0.875rem + tracking 0.25em (era 0.78rem / 0.22em) -->
           <p class="mb-6 text-[0.875rem] font-semibold uppercase tracking-[0.25em] text-[#00B2EB]">
             {content.index.eyebrow}
           </p>
 
-          <!-- FIX: max-w-3xl explícito (era clase inválida "max-3xl") -->
           <h1 class="max-w-3xl text-[clamp(2rem,4vw,3.2rem)] font-medium leading-[1] tracking-[-0.04em] text-[#0B2C4A]">
             {content.index.title}
           </h1>
 
-          <!-- FIX: max-w-2xl explícito (era "max-2xl" inválido) + opacidad /68 -->
           <p class="mt-6 max-w-2xl text-[1.05rem] leading-8 text-[#0B2C4A]/68">
             {content.index.description}
           </p>
@@ -87,7 +84,6 @@ const optimizedServices = await Promise.all(
 
                 <div class="flex flex-1 flex-col justify-between p-7">
                   <div>
-                    <!-- FIX: eyebrow tracking 0.25em (era 0.22em) -->
                     <p class="text-[0.875rem] font-semibold uppercase tracking-[0.25em] text-[#00B2EB] transition group-hover:text-white/55">
                       {service.eyebrow}
                     </p>
@@ -96,12 +92,10 @@ const optimizedServices = await Promise.all(
                       {service.title}
                     </h2>
 
-                    <!-- FIX: opacidad /68 — era /65 -->
                     <p class="mt-5 text-[1rem] leading-7 text-[#0B2C4A]/68 transition group-hover:text-white/75">
                       {service.description}
                     </p>
 
-                    <!-- FIX: opacidad texto /68 — era /70 -->
                     <div class="mt-8 space-y-3 border-t border-[#0B2C4A]/10 pt-6 transition group-hover:border-white/10">
                       {service.points.map((point) => (
                         <p class="flex items-start gap-2 text-sm font-medium text-[#0B2C4A]/68 transition group-hover:text-white/75">
@@ -112,7 +106,6 @@ const optimizedServices = await Promise.all(
                     </div>
                   </div>
 
-                  <!-- FIX: h-12 w-12 touch target correcto -->
                   <span class="mt-10 grid h-12 w-12 place-items-center rounded-full bg-[#0B2C4A] text-white transition duration-500 group-hover:bg-[#00B2EB] group-hover:text-[#0B2C4A]">
                     →
                   </span>

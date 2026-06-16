@@ -18,8 +18,11 @@ const postUrl = `${baseHref}${slug}/`;
 const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
 ---
 
-<article class="group flex flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-all hover:shadow-xl hover:shadow-blue/5">
-  <a href={postUrl} class="block aspect-video overflow-hidden">
+<article class="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-shadow duration-300 hover:shadow-xl hover:shadow-blue/5">
+  <!-- Stretched link covers the full card; the title link (z-[2]) stays above it for keyboard users -->
+  <a href={postUrl} aria-hidden="true" tabindex="-1" class="absolute inset-0 z-[1]"></a>
+
+  <div class="aspect-video overflow-hidden">
     <Image
       src={image || "/images/blog-placeholder.jpg"}
       alt={title}
@@ -28,7 +31,7 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
       height={450}
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
-  </a>
+  </div>
 
   <div class="flex flex-1 flex-col p-6">
     <div class="mb-3 flex items-center gap-3">
@@ -41,8 +44,8 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
       </time>
     </div>
 
-    <h3 class="mb-3 text-lg font-bold leading-tight text-ink transition-colors group-hover:text-blue md:text-xl">
-      <a href={postUrl}>{title}</a>
+    <h3 class="mb-3 text-lg font-bold leading-tight text-ink transition-colors duration-200 group-hover:text-blue md:text-xl">
+      <a href={postUrl} class="relative z-[2]">{title}</a>
     </h3>
 
     <p class="mb-6 line-clamp-3 text-sm leading-relaxed text-black/60">
@@ -50,9 +53,12 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
     </p>
 
     <div class="mt-auto border-t border-black/5 pt-4">
-      <a href={postUrl} class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-ink transition-colors hover:text-blue">
-        {t.readMore} <span class="text-lg">→</span>
-      </a>
+      <span aria-hidden="true" class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-ink transition-colors duration-200 group-hover:text-blue">
+        {t.readMore}
+        <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </span>
     </div>
   </div>
 </article>
