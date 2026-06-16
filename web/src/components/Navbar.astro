@@ -2,8 +2,8 @@
 import { localeLinks } from '../lib/siteContent';
 import {getCollection} from "astro:content";
 import { Image } from 'astro:assets';
-import logoLight from '../assets/Logo_vidra_sinfondo_letrablanca.png';
-import logoDark from '../assets/Logo_vidra_sinfondo_letranegra.png';
+import logoLight from '../assets/Logo Vidra IA transparente.svg';
+import logoDark from '../assets/Logo_Vidra_IA_transparente_azul.svg';
 
 const { locale = 'es' } = Astro.props;
 const links = localeLinks[locale as keyof typeof localeLinks]?.nav ?? localeLinks.es.nav;

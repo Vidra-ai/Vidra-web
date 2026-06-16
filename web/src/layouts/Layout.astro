@@ -1,43 +1,53 @@
 ---
-const { title = 'Vidra', description = 'AI consulting for strategy, delivery, and measurable business impact.', ogImage, ogType = 'website' } = Astro.props;
+const {
+  title = 'Vidra',
+  description = 'AI consulting for strategy, delivery, and measurable business impact.',
+  ogImage,
+  ogType = 'website',
+} = Astro.props;
+
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
+import '../styles.css';
 
-const pathname = typeof Astro.request !== 'undefined' && Astro.request.url ? new URL(Astro.request.url).pathname : (Astro.url?.pathname || '/');
+const pathname = Astro.url.pathname;
 const locale = pathname.startsWith('/en') ? 'en' : 'es';
-const htmlLang = locale === 'es' ? 'es' : 'en';
 ---
 
 <!DOCTYPE html>
-<html lang={htmlLang} class="scroll-smooth">
+<html lang={locale} class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    
-    <!-- Open Graph / LinkedIn -->
+
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {ogImage && <meta property="og:image" content={new URL(ogImage, Astro.url)} />}
-    
-    <!-- Twitter -->
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
     <title>{title}</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Figtree:wght@400;500;700&display=swap" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Figtree:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body class="antialiased">
+
+  <body class="m-0 bg-mist font-sans text-ink antialiased">
     <Navbar locale={locale} />
+
     <main>
       <slot />
     </main>
+
     <Footer locale={locale} />
 
     <button
@@ -57,10 +67,60 @@ const htmlLang = locale === 'es' ? 'es' : 'en';
       </svg>
     </button>
 
-    <script>
-      (() => {
+    <script is:inline>
+      const initScrollTopButton = () => {
         const button = document.getElementById('scroll-top');
         if (!button) return;
+
+        const setLightButton = () => {
+          button.classList.remove(
+            'bg-[#0B2C4A]',
+            'text-white',
+            'hover:bg-[#00B2EB]',
+            'hover:text-[#0B2C4A]'
+          );
+
+          button.classList.add(
+            'bg-white',
+            'text-[#0B2C4A]',
+            'hover:bg-white/90',
+            'hover:text-[#0B2C4A]'
+          );
+        };
+
+        const setDarkButton = () => {
+          button.classList.remove(
+            'bg-white',
+            'text-[#0B2C4A]',
+            'hover:bg-white/90'
+          );
+
+          button.classList.add(
+            'bg-[#0B2C4A]',
+            'text-white',
+            'hover:bg-[#00B2EB]',
+            'hover:text-[#0B2C4A]'
+          );
+        };
+
+        const checkButtonTheme = () => {
+          button.style.pointerEvents = 'none';
+
+          const rect = button.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+
+          const elementBelow = document.elementFromPoint(x, y);
+          const themedSection = elementBelow?.closest('[data-nav-theme="light"]');
+
+          button.style.pointerEvents = '';
+
+          if (themedSection) {
+            setLightButton();
+          } else {
+            setDarkButton();
+          }
+        };
 
         const toggleButton = () => {
           const show = window.scrollY > window.innerHeight * 0.6;
@@ -71,18 +131,29 @@ const htmlLang = locale === 'es' ? 'es' : 'en';
 
           button.classList.toggle('opacity-100', show);
           button.classList.toggle('translate-y-0', show);
+
+          checkButtonTheme();
         };
 
-        button.addEventListener('click', () => {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
+        if (!button.dataset.initialized) {
+          button.dataset.initialized = 'true';
+
+          button.addEventListener('click', () => {
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+            });
           });
-        });
+
+          window.addEventListener('scroll', toggleButton, { passive: true });
+          window.addEventListener('resize', toggleButton);
+        }
 
         toggleButton();
-        window.addEventListener('scroll', toggleButton, { passive: true });
-      })();
+      };
+
+      initScrollTopButton();
+      document.addEventListener('astro:page-load', initScrollTopButton);
     </script>
   </body>
 </html>

@@ -757,7 +757,7 @@ export const contactPageContent = {
       phoneLabel: "Consultas generales",
       phone: "(+34) 955 023 256",
       emailLabel: "Email",
-      email: "hello@vidra.ai",
+      email: "contacto@vidra-ia.com",
       mapsLabel: "Abrir en Google Maps",
       mapsHref: "https://www.google.com/maps/search/?api=1&query=Calle%20Am%C3%A9rico%20Vespucio%205%2041092%20Sevilla",
       emailCta: "Contactar por email",
@@ -781,7 +781,7 @@ export const contactPageContent = {
       phoneLabel: "General enquiries",
       phone: "(+34) 955 023 256",
       emailLabel: "Email",
-      email: "hello@vidra.ai",
+      email: "contacto@vidra-ia.com",
       mapsLabel: "Open in Google Maps",
       mapsHref: "https://www.google.com/maps/search/?api=1&query=Calle%20Am%C3%A9rico%20Vespucio%205%2041092%20Sevilla",
       emailCta: "Get in touch via email",
@@ -868,7 +868,7 @@ export const legalPageContent = {
         blocks: [
           {
             heading: "Contacta con nosotros",
-            paragraphs: ["Si tienes preguntas sobre esta política o estos términos, visita la página de contacto o escríbenos a hello@vidra.ai."],
+            paragraphs: ["Si tienes preguntas sobre esta política o estos términos, visita la página de contacto o escríbenos a contacto@vidra-ia.com."],
           },
         ],
       },
@@ -951,7 +951,7 @@ export const legalPageContent = {
         blocks: [
           {
             heading: "Contact Us",
-            paragraphs: ["If you have any questions about this policy or these terms, please visit our contact page or contact us at hello@vidra.ai."],
+            paragraphs: ["If you have any questions about this policy or these terms, please visit our contact page or contact us at contacto@vidra-ia.com."],
           },
         ],
       },
@@ -964,14 +964,14 @@ export const footerContent = {
     tagline: "Transformamos datos en decisiones inteligentes.",
     social: {
       linkedinLabel: "LinkedIn",
-      xLabel: "X (Twitter)",
+      instagramLabel: "Instagram",
     },
   },
   en: {
     tagline: "We turn data into intelligent decisions.",
     social: {
       linkedinLabel: "LinkedIn",
-      xLabel: "X (Twitter)",
+      instagramLabel: "Instagram",
     },
   },
 } as const;

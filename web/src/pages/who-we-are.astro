@@ -145,7 +145,7 @@ type HeroImageKey = keyof typeof heroImages;
   <section data-nav-theme="light" class="bg-[#0B2C4A] px-4 py-20 text-white md:px-6 md:py-28">
     <div class="mx-auto max-w-7xl">
       <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="order-2 grid gap-4 md:grid-cols-3 lg:order-1 lg:[direction:rtl]">
+        <div class="order-2 grid gap-4 md:grid-cols-3 lg:order-1 lg:[direction:ltr]">
           {content.values.items.map((item, index) => (
             <article
               data-reveal="left"
@@ -215,7 +215,7 @@ type HeroImageKey = keyof typeof heroImages;
     <div class="mx-auto max-w-7xl">
       <div class="border-t border-[#0B2C4A]/12 pt-10">
         <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-          <div class="order-2 relative grid gap-4 md:grid-cols-4 lg:order-1 lg:[direction:rtl]">
+          <div class="order-2 relative grid gap-4 md:grid-cols-4 lg:order-1 lg:[direction:ltr]">
             <div class="absolute left-0 top-9 hidden h-px w-full bg-[#0B2C4A]/12 lg:block"></div>
 
             {journeySteps.map((step, index) => (
@@ -308,36 +308,40 @@ type HeroImageKey = keyof typeof heroImages;
     </div>
   </section>
 
-  <section data-nav-theme="light" class="bg-white px-4 py-20 md:px-6 md:py-28">
+    <section data-nav-theme="light" class="bg-white px-4 py-16 md:px-6 md:py-20">
     <div class="mx-auto max-w-7xl">
       <a
         href={contactHref}
         data-reveal="up"
         class="group block overflow-hidden rounded-[2rem] bg-[#0B2C4A] p-8 text-white shadow-[0_28px_90px_rgba(11,44,74,0.22)] transition-all duration-700 hover:rounded-[2.5rem] hover:shadow-[0_34px_110px_rgba(11,44,74,0.28)] md:p-14"
       >
-        <div class="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-          <div>
+        <div class="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
+          <div class="min-w-0">
             <p class="mb-5 text-xs font-semibold uppercase tracking-[0.25em] text-white/55">
               {content.finalCta.eyebrow}
             </p>
 
-            <h2 class="max-w-4xl text-[clamp(2.2rem,5vw,4.2rem)] font-medium leading-[0.98] tracking-[-0.045em]">
+            <h2 class="max-w-4xl text-[clamp(1.65rem,3.2vw,3rem)] font-medium leading-[1.05] tracking-[-0.035em]">
               {content.finalCta.title}
             </h2>
 
-            <div class="mt-4 transition-all duration-700 ease-out">
-              <h3 class="max-w-4xl text-[clamp(2.2rem,5vw,4.2rem)] font-medium leading-[0.98] tracking-[-0.045em] text-[#00B2EB]">
-                {content.finalCta.highlight}
-              </h3>
+            <div
+              class="grid grid-rows-[0fr] opacity-0 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:grid-rows-[1fr] group-hover:opacity-100"
+            >
+              <div class="overflow-hidden">
+                <h3 class="mt-4 max-w-4xl text-[clamp(1.65rem,3.2vw,3rem)] font-medium leading-[1.05] tracking-[-0.035em] text-[#00B2EB]">
+                  {content.finalCta.highlight}
+                </h3>
 
-              <p class="mt-8 max-w-2xl text-[1.05rem] leading-7 text-white/70 transition-colors group-hover:text-white md:text-[1.15rem]">
-                {content.finalCta.text}
-              </p>
+                <p class="mt-8 max-w-2xl text-[1.05rem] leading-7 text-white/70 transition-colors group-hover:text-white md:text-[1.15rem]">
+                  {content.finalCta.text}
+                </p>
+              </div>
             </div>
           </div>
 
-          <div class="flex items-center gap-4">
-            <span class="hidden text-sm font-medium text-white/55 transition-opacity duration-500 group-hover:opacity-100 md:block">
+          <div class="flex shrink-0 items-center gap-4">
+            <span class="hidden translate-x-4 text-sm font-medium text-white/55 opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100 md:block">
               {content.finalCta.linkLabel}
             </span>
 
