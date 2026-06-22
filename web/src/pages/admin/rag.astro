@@ -1,0 +1,292 @@
+---
+import Layout from '../../layouts/Layout.astro';
+const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
+---
+
+<Layout
+  title="Admin RAG | Vidra"
+  description="Panel de administración de fuentes de documentación RAG."
+>
+  <div class="mx-auto max-w-3xl px-4 py-24 space-y-8">
+
+    <!-- Título -->
+    <div>
+      <h1 class="text-2xl font-bold text-[#071729]">Administración RAG</h1>
+      <p class="mt-1 text-sm text-[#071729]/50">Gestión de fuentes remotas de documentación indexada.</p>
+    </div>
+
+    <!-- Clave de administrador -->
+    <div class="rounded-2xl border border-[rgba(7,23,41,0.1)] bg-white p-5 shadow-[0_2px_12px_rgba(7,23,41,0.06)]">
+      <label class="block text-xs font-semibold uppercase tracking-wide text-[#071729]/50 mb-2">Clave de administrador</label>
+      <div class="flex gap-2">
+        <input
+          id="admin-key"
+          type="password"
+          placeholder="X-Admin-Key"
+          autocomplete="off"
+          class="flex-1 rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-4 py-2.5 text-sm text-[#071729] outline-none focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+        />
+        <button
+          id="load-btn"
+          class="rounded-xl bg-[#0d3c78] px-4 py-2.5 text-sm font-medium text-white hover:bg-[#00b2eb] transition"
+        >
+          Cargar
+        </button>
+      </div>
+      <p id="key-error" class="mt-2 text-xs text-red-500 hidden">Clave incorrecta o API no disponible.</p>
+    </div>
+
+    <!-- Fuentes registradas -->
+    <div id="sources-section" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base font-semibold text-[#071729]">Fuentes registradas</h2>
+        <button
+          id="sync-btn"
+          class="flex items-center gap-2 rounded-xl bg-[#00b2eb] px-4 py-2 text-sm font-medium text-white hover:bg-[#0d3c78] transition disabled:opacity-40"
+        >
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Sincronizar ahora
+        </button>
+      </div>
+
+      <!-- Resultado de sync -->
+      <div id="sync-result" class="hidden rounded-xl border p-4 text-sm"></div>
+
+      <!-- Lista de fuentes -->
+      <div id="sources-list" class="space-y-3">
+        <p id="no-sources" class="text-sm text-[#071729]/40 hidden">No hay fuentes registradas.</p>
+      </div>
+
+      <!-- Añadir fuente -->
+      <div class="rounded-2xl border border-[rgba(7,23,41,0.1)] bg-white p-5 shadow-[0_2px_12px_rgba(7,23,41,0.06)]">
+        <h3 class="text-sm font-semibold text-[#071729] mb-4">Añadir fuente</h3>
+        <form id="add-form" class="space-y-3">
+          <div>
+            <label class="block text-xs text-[#071729]/50 mb-1">URL del documento <span class="text-red-400">*</span></label>
+            <input
+              id="new-url"
+              type="url"
+              placeholder="https://ejemplo.com/manual.pdf"
+              required
+              class="w-full rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-4 py-2.5 text-sm text-[#071729] outline-none focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+            />
+          </div>
+          <div>
+            <label class="block text-xs text-[#071729]/50 mb-1">Título <span class="text-red-400">*</span></label>
+            <input
+              id="new-titulo"
+              type="text"
+              placeholder="Manual de incorporación"
+              required
+              class="w-full rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-4 py-2.5 text-sm text-[#071729] outline-none focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-[#071729]/50 mb-1">Tipo</label>
+              <input
+                id="new-tipo"
+                type="text"
+                placeholder="manual, política, proceso…"
+                class="w-full rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-4 py-2.5 text-sm text-[#071729] outline-none focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+              />
+            </div>
+            <div>
+              <label class="block text-xs text-[#071729]/50 mb-1">Área</label>
+              <input
+                id="new-area"
+                type="text"
+                placeholder="RRHH, IT, Legal…"
+                class="w-full rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-4 py-2.5 text-sm text-[#071729] outline-none focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+              />
+            </div>
+          </div>
+          <p id="add-error" class="text-xs text-red-500 hidden"></p>
+          <button
+            type="submit"
+            class="w-full rounded-xl bg-[#0d3c78] py-2.5 text-sm font-medium text-white hover:bg-[#00b2eb] transition disabled:opacity-40"
+          >
+            Registrar fuente
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<script is:inline define:vars={{ apiUrl }}>
+  const adminKeyInput = document.getElementById('admin-key');
+  const loadBtn = document.getElementById('load-btn');
+  const keyError = document.getElementById('key-error');
+  const sourcesSection = document.getElementById('sources-section');
+  const sourcesList = document.getElementById('sources-list');
+  const noSources = document.getElementById('no-sources');
+  const syncBtn = document.getElementById('sync-btn');
+  const syncResult = document.getElementById('sync-result');
+  const addForm = document.getElementById('add-form');
+  const addError = document.getElementById('add-error');
+
+  // Recuperar clave guardada
+  const savedKey = sessionStorage.getItem('rag_admin_key');
+  if (savedKey) {
+    adminKeyInput.value = savedKey;
+    loadSources();
+  }
+
+  function getKey() {
+    return adminKeyInput.value.trim();
+  }
+
+  function headers() {
+    return { 'Content-Type': 'application/json', 'X-Admin-Key': getKey() };
+  }
+
+  async function loadSources() {
+    keyError.classList.add('hidden');
+    try {
+      const res = await fetch(`${apiUrl}/rag/sources`, { headers: headers() });
+      if (res.status === 403 || res.status === 404) {
+        keyError.classList.remove('hidden');
+        sourcesSection.classList.add('hidden');
+        return;
+      }
+      sessionStorage.setItem('rag_admin_key', getKey());
+      const data = await res.json();
+      sourcesSection.classList.remove('hidden');
+      renderSources(data);
+    } catch {
+      keyError.classList.remove('hidden');
+    }
+  }
+
+  function renderSources(sources) {
+    // Limpiar solo las tarjetas (no el form de añadir)
+    sourcesList.querySelectorAll('.source-card').forEach(el => el.remove());
+
+    if (!sources.length) {
+      noSources.classList.remove('hidden');
+      return;
+    }
+    noSources.classList.add('hidden');
+
+    sources.forEach(s => {
+      const card = document.createElement('div');
+      card.className = 'source-card rounded-2xl border border-[rgba(7,23,41,0.1)] bg-white p-4 shadow-[0_2px_8px_rgba(7,23,41,0.05)] flex items-start justify-between gap-4';
+
+      const syncedText = s.last_synced_at
+        ? new Date(s.last_synced_at).toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' })
+        : 'Nunca sincronizado';
+
+      const hashBadge = s.content_hash
+        ? `<span class="inline-block rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-xs text-green-700">Indexado</span>`
+        : `<span class="inline-block rounded-full bg-yellow-50 border border-yellow-200 px-2 py-0.5 text-xs text-yellow-700">Pendiente</span>`;
+
+      card.innerHTML = `
+        <div class="min-w-0 flex-1">
+          <p class="text-sm font-semibold text-[#071729] truncate">${escapeHtml(s.titulo)}</p>
+          <p class="text-xs text-[#071729]/50 truncate mt-0.5">${escapeHtml(s.url)}</p>
+          <div class="mt-2 flex flex-wrap items-center gap-2">
+            ${hashBadge}
+            ${s.tipo ? `<span class="text-xs text-[#071729]/40">${escapeHtml(s.tipo)}</span>` : ''}
+            ${s.area ? `<span class="text-xs text-[#071729]/40">${escapeHtml(s.area)}</span>` : ''}
+            <span class="text-xs text-[#071729]/30">${syncedText}</span>
+          </div>
+        </div>
+        <button
+          data-id="${s.id}"
+          class="delete-btn shrink-0 rounded-lg border border-red-100 bg-red-50 px-3 py-1.5 text-xs text-red-500 hover:bg-red-100 transition"
+        >
+          Eliminar
+        </button>
+      `;
+      sourcesList.appendChild(card);
+    });
+
+    sourcesList.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => deleteSource(Number(btn.dataset.id)));
+    });
+  }
+
+  async function deleteSource(id) {
+    if (!confirm('¿Eliminar esta fuente y su documentación indexada?')) return;
+    const res = await fetch(`${apiUrl}/rag/sources/${id}`, {
+      method: 'DELETE',
+      headers: headers(),
+    });
+    if (res.ok || res.status === 204) {
+      loadSources();
+    }
+  }
+
+  loadBtn.addEventListener('click', loadSources);
+  adminKeyInput.addEventListener('keydown', e => { if (e.key === 'Enter') loadSources(); });
+
+  syncBtn.addEventListener('click', async () => {
+    syncBtn.disabled = true;
+    syncBtn.textContent = 'Sincronizando…';
+    syncResult.classList.add('hidden');
+
+    try {
+      const res = await fetch(`${apiUrl}/rag/sync`, { method: 'POST', headers: headers() });
+      const data = await res.json();
+
+      const colorClass = data.errors > 0 ? 'border-red-200 bg-red-50 text-red-700' : 'border-green-200 bg-green-50 text-green-700';
+      const rows = data.items.map(i => {
+        const icon = i.status === 'updated' ? '✓' : i.status === 'unchanged' ? '—' : '✗';
+        const color = i.status === 'updated' ? 'text-green-600' : i.status === 'unchanged' ? 'text-[#071729]/40' : 'text-red-500';
+        return `<li class="flex gap-2"><span class="${color} font-mono">${icon}</span><span class="truncate">${escapeHtml(i.url)}</span>${i.detail ? `<span class="text-[#071729]/40">${escapeHtml(i.detail)}</span>` : ''}</li>`;
+      }).join('');
+
+      syncResult.className = `rounded-xl border p-4 text-sm ${colorClass}`;
+      syncResult.innerHTML = `
+        <p class="font-semibold mb-2">
+          ${data.synced} actualizada(s) · ${data.unchanged} sin cambios · ${data.errors} error(es)
+        </p>
+        <ul class="space-y-1 text-xs">${rows}</ul>
+      `;
+      syncResult.classList.remove('hidden');
+      loadSources();
+    } catch (err) {
+      syncResult.className = 'rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700';
+      syncResult.textContent = 'Error al conectar con la API.';
+      syncResult.classList.remove('hidden');
+    } finally {
+      syncBtn.disabled = false;
+      syncBtn.innerHTML = `<svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> Sincronizar ahora`;
+    }
+  });
+
+  addForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    addError.classList.add('hidden');
+    const url = document.getElementById('new-url').value.trim();
+    const titulo = document.getElementById('new-titulo').value.trim();
+    const tipo = document.getElementById('new-tipo').value.trim() || null;
+    const area = document.getElementById('new-area').value.trim() || null;
+
+    try {
+      const res = await fetch(`${apiUrl}/rag/sources`, {
+        method: 'POST',
+        headers: headers(),
+        body: JSON.stringify({ url, titulo, tipo, area }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        addError.textContent = err.detail ?? `Error ${res.status}`;
+        addError.classList.remove('hidden');
+        return;
+      }
+      addForm.reset();
+      loadSources();
+    } catch {
+      addError.textContent = 'Error al conectar con la API.';
+      addError.classList.remove('hidden');
+    }
+  });
+
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
