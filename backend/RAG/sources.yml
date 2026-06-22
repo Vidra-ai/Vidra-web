@@ -1,0 +1,8 @@
+# Fuentes remotas para sincronización automática.
+# Descomenta y rellena para activar la ingesta desde URLs externas.
+#
+# sources:
+#   - url: https://ejemplo.com/manual.pdf
+#     titulo: Manual de incorporación
+#     tipo: manual
+#     area: RRHH
