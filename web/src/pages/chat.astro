@@ -163,7 +163,6 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
 
   function setLoading(on) {
     sendBtn.disabled = on;
-    input.disabled = on;
   }
 
   form.addEventListener('submit', async (e) => {
@@ -172,6 +171,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
     if (!question) return;
 
     input.value = '';
+    input.focus();
     addUserMessage(question);
     setLoading(true);
     addLoadingMessage();

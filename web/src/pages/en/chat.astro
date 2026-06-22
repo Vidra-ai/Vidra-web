@@ -108,13 +108,14 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
   function escapeHtml(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function setLoading(on) { sendBtn.disabled = on; input.disabled = on; }
+  function setLoading(on) { sendBtn.disabled = on; }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const question = input.value.trim();
     if (!question) return;
     input.value = '';
+    input.focus();
     addUserMessage(question);
     setLoading(true);
     addLoadingMessage();
