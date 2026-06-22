@@ -78,6 +78,7 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
   const sendBtn = document.getElementById('send-btn');
 
   const container = () => messagesEl.querySelector('.space-y-6');
+  const history = []; // { rol: 'usuario'|'asistente', contenido: string }
 
   function addUserMessage(text) {
     const div = document.createElement('div');
@@ -180,13 +181,15 @@ const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
       const res = await fetch(`${apiUrl}/rag/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pregunta: question, top_k: 10 }),
+        body: JSON.stringify({ pregunta: question, top_k: 10, historial: history.slice(-10) }),
       });
 
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
       removeLoading();
       addAssistantMessage(data.respuesta, data.fuentes);
+      history.push({ rol: 'usuario', contenido: question });
+      history.push({ rol: 'asistente', contenido: data.respuesta });
     } catch (err) {
       removeLoading();
       addAssistantMessage('Ha ocurrido un error al conectar con el asistente. Por favor, inténtalo de nuevo.', []);
