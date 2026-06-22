@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import time
+from collections import deque
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -11,9 +13,9 @@ from typing import Annotated
 from urllib.parse import urlparse
 
 import httpx
-from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -59,12 +61,53 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="Chatbot RAG", version="1.0.0", lifespan=lifespan)
 
+# Rate limiting en memoria por IP para el endpoint público /rag/chat. Evita el abuso
+# y el gasto descontrolado en OpenAI. Suficiente para un único contenedor; si se escala
+# a varias réplicas, mover el contador a Redis (vidra_redis).
+_rate_buckets: dict[str, deque[float]] = {}
+
+
+def _client_ip(request: Request) -> str:
+    """IP real del cliente respetando el proxy inverso (Nginx) vía X-Forwarded-For."""
+    forwarded = request.headers.get("x-forwarded-for")
+    if forwarded:
+        return forwarded.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+@app.middleware("http")
+async def rate_limit_chat(request: Request, call_next):
+    if request.method == "POST" and request.url.path == "/rag/chat":
+        settings = get_settings()
+        now = time.monotonic()
+        window = settings.chat_rate_window
+        ip = _client_ip(request)
+        bucket = _rate_buckets.setdefault(ip, deque())
+        while bucket and now - bucket[0] > window:
+            bucket.popleft()
+        if len(bucket) >= settings.chat_rate_limit:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Demasiadas solicitudes. Inténtalo de nuevo en unos segundos."},
+            )
+        bucket.append(now)
+        # Poda defensiva: evita crecimiento ilimitado del diccionario de IPs.
+        if len(_rate_buckets) > 10000:
+            for k in [k for k, v in _rate_buckets.items() if not v]:
+                _rate_buckets.pop(k, None)
+    return await call_next(request)
+
+
+# CORS: orígenes explícitos desde la configuración. No se usa "*" con credenciales
+# (combinación que los navegadores rechazan y que abriría la API a cualquier origen).
+# Se añade el ÚLTIMO para que sea la capa más externa y añada cabeceras CORS incluso
+# a las respuestas 429 que devuelve el rate-limiter.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=get_settings().cors_origins_list,
+    allow_credentials=False,
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "X-Admin-Key"],
 )
 
 

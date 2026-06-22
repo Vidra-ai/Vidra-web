@@ -1,12 +1,17 @@
+# Stack de VALIDACIÓN LOCAL (db + api + web dev server).
+# Para el servidor usa docker-compose.prod.yml (ver DEPLOY.md).
 services:
   db:
     image: pgvector/pgvector:pg16
+    container_name: vidra_chatbot_db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-chatbot}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
       POSTGRES_DB: ${POSTGRES_DB:-chatbot}
     ports:
-      - "5435:5432"
+      # Solo accesible desde la propia máquina, nunca expuesta a la red.
+      - "127.0.0.1:5435:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -17,6 +22,8 @@ services:
 
   api:
     build: ./backend
+    container_name: vidra_chatbot_api
+    restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
@@ -26,13 +33,16 @@ services:
       LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4322,http://localhost:4321}
     ports:
-      - "8001:8000"
+      - "127.0.0.1:8001:8000"
     volumes:
       - ./backend:/app
 
   web:
     image: node:22-slim
+    container_name: vidra_chatbot_web
+    restart: unless-stopped
     working_dir: /app
     command: sh -c "npm install && npm run dev -- --host"
     depends_on:

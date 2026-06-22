@@ -56,11 +56,19 @@ def init_db() -> None:
         connection.execute(text("CREATE EXTENSION IF NOT EXISTS pg_trgm"))
         connection.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
     Base.metadata.create_all(engine)
-    # Índice trigram para la parte léxica de la búsqueda híbrida.
     with engine.begin() as connection:
+        # Índice trigram para la parte léxica de la búsqueda híbrida.
         connection.execute(
             text(
                 "CREATE INDEX IF NOT EXISTS ix_rag_chunks_texto_trgm "
                 "ON rag_chunks USING gin (texto gin_trgm_ops)"
+            )
+        )
+        # Índice HNSW para la búsqueda vectorial (coseno). Sin él, pgvector hace un
+        # escaneo secuencial completo: aceptable con pocos chunks, lento al escalar.
+        connection.execute(
+            text(
+                "CREATE INDEX IF NOT EXISTS ix_rag_chunks_embedding_hnsw "
+                "ON rag_chunks USING hnsw (embedding vector_cosine_ops)"
             )
         )
