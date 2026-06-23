@@ -1,0 +1,202 @@
+---
+const apiUrl = import.meta.env.PUBLIC_API_URL ?? 'http://localhost:8000';
+const { locale = 'es' } = Astro.props;
+const isEs = locale !== 'en';
+const t = {
+  placeholder: isEs ? 'Escribe tu pregunta...' : 'Ask a question...',
+  welcome: isEs
+    ? 'Hola, soy el asistente de Vidra. ¿En qué puedo ayudarte?'
+    : 'Hi, I\'m Vidra\'s assistant. How can I help you?',
+  error: isEs
+    ? 'Error al conectar con el asistente. Inténtalo de nuevo.'
+    : 'Connection error. Please try again.',
+  ariaOpen: isEs ? 'Abrir asistente' : 'Open assistant',
+  ariaClose: isEs ? 'Cerrar asistente' : 'Close assistant',
+};
+---
+
+<!-- Botón flotante -->
+<button
+  id="chat-toggle"
+  aria-label={t.ariaOpen}
+  class="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#0d3c78] text-white shadow-[0_8px_30px_rgba(13,60,120,0.35)] transition-all duration-300 hover:bg-[#00b2eb] hover:scale-105"
+>
+  <!-- Icono chat (visible cuando cerrado) -->
+  <svg id="chat-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4z" />
+  </svg>
+  <!-- Icono X (visible cuando abierto) -->
+  <svg id="chat-icon-close" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+  </svg>
+</button>
+
+<!-- Panel de chat -->
+<div
+  id="chat-panel"
+  class="fixed bottom-24 left-6 z-50 hidden w-[360px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_20px_60px_rgba(7,23,41,0.18)] transition-all duration-300"
+  style="height: 500px;"
+>
+  <!-- Header -->
+  <div class="flex items-center gap-3 border-b border-[rgba(7,23,41,0.08)] bg-[#0d3c78] px-4 py-3">
+    <div class="flex h-8 w-8 items-center justify-center rounded-full bg-white/20">
+      <svg class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4z" />
+      </svg>
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-white">Asistente IA</p>
+      <p class="text-xs text-white/60">Vidra</p>
+    </div>
+  </div>
+
+  <!-- Mensajes -->
+  <div id="chat-messages" class="flex-1 overflow-y-auto bg-[#f7fafd] px-4 py-4" style="height: 360px;">
+    <div id="chat-messages-inner" class="space-y-4">
+      <!-- Mensaje de bienvenida -->
+      <div class="flex gap-2">
+        <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0d3c78]">
+          <svg class="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4z" />
+          </svg>
+        </div>
+        <div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-3 py-2.5 shadow-[0_2px_8px_rgba(7,23,41,0.08)]">
+          <p class="text-sm leading-relaxed text-[#071729]">{t.welcome}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div class="border-t border-[rgba(7,23,41,0.08)] bg-white px-3 py-3">
+    <form id="chat-widget-form" class="flex gap-2">
+      <input
+        id="chat-widget-input"
+        type="text"
+        placeholder={t.placeholder}
+        autocomplete="off"
+        class="flex-1 rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-3 py-2.5 text-sm text-[#071729] outline-none transition placeholder:text-[#071729]/40 focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+      />
+      <button
+        id="chat-widget-send"
+        type="submit"
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0d3c78] text-white transition hover:bg-[#00b2eb] disabled:opacity-40"
+      >
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script is:inline define:vars={{ apiUrl, errorMsg: t.error }}>
+  const toggle = document.getElementById('chat-toggle');
+  const panel = document.getElementById('chat-panel');
+  const iconOpen = document.getElementById('chat-icon-open');
+  const iconClose = document.getElementById('chat-icon-close');
+  const messagesEl = document.getElementById('chat-messages');
+  const inner = document.getElementById('chat-messages-inner');
+  const form = document.getElementById('chat-widget-form');
+  const input = document.getElementById('chat-widget-input');
+  const sendBtn = document.getElementById('chat-widget-send');
+
+  let isOpen = false;
+  const history = [];
+
+  const initChatWidget = () => {
+    if (toggle._initialized) return;
+    toggle._initialized = true;
+
+    toggle.addEventListener('click', () => {
+      isOpen = !isOpen;
+      panel.classList.toggle('hidden', !isOpen);
+      panel.classList.toggle('flex', isOpen);
+      iconOpen.classList.toggle('hidden', isOpen);
+      iconClose.classList.toggle('hidden', !isOpen);
+      if (isOpen) { input.focus(); scrollBottom(); }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const question = input.value.trim();
+      if (!question) return;
+      input.value = '';
+      addUserMessage(question);
+      sendBtn.disabled = true;
+      addLoading();
+      try {
+        const res = await fetch(`${apiUrl}/rag/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pregunta: question, top_k: 10, historial: history.slice(-10) }),
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        removeLoading();
+        addAssistantMessage(data.respuesta);
+        history.push({ rol: 'usuario', contenido: question });
+        history.push({ rol: 'asistente', contenido: data.respuesta });
+      } catch {
+        removeLoading();
+        addAssistantMessage(errorMsg);
+      } finally {
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    });
+  };
+
+  function addUserMessage(text) {
+    const d = document.createElement('div');
+    d.className = 'flex justify-end gap-2';
+    d.innerHTML = `<div class="max-w-[85%] rounded-2xl rounded-tr-sm bg-[#0d3c78] px-3 py-2.5"><p class="text-sm leading-relaxed text-white">${esc(text)}</p></div>`;
+    inner.appendChild(d);
+    scrollBottom();
+  }
+
+  function addAssistantMessage(text) {
+    const d = document.createElement('div');
+    d.className = 'flex gap-2';
+    d.innerHTML = `
+      <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0d3c78]">
+        <svg class="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4z"/></svg>
+      </div>
+      <div class="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-3 py-2.5 shadow-[0_2px_8px_rgba(7,23,41,0.08)]">
+        <p class="text-sm leading-relaxed text-[#071729] whitespace-pre-line">${esc(text)}</p>
+      </div>`;
+    inner.appendChild(d);
+    scrollBottom();
+  }
+
+  function addLoading() {
+    const d = document.createElement('div');
+    d.id = 'cw-loading';
+    d.className = 'flex gap-2';
+    d.innerHTML = `
+      <div class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#0d3c78]">
+        <svg class="h-3.5 w-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-4 4z"/></svg>
+      </div>
+      <div class="rounded-2xl rounded-tl-sm bg-white px-3 py-2.5 shadow-[0_2px_8px_rgba(7,23,41,0.08)]">
+        <div class="flex gap-1 items-center h-5">
+          <span class="h-1.5 w-1.5 rounded-full bg-[#00b2eb] animate-bounce" style="animation-delay:0ms"></span>
+          <span class="h-1.5 w-1.5 rounded-full bg-[#00b2eb] animate-bounce" style="animation-delay:150ms"></span>
+          <span class="h-1.5 w-1.5 rounded-full bg-[#00b2eb] animate-bounce" style="animation-delay:300ms"></span>
+        </div>
+      </div>`;
+    inner.appendChild(d);
+    scrollBottom();
+  }
+
+  function removeLoading() { document.getElementById('cw-loading')?.remove(); }
+  function scrollBottom() { messagesEl.scrollTop = messagesEl.scrollHeight; }
+  function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  initChatWidget();
+  document.addEventListener('astro:page-load', initChatWidget);
+</script>
