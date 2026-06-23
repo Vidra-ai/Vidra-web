@@ -34,10 +34,14 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ADMIN_API_KEY: ${ADMIN_API_KEY:-}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4322,http://localhost:4321}
+      PUBLIC_DOCS_DIR: /vault-publico
+      PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-10}
     ports:
       - "127.0.0.1:8001:8000"
     volumes:
       - ./backend:/app
+      # Carpeta "Información pública" del vault Obsidian (solo lectura).
+      - "${PUBLIC_DOCS_HOST_DIR:-C:/Users/CDiaz/Desktop/MEGA/Vidra-docs/Obsidian-Vidra/01 - Información pública (web - chatbot)}:/vault-publico:ro"
 
   web:
     image: node:22-slim

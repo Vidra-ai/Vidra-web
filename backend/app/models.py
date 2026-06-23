@@ -20,6 +20,9 @@ class RagDocument(Base):
     tipo: Mapped[str | None] = mapped_column(default=None)
     area: Mapped[str | None] = mapped_column(default=None)
     fuente_original: Mapped[str | None] = mapped_column(default=None)
+    # Hash SHA-256 del contenido fuente. Permite re-embeber solo los ficheros
+    # que cambian en la sincronización incremental (p. ej. notas de Obsidian).
+    content_hash: Mapped[str | None] = mapped_column(default=None)
     nivel_confidencialidad: Mapped[str] = mapped_column(default="interno")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 

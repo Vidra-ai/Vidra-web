@@ -28,6 +28,13 @@ class Settings(BaseSettings):
     chat_rate_limit: int = 20
     chat_rate_window: int = 60
 
+    # Carpeta de Obsidian "Información pública" montada en el contenedor (solo lectura).
+    # Vacío = desactivado. La sincronización incremental re-embebe solo los .md que cambian.
+    public_docs_dir: str = ""
+    public_docs_sync_interval: int = 10
+    # Si True, solo se indexan notas con frontmatter `visibilidad: publico` (ADR-005).
+    public_docs_require_public_flag: bool = True
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]

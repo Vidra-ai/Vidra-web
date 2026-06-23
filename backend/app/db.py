@@ -57,6 +57,10 @@ def init_db() -> None:
         connection.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
     Base.metadata.create_all(engine)
     with engine.begin() as connection:
+        # Columna añadida después de la primera versión: idempotente para DBs existentes.
+        connection.execute(
+            text("ALTER TABLE rag_documents ADD COLUMN IF NOT EXISTS content_hash VARCHAR")
+        )
         # Índice trigram para la parte léxica de la búsqueda híbrida.
         connection.execute(
             text(

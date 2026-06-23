@@ -42,6 +42,10 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       ADMIN_API_KEY: ${ADMIN_API_KEY}
       CORS_ORIGINS: ${CORS_ORIGINS:-https://vidra-ia.com}
+      # Sincronización de la carpeta pública del vault (vacío = desactivada hasta que
+      # el vault esté disponible en el servidor; ver tarea "Obsidian bare repo").
+      PUBLIC_DOCS_DIR: ${PUBLIC_DOCS_DIR:-}
+      PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-30}
     # Producción: sin --reload, con proxy headers (para X-Forwarded-For / rate limit).
     # 1 worker basta: los endpoints síncronos usan el threadpool de Starlette para la
     # E/S bloqueante (OpenAI). Subir UVICORN_WORKERS implica mover el rate limit a Redis.
@@ -54,6 +58,10 @@ services:
     volumes:
       # Documentación RAG persistente (no se hornea en la imagen).
       - ./backend/RAG:/app/RAG
+      # Carpeta "Información pública" del vault Obsidian (solo lectura). Descomenta y
+      # ajusta la ruta del host cuando el vault esté disponible en el servidor; además
+      # define PUBLIC_DOCS_DIR=/vault-publico en el .env.
+      # - "${PUBLIC_DOCS_HOST_DIR}:/vault-publico:ro"
     networks:
       - chatbot_internal
 

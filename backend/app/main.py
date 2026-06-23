@@ -34,6 +34,7 @@ from app.rag.schemas import (
     SyncResult,
     SyncResultItem,
 )
+from app.rag.public_docs import sync_public_docs
 from app.rag.seed import sync_remote_sources
 from app.settings import get_settings
 
@@ -51,12 +52,33 @@ async def _daily_sync_loop() -> None:
         await asyncio.sleep(_SYNC_INTERVAL)
 
 
+async def _public_docs_sync_loop() -> None:
+    """Sincroniza la carpeta pública de Obsidian en bucle corto. Re-embebe solo los
+    ficheros cambiados; si no hay cambios, es prácticamente gratis (hash de unos .md)."""
+    settings = get_settings()
+    if not settings.public_docs_dir.strip():
+        print("[public-docs] PUBLIC_DOCS_DIR no configurado: sincronización desactivada.")
+        return
+    while True:
+        try:
+            summary = await asyncio.to_thread(sync_public_docs)
+            if any(summary[k] for k in ("indexed", "updated", "removed", "errors")):
+                print(f"[public-docs] {summary}")
+        except Exception as exc:
+            print(f"[public-docs] Error en sincronización: {exc}")
+        await asyncio.sleep(settings.public_docs_sync_interval)
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     init_db()
-    task = asyncio.create_task(_daily_sync_loop())
+    tasks = [
+        asyncio.create_task(_daily_sync_loop()),
+        asyncio.create_task(_public_docs_sync_loop()),
+    ]
     yield
-    task.cancel()
+    for task in tasks:
+        task.cancel()
 
 
 app = FastAPI(title="Chatbot RAG", version="1.0.0", lifespan=lifespan)
@@ -235,6 +257,12 @@ def sync_sources(session: Annotated[Session, Depends(get_db)]) -> SyncResult:
         errors=sum(1 for i in items if i.status == "error"),
         items=items,
     )
+
+
+@app.post("/rag/sync-public", dependencies=[Depends(_require_admin_key)])
+def sync_public(_session: Annotated[Session, Depends(get_db)]) -> dict:
+    """Fuerza una sincronización inmediata de la carpeta pública de Obsidian."""
+    return sync_public_docs()
 
 
 @app.post("/rag/chat", response_model=ChatResponse)

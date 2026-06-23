@@ -72,7 +72,26 @@ con cabeceras `X-Forwarded-For`/`X-Forwarded-Proto`. SSL con Certbot
 
 ---
 
-## 3. Notas de escalabilidad / operación
+## 3. Fuente de contenido: carpeta pública de Obsidian
+
+El chatbot se nutre de la carpeta **"01 - Información pública (web - chatbot)"** del vault
+(única fuente de verdad, ADR-005). El backend la lee montada en `/vault-publico` (solo
+lectura) y la **sincroniza de forma incremental**: en cada ciclo (`PUBLIC_DOCS_SYNC_INTERVAL`
+seg) calcula el hash de cada `.md` y **re-embebe solo los que cambian**; indexa los nuevos
+y elimina del índice los borrados o los que dejan de ser públicos.
+
+- Solo se indexan notas con frontmatter `visibilidad: publico` (`PUBLIC_DOCS_REQUIRE_PUBLIC_FLAG`).
+- Se limpia el markdown antes de embeber: frontmatter, `#etiquetas`, callouts de aviso,
+  `[[enlaces]]` y la sección "Notas relacionadas".
+- Forzar una sincronización: `POST /rag/sync-public` con `X-Admin-Key`.
+
+**Local:** se monta automáticamente desde `PUBLIC_DOCS_HOST_DIR` (MEGA) en compose.
+**Servidor:** el vault aún no está en vidra-central (tarea pendiente "Obsidian bare repo").
+Hasta entonces, `PUBLIC_DOCS_DIR` vacío deja la sincronización desactivada. Cuando el vault
+esté disponible, descomenta el volumen en `docker-compose.prod.yml` y define
+`PUBLIC_DOCS_DIR=/vault-publico` + `PUBLIC_DOCS_HOST_DIR=<ruta en el servidor>`.
+
+## 4. Notas de escalabilidad / operación
 
 - **Rate limit** (`/rag/chat`) es en memoria y por worker. Con `UVICORN_WORKERS=1`
   (default) el límite es exacto. Para >1 worker o varias réplicas, mover el contador
