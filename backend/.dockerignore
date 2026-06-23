@@ -1,0 +1,21 @@
+# No incluir secretos ni datos en la imagen
+.env
+.env.*
+
+# Documentación RAG (puede ser pesada; se monta como volumen o se sincroniza aparte)
+RAG/*
+!RAG/.gitkeep
+!RAG/sources.yml
+
+# Artefactos de Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Caché de hashes de sincronización (estado de runtime)
+RAG/.sources_hashes.json

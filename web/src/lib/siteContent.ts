@@ -10,7 +10,6 @@ export const localeLinks = {
       { label: "Quiénes somos", href: "/#who-we-are" },
       { label: "Contacto", href: "/#contact" },
       { label: "Blog", href: "/blog" },
-      { label: "Asistente", href: "/chat" },
     ],
     footer: [
       { label: "Qué hacemos", href: "/#what-we-do" },
@@ -18,7 +17,6 @@ export const localeLinks = {
       { label: "Quiénes somos", href: "/#who-we-are" },
       { label: "Contacto", href: "/contact" },
       { label: "Blog", href: "/blog" },
-      { label: "Asistente", href: "/chat" },
     ],
   },
   en: {
@@ -30,7 +28,6 @@ export const localeLinks = {
       { label: "Who we are", href: "/en/#who-we-are" },
       { label: "Contact", href: "/en/#contact" },
       { label: "Blog", href: "/en/blog" },
-      { label: "Assistant", href: "/en/chat" },
     ],
     footer: [
       { label: "What we do", href: "/en/#what-we-do" },
@@ -38,7 +35,6 @@ export const localeLinks = {
       { label: "Who we are", href: "/en/#who-we-are" },
       { label: "Contact", href: "/en/#contact" },
       { label: "Blog", href: "/en/blog" },
-      { label: "Assistant", href: "/en/chat" },
     ],
   },
 } as const;

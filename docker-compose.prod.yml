@@ -1,0 +1,74 @@
+# Stack de PRODUCCIÓN para vidra-central (Control Plane).
+#
+# - La web Astro NO va aquí: se compila estática (con PUBLIC_API_URL apuntando al
+#   dominio público de la API) y la sirve Nginx. Aquí solo viven la API y su DB.
+# - La DB no se expone a ninguna interfaz; solo es accesible en la red interna.
+# - La API escucha en 127.0.0.1; Nginx (ya instalado) hace de proxy inverso + SSL.
+# - Imágenes desde GHCR (patrón ADR-006/ADR-007). El `build` es solo respaldo manual.
+#
+# Variables en .env (valores reales en Vaultwarden, nunca commiteadas). Ver DEPLOY.md.
+#   docker compose -f docker-compose.prod.yml up -d
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: vidra_chatbot_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - vidra_chatbot_pgdata:/var/lib/postgresql/data
+    networks:
+      - chatbot_internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    image: ${CHATBOT_API_IMAGE:-ghcr.io/vidra-ai/vidra-web-chatbot:latest}
+    build: ./backend
+    container_name: vidra_chatbot_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      ADMIN_API_KEY: ${ADMIN_API_KEY}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://vidra-ia.com}
+      # Sincronización de la carpeta pública del vault (vacío = desactivada hasta que
+      # el vault esté disponible en el servidor; ver tarea "Obsidian bare repo").
+      PUBLIC_DOCS_DIR: ${PUBLIC_DOCS_DIR:-}
+      PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-30}
+    # Producción: sin --reload, con proxy headers (para X-Forwarded-For / rate limit).
+    # 1 worker basta: los endpoints síncronos usan el threadpool de Starlette para la
+    # E/S bloqueante (OpenAI). Subir UVICORN_WORKERS implica mover el rate limit a Redis.
+    command: >
+      uvicorn app.main:app --host 0.0.0.0 --port 8000
+      --workers ${UVICORN_WORKERS:-1} --proxy-headers --forwarded-allow-ips=*
+    ports:
+      # Solo localhost: Nginx hace de proxy inverso público con SSL.
+      - "127.0.0.1:8001:8000"
+    volumes:
+      # Documentación RAG persistente (no se hornea en la imagen).
+      - ./backend/RAG:/app/RAG
+      # Carpeta "Información pública" del vault Obsidian (solo lectura). Descomenta y
+      # ajusta la ruta del host cuando el vault esté disponible en el servidor; además
+      # define PUBLIC_DOCS_DIR=/vault-publico en el .env.
+      # - "${PUBLIC_DOCS_HOST_DIR}:/vault-publico:ro"
+    networks:
+      - chatbot_internal
+
+networks:
+  chatbot_internal:
+    name: vidra_chatbot_internal
+
+volumes:
+  vidra_chatbot_pgdata:
+    name: vidra_chatbot_pgdata

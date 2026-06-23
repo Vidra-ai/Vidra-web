@@ -1,0 +1,63 @@
+# Stack de VALIDACIÓN LOCAL (db + api + web dev server).
+# Para el servidor usa docker-compose.prod.yml (ver DEPLOY.md).
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: vidra_chatbot_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-chatbot}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-chatbot}
+    ports:
+      # Solo accesible desde la propia máquina, nunca expuesta a la red.
+      - "127.0.0.1:5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-chatbot} -d ${POSTGRES_DB:-chatbot}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: ./backend
+    container_name: vidra_chatbot_api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-chatbot}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-chatbot}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4322,http://localhost:4321}
+      PUBLIC_DOCS_DIR: /vault-publico
+      PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-10}
+    ports:
+      - "127.0.0.1:8001:8000"
+    volumes:
+      - ./backend:/app
+      # Carpeta "Información pública" del vault Obsidian (solo lectura).
+      - "${PUBLIC_DOCS_HOST_DIR:-C:/Users/CDiaz/Desktop/MEGA/Vidra-docs/Obsidian-Vidra/01 - Información pública (web - chatbot)}:/vault-publico:ro"
+
+  web:
+    image: node:22-slim
+    container_name: vidra_chatbot_web
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host"
+    depends_on:
+      - api
+    environment:
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:8001}
+    ports:
+      - "4322:4321"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+
+volumes:
+  pgdata:

@@ -10,6 +10,7 @@ const {
 
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
+import ChatWidget from '../components/ChatWidget.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles.css';
 
@@ -78,6 +79,8 @@ const hreflangLinks: { hreflang: string; href: string }[] =
     </main>
 
     <Footer locale={locale} />
+
+    <ChatWidget locale={locale} />
 
     <button
       id="scroll-top"
