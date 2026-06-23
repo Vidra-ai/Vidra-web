@@ -118,6 +118,7 @@ class OpenAIClient:
             headers={"Authorization": f"Bearer {self._api_key}"},
             json={
                 "model": self._model,
+                "temperature": 0.25,
                 "messages": [
                     {"role": "system", "content": system},
                     {"role": "user", "content": user},
@@ -141,7 +142,7 @@ class OpenAIClient:
         response = httpx.post(
             _OPENAI_URL,
             headers={"Authorization": f"Bearer {self._api_key}"},
-            json={"model": self._model, "messages": [{"role": "system", "content": system}, *messages]},
+            json={"model": self._model, "temperature": 0.25, "messages": [{"role": "system", "content": system}, *messages]},
             timeout=self._timeout,
         )
         response.raise_for_status()
