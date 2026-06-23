@@ -35,9 +35,10 @@ Comprobaciones:
 Patrón ADR-006/ADR-007: imágenes desde **GHCR**, **no se construyen en el servidor**;
 Nginx hace de proxy inverso + SSL; secretos en **Vaultwarden**; DB **no expuesta**.
 
-### 2.1 Subdominio y DNS
-Crear `chat-api.vidra-ia.com` (o el que se decida) → `178.104.197.240`.
-La web (`vidra-ia.com`) se compila con `PUBLIC_API_URL=https://chat-api.vidra-ia.com`.
+### 2.1 Ruta en el dominio principal
+La API se sirve bajo `https://vidra-ia.com/api/` — sin subdominio separado, mismo origen
+que la web. No requiere registro DNS extra ni certificado SSL adicional.
+La web se compila con `PUBLIC_API_URL=https://vidra-ia.com/api`.
 
 ### 2.2 Imagen en GHCR
 Construir y publicar `ghcr.io/vidra-ai/vidra-web-chatbot:<tag>` (idealmente vía GitHub
@@ -59,10 +60,23 @@ docker compose -f docker-compose.prod.yml up -d
 docker compose -f docker-compose.prod.yml exec api python -m app.rag.seed
 ```
 
-### 2.4 Nginx (vhost del subdominio API)
-Bloque `server` para `chat-api.vidra-ia.com` → `proxy_pass http://127.0.0.1:8001;`
-con cabeceras `X-Forwarded-For`/`X-Forwarded-Proto`. SSL con Certbot
-(`certbot --nginx -d chat-api.vidra-ia.com`). Registrar en Obsidian → *Red* y *Despliegues*.
+### 2.4 Nginx (bloque /api/ en el vhost de vidra-ia.com)
+Dentro del `server` existente de `vidra-ia.com`, añadir antes del bloque de archivos
+estáticos:
+
+```nginx
+location /api/ {
+    proxy_pass         http://127.0.0.1:8001/;
+    proxy_set_header   Host              $host;
+    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+    proxy_set_header   X-Forwarded-Proto $scheme;
+    proxy_read_timeout 120s;
+}
+```
+
+El trailing slash en `proxy_pass` hace que Nginx elimine el prefijo `/api` antes de
+reenviar a FastAPI, que sigue viendo sus rutas normales (`/health`, `/rag/chat`, etc.).
+No se necesita certificado ni vhost adicional. Registrar en Obsidian → *Despliegues*.
 
 ### 2.5 Secretos (Vaultwarden — nunca en git)
 | Variable | Colección |
