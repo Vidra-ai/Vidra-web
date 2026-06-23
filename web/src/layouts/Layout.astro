@@ -1,6 +1,6 @@
 ---
 const {
-  title = 'Vidra',
+  title = 'Vidra IA',
   description = 'AI consulting for strategy, delivery, and measurable business impact.',
   ogImage,
   ogType = 'website',
@@ -11,6 +11,7 @@ const {
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 import ChatWidget from '../components/ChatWidget.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { ClientRouter } from 'astro:transitions';
 import '../styles.css';
 
@@ -42,6 +43,8 @@ const hreflangLinks: { hreflang: string; href: string }[] =
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071729" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#eef4fb" media="(prefers-color-scheme: light)" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
 
@@ -81,6 +84,7 @@ const hreflangLinks: { hreflang: string; href: string }[] =
     <Footer locale={locale} />
 
     <ChatWidget locale={locale} />
+    <CookieBanner locale={locale} />
 
     <button
       id="scroll-top"

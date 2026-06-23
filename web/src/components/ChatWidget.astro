@@ -12,6 +12,7 @@ const t = {
     : 'Connection error. Please try again.',
   ariaOpen: isEs ? 'Abrir asistente' : 'Open assistant',
   ariaClose: isEs ? 'Cerrar asistente' : 'Close assistant',
+  ariaMessages: isEs ? 'Conversación con el asistente de Vidra' : 'Conversation with Vidra assistant',
 };
 ---
 
@@ -19,7 +20,7 @@ const t = {
 <button
   id="chat-toggle"
   aria-label={t.ariaOpen}
-  class="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#0d3c78] text-white shadow-[0_8px_30px_rgba(13,60,120,0.35)] transition-all duration-300 hover:bg-[#00b2eb] hover:scale-105"
+  class="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#0d3c78] text-white shadow-[0_8px_30px_rgba(13,60,120,0.35)] transition-all duration-300 hover:bg-[#00b2eb] hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00b2eb]"
 >
   <!-- Icono chat (visible cuando cerrado) -->
   <svg id="chat-icon-open" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -53,7 +54,7 @@ const t = {
   </div>
 
   <!-- Mensajes -->
-  <div id="chat-messages" class="flex-1 overflow-y-auto bg-[#f7fafd] px-4 py-4" style="height: 360px;">
+  <div id="chat-messages" class="flex-1 overflow-y-auto bg-[#f7fafd] px-4 py-4" style="height: 360px;" role="log" aria-live="polite" aria-label={t.ariaMessages}>
     <div id="chat-messages-inner" class="space-y-4">
       <!-- Mensaje de bienvenida -->
       <div class="flex gap-2">
@@ -78,12 +79,12 @@ const t = {
         type="text"
         placeholder={t.placeholder}
         autocomplete="off"
-        class="flex-1 rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-3 py-2.5 text-sm text-[#071729] outline-none transition placeholder:text-[#071729]/40 focus:border-[#00b2eb] focus:ring-2 focus:ring-[#00b2eb]/20"
+        class="flex-1 rounded-xl border border-[rgba(7,23,41,0.12)] bg-[#eef4fb] px-3 py-2.5 text-sm text-[#071729] transition placeholder:text-[#071729]/40 focus-visible:border-[#00b2eb] focus-visible:ring-2 focus-visible:ring-[#00b2eb]/20 focus-visible:outline-none"
       />
       <button
         id="chat-widget-send"
         type="submit"
-        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0d3c78] text-white transition hover:bg-[#00b2eb] disabled:opacity-40"
+        class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#0d3c78] text-white transition hover:bg-[#00b2eb] disabled:opacity-40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00b2eb]"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

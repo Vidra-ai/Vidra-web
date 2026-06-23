@@ -1,0 +1,87 @@
+---
+import BaseLayout from "../layouts/Layout.astro";
+import { projectsContent, type Locale } from "../lib/siteContent";
+
+const locale: Locale = "es";
+const content = projectsContent[locale];
+
+const categoryColors: Record<string, string> = {
+  ml: "bg-[#00b2eb]/15 text-[#00b2eb]",
+  app: "bg-[#1677ff]/15 text-[#8ec8ff]",
+  agentic: "bg-white/10 text-white/70",
+};
+
+const statusColors: Record<string, string> = {
+  enPruebas: "bg-[#fbbf24]/15 text-[#fbbf24]",
+  enDesarrollo: "bg-[#00b2eb]/15 text-[#00b2eb]",
+  finalizado: "bg-emerald-400/15 text-emerald-400",
+};
+---
+
+<BaseLayout title={content.title} description={content.description}>
+  <div class="min-h-screen bg-[#071729] px-4 pb-28 pt-32 md:px-6 md:pt-40">
+    <div class="mx-auto max-w-7xl">
+
+      <div class="mb-16">
+        <p class="mb-4 text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-[#00b2eb]">
+          {content.eyebrow}
+        </p>
+        <h1 class="text-[clamp(2.4rem,5vw,4.5rem)] font-medium leading-[0.93] tracking-[-0.05em] text-white">
+          {content.heading}
+        </h1>
+        <p class="mt-5 max-w-2xl text-[1.05rem] leading-7 text-white/60">
+          {content.subheading}
+        </p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {content.projects.map((project) => (
+          <article class="group flex flex-col rounded-[1.5rem] border border-white/8 bg-white/3 p-7 transition duration-500 hover:-translate-y-1 hover:border-[#00b2eb]/30 hover:bg-white/6">
+
+            <div class="mb-5 flex items-center justify-between gap-3 flex-wrap">
+              <span class={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.12em] ${statusColors[project.status]}`}>
+                {content.statusValues[project.status as keyof typeof content.statusValues]}
+              </span>
+              <span class="text-[0.75rem] font-medium uppercase tracking-[0.15em] text-white/40">
+                {project.client}
+              </span>
+            </div>
+
+            <h2 class="mb-3 text-[1.1rem] font-semibold leading-snug tracking-[-0.02em] text-white">
+              {project.title}
+            </h2>
+
+            <p class="mb-4 text-[0.9rem] leading-6 text-white/55 flex-1">
+              {project.description}
+            </p>
+
+            <div class="mb-5 rounded-[1rem] border border-[#00b2eb]/15 bg-[#00b2eb]/5 p-4">
+              <p class="text-[0.8rem] leading-5 text-white/65 italic">
+                {project.outcome}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[0.68rem] font-medium text-white/50">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-20 text-center">
+        <a
+          href="/contact"
+          class="inline-flex items-center gap-3 rounded-full bg-[#00b2eb] px-8 py-4 text-sm font-semibold text-[#071729] transition hover:bg-white"
+        >
+          Hablemos de tu proyecto
+          <span class="text-base">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

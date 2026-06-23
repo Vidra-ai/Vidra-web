@@ -1,0 +1,84 @@
+---
+const { locale = 'es' } = Astro.props;
+const isEs = locale !== 'en';
+
+const t = {
+  message: isEs
+    ? 'Usamos cookies propias y de terceros para analítica y mejorar tu experiencia. Puedes aceptarlas o rechazarlas.'
+    : 'We use cookies for analytics and to improve your experience. You can accept or reject them.',
+  accept: isEs ? 'Aceptar' : 'Accept',
+  reject: isEs ? 'Rechazar' : 'Reject',
+  policy: isEs ? 'Política de privacidad' : 'Privacy policy',
+  policyHref: isEs ? '/legal/' : '/en/legal/',
+};
+---
+
+<div
+  id="cookie-banner"
+  role="region"
+  aria-label={isEs ? 'Aviso de cookies' : 'Cookie notice'}
+  class="fixed bottom-0 left-0 right-0 z-[100] hidden border-t border-[rgba(7,23,41,0.1)] bg-white px-4 py-4 shadow-[0_-4px_24px_rgba(7,23,41,0.08)] md:px-6"
+>
+  <div class="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+    <p class="flex-1 text-sm leading-relaxed text-ink/75">
+      {t.message}
+      {' '}
+      <a
+        href={t.policyHref}
+        class="font-medium text-[#0d3c78] underline underline-offset-2 hover:text-[#00b2eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00b2eb]"
+      >
+        {t.policy}
+      </a>
+    </p>
+
+    <div class="flex shrink-0 gap-2">
+      <button
+        id="cookie-reject"
+        type="button"
+        class="rounded-lg border border-[rgba(7,23,41,0.2)] px-4 py-2 text-sm font-medium text-ink/70 transition hover:border-[rgba(7,23,41,0.4)] hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#00b2eb]"
+      >
+        {t.reject}
+      </button>
+      <button
+        id="cookie-accept"
+        type="button"
+        class="rounded-lg bg-[#0d3c78] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#00b2eb] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#00b2eb]"
+      >
+        {t.accept}
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  const STORAGE_KEY = 'vidra-cookie-consent';
+
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const rejectBtn = document.getElementById('cookie-reject');
+
+  const initBanner = () => {
+    if (!banner || !acceptBtn || !rejectBtn) return;
+    if (banner._initialized) return;
+    banner._initialized = true;
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) {
+      banner.classList.remove('hidden');
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, 'accepted');
+      banner.classList.add('hidden');
+      document.dispatchEvent(new CustomEvent('vidra:consent-accepted'));
+    });
+
+    rejectBtn.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, 'rejected');
+      banner.classList.add('hidden');
+    });
+  };
+
+  initBanner();
+  document.addEventListener('astro:page-load', initBanner);
+</script>

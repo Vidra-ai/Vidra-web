@@ -14,6 +14,7 @@ const blog = defineCollection({
     category: z.enum(['analytics', 'machine-learning', 'deep-learning']),
     translationKey: z.string().optional(),
     image: z.string().optional(),
+    noindex: z.boolean().optional(),
   }),
 });
 

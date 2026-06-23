@@ -1,0 +1,26 @@
+---
+import { clientsContent, type Locale } from '../lib/siteContent';
+
+const { locale = 'es' } = Astro.props;
+const content = clientsContent[locale as Locale];
+---
+
+<section class="border-t border-[#071729]/10 bg-[#eef4fb] px-4 py-14 md:px-6">
+  <div class="mx-auto max-w-7xl">
+    <p class="mb-10 text-center text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[#071729]/35">
+      {content.eyebrow}
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-6 md:gap-12">
+      {content.clients.map((client) => (
+        <div class="flex flex-col items-center gap-1.5 opacity-50 transition hover:opacity-80">
+          <span class="text-[1.1rem] font-bold tracking-[-0.02em] text-[#071729]">
+            {client.name}
+          </span>
+          <span class="text-[0.68rem] font-medium uppercase tracking-[0.14em] text-[#071729]/50">
+            {client.sector}
+          </span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

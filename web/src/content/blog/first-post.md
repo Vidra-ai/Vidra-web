@@ -6,6 +6,7 @@ lang: "en"
 category: "analytics"
 translationKey: "first-post"
 image: "/images/blog/mi-primer-post.jpg"
+noindex: true
 ---
 
 ## Introduction

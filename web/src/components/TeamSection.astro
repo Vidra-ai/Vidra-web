@@ -1,0 +1,37 @@
+---
+import { teamContent, type Locale } from '../lib/siteContent';
+
+const { locale = 'es' } = Astro.props;
+const content = teamContent[locale as Locale];
+---
+
+<section class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
+  <div class="mx-auto max-w-7xl">
+    <div class="mb-12 grid gap-6 md:grid-cols-2 md:items-end">
+      <div>
+        <p class="mb-4 text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-[#0d3c78]">
+          {content.eyebrow}
+        </p>
+        <h2 class="text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[0.95] tracking-[-0.05em] text-[#071729]">
+          {content.title}
+        </h2>
+      </div>
+      <p class="text-[1rem] leading-7 text-[#071729]/60 md:max-w-sm md:justify-self-end">
+        {content.description}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      {content.members.map((member) => (
+        <div class="group rounded-[1.25rem] border border-[#071729]/10 bg-white p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(7,23,41,0.10)]">
+          <div class="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#0B2C4A] text-lg font-bold tracking-tight text-white">
+            {member.initials}
+          </div>
+          <p class="text-[0.95rem] font-semibold text-[#071729]">{member.name}</p>
+          <p class="mt-0.5 text-[0.75rem] font-semibold uppercase tracking-[0.1em] text-[#00b2eb]">{member.role}</p>
+          <p class="mt-2 text-[0.8rem] leading-5 text-[#071729]/50">{member.area}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

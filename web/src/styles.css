@@ -52,3 +52,7 @@ html {
 .prose strong {
   font-weight: 700;
 }
+
+/* Typographic readability */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }

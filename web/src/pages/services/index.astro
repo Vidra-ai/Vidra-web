@@ -117,4 +117,58 @@ const optimizedServices = await Promise.all(
       </div>
     </section>
   </main>
+
+  <!-- SERVICIOS ESPECÍFICOS -->
+  <section class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
+    <div class="mx-auto max-w-7xl">
+      <div class="mb-12">
+        <p class="mb-4 text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-[#0d3c78]">
+          {locale === 'en' ? 'AI capabilities' : 'Capacidades IA'}
+        </p>
+        <h2 class="max-w-2xl text-[clamp(1.8rem,3.5vw,3rem)] font-medium leading-[0.97] tracking-[-0.04em] text-[#071729]">
+          {locale === 'en' ? 'What we actually build.' : 'Lo que construimos, en concreto.'}
+        </h2>
+      </div>
+
+      <div class="grid gap-px bg-[#071729]/8 overflow-hidden rounded-[1.5rem] sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          {
+            num: locale === 'en' ? 'ML · 01' : 'ML · 01',
+            title: locale === 'en' ? 'Predictive models' : 'Modelos predictivos',
+            desc: locale === 'en' ? 'Demand forecasting, anomaly detection, cost estimation. Trained on your historical data.' : 'Previsión de demanda, detección de anomalías, estimación de costes. Entrenados con tus datos históricos.',
+            tags: ['scikit-learn', 'XGBoost', 'CatBoost', 'LSTM'],
+          },
+          {
+            num: locale === 'en' ? 'LLM · 02' : 'LLM · 02',
+            title: locale === 'en' ? 'RAG chatbots' : 'Chatbots RAG',
+            desc: locale === 'en' ? 'Q&A systems over your own documents, manuals, or knowledge base. Deployed with your data, not public.' : 'Sistemas de preguntas sobre tu propia documentación, manuales o base de conocimiento. Con tus datos, no los públicos.',
+            tags: ['OpenAI', 'pgvector', 'FastAPI'],
+          },
+          {
+            num: locale === 'en' ? 'App · 03' : 'App · 03',
+            title: locale === 'en' ? 'AI hubs for enterprise' : 'Hubs IA para empresa',
+            desc: locale === 'en' ? 'Modular platforms that group AI tools by department. Each new capability is a registry entry, not a rewrite.' : 'Plataformas modulares que agrupan herramientas de IA por departamento. Cada nueva capacidad es una entrada en el registro, no una reescritura.',
+            tags: ['React + Vite', 'Electron', 'Docker'],
+          },
+          {
+            num: locale === 'en' ? 'AI · 04' : 'IA · 04',
+            title: locale === 'en' ? 'Agentic pipelines' : 'Pipelines agénticos',
+            desc: locale === 'en' ? 'Automated multi-agent flows for market intelligence, document processing, or business monitoring.' : 'Flujos multi-agente automáticos para inteligencia de mercado, procesamiento de documentos o monitorización de negocio.',
+            tags: ['Gemini AI', 'Python', 'Pydantic'],
+          },
+        ].map((item) => (
+          <div class="bg-white p-7 transition hover:bg-[#eef4fb]">
+            <p class="mb-4 text-[0.7rem] font-bold uppercase tracking-[0.2em] text-[#00b2eb]">{item.num}</p>
+            <h3 class="mb-3 text-[1.05rem] font-semibold text-[#071729]">{item.title}</h3>
+            <p class="mb-5 text-[0.88rem] leading-6 text-[#071729]/60">{item.desc}</p>
+            <div class="flex flex-wrap gap-1.5">
+              {item.tags.map((tag) => (
+                <span class="rounded-full border border-[#071729]/10 px-2.5 py-1 text-[0.68rem] font-medium text-[#071729]/50">{tag}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

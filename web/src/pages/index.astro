@@ -8,6 +8,7 @@ import BaseLayout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import ProcessTimeline from "../components/ProcessTimeline.astro";
 import { homeContent, type Locale } from "../lib/siteContent";
+import ClientsStrip from '../components/ClientsStrip.astro';
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
@@ -199,6 +200,8 @@ const focusAreas = await Promise.all(
       </div>
     </div>
   </section>
+
+  <ClientsStrip locale={locale} />
 
   <!-- CONTACT CTA -->
   <section id="contact" data-nav-theme="light" class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
