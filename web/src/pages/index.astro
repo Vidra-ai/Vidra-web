@@ -1,25 +1,23 @@
 ---
-import { Image, getImage } from "astro:assets";
-
-import analyticsImage from "../assets/analysis.jpg";
-import machineLearningImage from "../assets/machine-learning.jpg";
-import deepLearningImage from "../assets/deep-learning.jpg";
 import BaseLayout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import ProcessTimeline from "../components/ProcessTimeline.astro";
 import { homeContent, type Locale } from "../lib/siteContent";
 import ClientsStrip from '../components/ClientsStrip.astro';
+import ProjectsShowcase from '../components/ProjectsShowcase.astro';
+
+import analysisUrl from "../assets/service-analysis.svg?url";
+import mlUrl from "../assets/service-ml.svg?url";
+import aiUrl from "../assets/service-ai.svg?url";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
 
-const areaImages = {
-  analysis: analyticsImage,
-  machineLearning: machineLearningImage,
-  deepLearning: deepLearningImage,
-} as const;
-
-type AreaImageKey = keyof typeof areaImages;
+const areaImageUrls: Record<string, string> = {
+  analysis: analysisUrl,
+  machineLearning: mlUrl,
+  deepLearning: aiUrl,
+};
 
 const siteOrigin = 'https://vidra-ia.com';
 
@@ -46,26 +44,10 @@ const orgSchema = {
   "knowsAbout": ["Inteligencia Artificial", "Machine Learning", "Deep Learning", "Análisis de Datos"],
 };
 
-const focusAreas = await Promise.all(
-  content.whatWeDo.areas.map(async (area) => {
-    const imageKey = area.imageKey as AreaImageKey;
-    const imageAsset = areaImages[imageKey];
-
-    const optimizedImage = await getImage({
-      src: imageAsset,
-      width: 520,
-      height: 680,
-      format: "webp",
-      quality: 72,
-    });
-
-    return {
-      ...area,
-      imageAsset,
-      imageSrc: optimizedImage.src,
-    };
-  })
-);
+const focusAreas = content.whatWeDo.areas.map((area) => ({
+  ...area,
+  imageSrc: areaImageUrls[area.imageKey] ?? analysisUrl,
+}));
 ---
 
 <BaseLayout title={content.title} description={content.description}>
@@ -100,19 +82,17 @@ const focusAreas = await Promise.all(
               style={`--reveal-delay: ${index * 90}ms`}
               class="group relative block min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[#071729] shadow-[0_20px_50px_rgba(7,23,41,0.12)] transition duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(7,23,41,0.18)] md:[direction:ltr]"
             >
-              <Image
-                src={area.imageAsset}
+              <img
+                src={area.imageSrc}
                 alt={`Imagen representativa de ${area.title}`}
-                width={520}
-                height={680}
-                format="webp"
-                quality={72}
+                width="900"
+                height="900"
                 class="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
 
-              <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/82 via-[#071729]/18 to-transparent"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/65 via-[#071729]/8 to-transparent"></div>
 
               <div class="absolute inset-0 flex flex-col justify-between p-6">
                 <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/55">
@@ -144,6 +124,8 @@ const focusAreas = await Promise.all(
 
   <ProcessTimeline locale={locale} />
 
+  <ProjectsShowcase locale={locale} />
+
   <!-- WHO WE ARE -->
   <section
     id="who-we-are"
@@ -161,18 +143,18 @@ const focusAreas = await Promise.all(
             <div
               data-reveal="up"
               style={`--reveal-delay: ${index * 90}ms`}
-              class="rounded-[1.25rem] border border-white/10 bg-white/5 p-4 transition duration-500 hover:-translate-y-1 hover:border-white/25 hover:bg-white/8"
+              class="rounded-[1.25rem] border border-white/[0.18] bg-white/[0.10] p-5 transition duration-500 hover:-translate-y-1 hover:border-white/[0.32] hover:bg-white/[0.15]"
             >
               <div class="mb-5 flex items-center gap-3" aria-hidden="true">
                 <span class="h-2.5 w-2.5 rounded-full bg-[#8ec8ff]"></span>
-                <span class="h-px w-8 bg-[#8ec8ff]/50"></span>
+                <span class="h-px w-8 bg-[#8ec8ff]/60"></span>
               </div>
 
-              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/60">
+              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-white/[0.78]">
                 {pillar.title}
               </p>
 
-              <p class="mt-2 text-sm leading-6 text-white/75">
+              <p class="mt-2 text-sm leading-6 text-white/[0.82]">
                 {pillar.text}
               </p>
             </div>
@@ -204,7 +186,7 @@ const focusAreas = await Promise.all(
   <ClientsStrip locale={locale} />
 
   <!-- CONTACT CTA -->
-  <section id="contact" data-nav-theme="light" class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
+  <section id="contact" class="bg-[#eef4fb] px-4 py-20 md:px-6 md:py-28">
     <div class="mx-auto max-w-7xl">
       <a
         href={locale === "en" ? "/en/contact" : "/contact"}

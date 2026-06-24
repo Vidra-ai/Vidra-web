@@ -1,20 +1,18 @@
 ---
-import { Image } from "astro:assets";
-import analysisImage from "../../assets/analysis-hero.png";
-import machineLearningImage from "../../assets/machine-learning-hero.png";
-import deepLearningImage from "../../assets/deep-learning-hero.png";
 import BaseLayout from "../../layouts/Layout.astro";
 import { serviceContent, type Locale } from "../../lib/siteContent";
 
+import analysisUrl from "../../assets/service-analysis.svg?url";
+import mlUrl from "../../assets/service-ml.svg?url";
+import aiUrl from "../../assets/service-ai.svg?url";
+
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = serviceContent[locale];
-const heroImages = {
-  "analysis-hero": analysisImage,
-  "machineLearning-hero": machineLearningImage,
-  "deepLearning-hero": deepLearningImage,
-} as const;
-
-type HeroImageKey = keyof typeof heroImages;
+const heroImageUrls: Record<string, string> = {
+  "analysis-hero": analysisUrl,
+  "machineLearning-hero": mlUrl,
+  "deepLearning-hero": aiUrl,
+};
 
 export const getStaticPaths = () => {
   const slugs = ["analysis", "machine-learning", "deep-learning"];
@@ -111,10 +109,10 @@ const breadcrumbSchema = {
 
           <div class="lg:pt-2">
             <div class="overflow-hidden rounded-[2rem] bg-[#0B2C4A] p-4 shadow-[0_28px_80px_rgba(11,44,74,0.18)]">
-              <Image
-                src={heroImages[service.heroImageKey as HeroImageKey]}
+              <img
+                src={heroImageUrls[service.heroImageKey] ?? analysisUrl}
                 alt={locale === "en" ? `Main image for ${service.title} service` : `Imagen principal del servicio ${service.title}`}
-                class="aspect-[4/5] w-full rounded-[1.4rem] object-cover"
+                class="aspect-[4/3] w-full rounded-[1.4rem] object-cover"
                 loading="eager"
                 decoding="async"
               />

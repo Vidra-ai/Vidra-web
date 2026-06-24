@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/Layout.astro";
 import { whoWeArePageContent, type Locale } from "../lib/siteContent";
-import { Image } from "astro:assets";
-
-import analysisImage from "../assets/analysis-hero.png";
+import analysisUrl from "../assets/service-analysis.svg?url";
 
 import TeamSection from '../components/TeamSection.astro';
 import ClientsStrip from '../components/ClientsStrip.astro';
@@ -39,11 +37,9 @@ const peopleMindsetItems = [
   content.people.mindset.partnership,
 ];
 
-const heroImages = {
-  analysis: analysisImage,
-} as const;
-
-type HeroImageKey = keyof typeof heroImages;
+const heroImages: Record<string, string> = {
+  analysis: analysisUrl,
+};
 
 const siteOrigin = 'https://vidra-ia.com';
 const pageUrl = `${siteOrigin}${locale === 'en' ? '/en' : ''}/who-we-are/`;
@@ -107,8 +103,8 @@ const breadcrumbSchema = {
 
       <div class="mt-16 grid gap-5 lg:grid-cols-[1fr_0.8fr]">
         <div class="overflow-hidden rounded-[2rem] bg-[#0B2C4A] shadow-[0_28px_90px_rgba(11,44,74,0.18)]">
-          <Image
-            src={heroImages[content.hero.imageKey as HeroImageKey]}
+          <img
+            src={heroImages[content.hero.imageKey] ?? analysisUrl}
             alt={content.hero.imageAlt}
             class="h-[420px] w-full object-cover md:h-[620px]"
             loading="eager"
@@ -337,7 +333,7 @@ const breadcrumbSchema = {
     </div>
   </section>
 
-    <section data-nav-theme="light" class="bg-white px-4 py-16 md:px-6 md:py-20">
+    <section class="bg-white px-4 py-16 md:px-6 md:py-20">
     <div class="mx-auto max-w-7xl">
       <a
         href={contactHref}

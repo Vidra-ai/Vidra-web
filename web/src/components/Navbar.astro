@@ -76,6 +76,7 @@ const languageLabel = locale === 'en' ? 'Language' : 'Idioma';
 
   <nav
     id="site-nav"
+    data-theme="dark"
     class="relative z-10 mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between rounded-[1.25rem] border border-white/10 bg-[#0B2C4A] px-5 text-white shadow-[0_12px_40px_rgba(7,23,41,0.18)] backdrop-blur-md transition-colors duration-300 md:px-6"
   >
     <a href={homeHref} class="flex items-center gap-3 border-r border-white/10 pr-5 md:pr-6" aria-label="Vidra home">
@@ -165,6 +166,7 @@ const languageLabel = locale === 'en' ? 'Language' : 'Idioma';
     const darkLogo = logo.dataset.logoDark || '/Logo_vidra_sinfondo_letranegra.png';
 
     const setLightNav = () => {
+        nav.dataset.theme = 'light';
         nav.classList.remove('bg-[#0B2C4A]', 'border-white/10', 'text-white');
         nav.classList.add('bg-white', 'border-[#0B2C4A]/10', 'text-[#0B2C4A]');
 
@@ -173,29 +175,25 @@ const languageLabel = locale === 'en' ? 'Language' : 'Idioma';
         links.classList.remove('text-white/68', 'text-[#0B2C4A]/70');
         links.classList.add('text-black/68');
 
-        links.querySelectorAll('a').forEach((link) => {
-            link.classList.remove('hover:text-white');
-            link.classList.add('hover:text-black');
-        });
-
         mobileContact?.classList.remove('border-white/15', 'text-white');
         mobileContact?.classList.add('border-[#0B2C4A]/15', 'text-[#0B2C4A]');
 
         icons.forEach((icon) => {
-            icon.classList.remove('border-white/10', 'bg-white/8', 'text-white', 'hover:bg-white/14');
-            icon.classList.add('border-[#0B2C4A]/10', 'bg-[#0B2C4A]/5', 'text-[#0B2C4A]', 'hover:bg-[#0B2C4A]/10');
+            icon.classList.remove('border-white/10', 'bg-white/8', 'text-white');
+            icon.classList.add('border-[#0B2C4A]/10', 'bg-[#0B2C4A]/5', 'text-[#0B2C4A]');
         });
 
         dropdown?.classList.remove('bg-[#0B2C4A]', 'border-white/10', 'text-white');
         dropdown?.classList.add('bg-white', 'border-[#0B2C4A]/10', 'text-[#0B2C4A]');
 
         dropdownLinks?.forEach((link) => {
-            link.classList.remove('text-white/75', 'hover:bg-white/10', 'hover:text-white');
-            link.classList.add('text-[#0B2C4A]/75', 'hover:bg-[#0B2C4A]/10', 'hover:text-[#0B2C4A]');
+            link.classList.remove('text-white/75');
+            link.classList.add('text-[#0B2C4A]/75');
         });
         };
 
         const setDarkNav = () => {
+        nav.dataset.theme = 'dark';
         nav.classList.remove('bg-white', 'border-[#0B2C4A]/10', 'text-[#0B2C4A]');
         nav.classList.add('bg-[#0B2C4A]', 'border-white/10', 'text-white');
 
@@ -204,25 +202,20 @@ const languageLabel = locale === 'en' ? 'Language' : 'Idioma';
         links.classList.remove('text-black/68', 'text-[#0B2C4A]/70');
         links.classList.add('text-white/68');
 
-        links.querySelectorAll('a').forEach((link) => {
-            link.classList.remove('hover:text-black');
-            link.classList.add('hover:text-white');
-        });
-
         mobileContact?.classList.remove('border-[#0B2C4A]/15', 'text-[#0B2C4A]');
         mobileContact?.classList.add('border-white/15', 'text-white');
 
         icons.forEach((icon) => {
-            icon.classList.remove('border-[#0B2C4A]/10', 'bg-[#0B2C4A]/5', 'text-[#0B2C4A]', 'hover:bg-[#0B2C4A]/10');
-            icon.classList.add('border-white/10', 'bg-white/8', 'text-white', 'hover:bg-white/14');
+            icon.classList.remove('border-[#0B2C4A]/10', 'bg-[#0B2C4A]/5', 'text-[#0B2C4A]');
+            icon.classList.add('border-white/10', 'bg-white/8', 'text-white');
         });
 
         dropdown?.classList.remove('bg-white', 'border-[#0B2C4A]/10', 'text-[#0B2C4A]');
         dropdown?.classList.add('bg-[#0B2C4A]', 'border-white/10', 'text-white');
 
         dropdownLinks?.forEach((link) => {
-            link.classList.remove('text-[#0B2C4A]/75', 'hover:bg-[#0B2C4A]/10', 'hover:text-[#0B2C4A]');
-            link.classList.add('text-white/75', 'hover:bg-white/10', 'hover:text-white');
+            link.classList.remove('text-[#0B2C4A]/75');
+            link.classList.add('text-white/75');
         });
         };
 
@@ -436,3 +429,37 @@ const languageLabel = locale === 'en' ? 'Language' : 'Idioma';
   });
 })();
 </script>
+
+<style is:global>
+  /*
+   * Navbar hover states — driven by data-theme attribute on #site-nav.
+   * These are intentionally NOT toggled by JS so hover animations
+   * never get stuck when the nav theme switches mid-hover.
+   */
+
+  /* Icon buttons */
+  #site-nav .nav-icon:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+  #site-nav[data-theme="light"] .nav-icon:hover {
+    background: rgba(11, 44, 74, 0.10) !important;
+  }
+
+  /* Desktop nav links */
+  #site-links a:hover {
+    color: white;
+  }
+  #site-nav[data-theme="light"] #site-links a:hover {
+    color: #0B2C4A !important;
+  }
+
+  /* Mobile dropdown links */
+  #menu-dropdown a:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: white;
+  }
+  #site-nav[data-theme="light"] #menu-dropdown a:hover {
+    background: rgba(11, 44, 74, 0.10) !important;
+    color: #0B2C4A !important;
+  }
+</style>

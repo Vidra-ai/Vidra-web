@@ -1,42 +1,26 @@
 ---
-import { Image, getImage } from "astro:assets";
-import analysisImage from "../../assets/analysis.jpg";
-import machineLearningImage from "../../assets/machine-learning.jpg";
-import deepLearningImage from "../../assets/deep-learning.jpg";
 import BaseLayout from "../../layouts/Layout.astro";
 import { serviceContent, type Locale } from "../../lib/siteContent";
+
+import analysisUrl from "../../assets/service-analysis.svg?url";
+import mlUrl from "../../assets/service-ml.svg?url";
+import aiUrl from "../../assets/service-ai.svg?url";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = serviceContent[locale];
 const services = content.services;
 const serviceBase = locale === "en" ? "/en/services" : "/services";
-const serviceImages = {
-  analysis: analysisImage,
-  machineLearning: machineLearningImage,
-  deepLearning: deepLearningImage,
-} as const;
 
-type ServiceImageKey = keyof typeof serviceImages;
+const serviceImageUrls: Record<string, string> = {
+  analysis: analysisUrl,
+  machineLearning: mlUrl,
+  deepLearning: aiUrl,
+};
 
-const optimizedServices = await Promise.all(
-  services.map(async (service) => {
-    const imageKey = service.imageKey as ServiceImageKey;
-    const imageAsset = serviceImages[imageKey];
-
-    const optimizedImage = await getImage({
-      src: imageAsset,
-      width: 520,
-      height: 390,
-      format: "webp",
-      quality: 65,
-    });
-
-    return {
-      ...service,
-      imageSrc: optimizedImage.src,
-    };
-  })
-);
+const optimizedServices = services.map((service) => ({
+  ...service,
+  imageSrc: serviceImageUrls[service.imageKey] ?? analysisUrl,
+}));
 ---
 
 <BaseLayout title={`${content.index.eyebrow} | Vidra`} description={content.index.description}>
@@ -70,13 +54,11 @@ const optimizedServices = await Promise.all(
                 href={`${serviceBase}/${service.slug}`}
                 class="group flex min-h-[520px] flex-col overflow-hidden rounded-[1.5rem] border border-[#0B2C4A]/10 bg-white shadow-[0_20px_60px_rgba(11,44,74,0.08)] transition duration-500 hover:-translate-y-2 hover:border-transparent hover:bg-[#0B2C4A]"
               >
-                <Image
+                <img
                   src={service.imageSrc}
                   alt={locale === "en" ? `${service.title} Service - Vidra` : `Servicio de ${service.title} - Vidra`}
-                  width={640}
-                  height={480}
-                  format="webp"
-                  quality={72}
+                  width="640"
+                  height="480"
                   class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
                   loading="lazy"
                   decoding="async"

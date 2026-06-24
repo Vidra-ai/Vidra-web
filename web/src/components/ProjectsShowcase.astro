@@ -1,0 +1,193 @@
+---
+import type { Locale } from "../lib/siteContent";
+import analysisUrl from "../assets/service-analysis.svg?url";
+import mlUrl from "../assets/service-ml.svg?url";
+import aiUrl from "../assets/service-ai.svg?url";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = "es" } = Astro.props;
+const isEN = locale === "en";
+---
+
+<section id="projects" data-nav-theme="light" class="bg-[#071729] px-4 py-20 md:px-6 md:py-28">
+  <div class="mx-auto max-w-7xl">
+
+    <div class="mb-12 border-t border-white/8 pt-8 md:pt-12">
+      <div class="mb-4 flex items-center gap-3">
+        <span class="block h-px w-5 bg-[#00b2eb]" aria-hidden="true"></span>
+        <p class="text-[0.75rem] font-semibold uppercase tracking-[0.25em] text-[#00b2eb]">
+          {isEN ? "Projects delivered" : "Proyectos realizados"}
+        </p>
+      </div>
+      <h2 class="max-w-xl text-[clamp(2rem,3.8vw,3.2rem)] font-medium leading-[1.0] tracking-[-0.04em] text-white">
+        {isEN ? "AI already working." : "IA que ya está funcionando."}
+      </h2>
+    </div>
+
+    <div class="grid gap-4 lg:grid-cols-2">
+
+      <!-- ── Featured: Radar Licitaciones ─────────────── -->
+      <article class="group lg:col-span-2 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
+        <!-- Image area: tall crop, sharp render -->
+        <div class="relative overflow-hidden" style="aspect-ratio:21/9;">
+          <img
+            src={aiUrl}
+            alt=""
+            aria-hidden="true"
+            width="900"
+            height="900"
+            class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          />
+          <!-- Thin bottom-only fade so the pipeline diagram stays visible -->
+          <div class="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#071729] to-transparent"></div>
+          <!-- Top-left label -->
+          <span class="absolute left-5 top-5 rounded-full border border-[#00b2eb]/30 bg-[#071729]/70 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#00b2eb] backdrop-blur-sm">
+            {isEN ? "Multi-agent RAG" : "RAG Multi-agente"}
+          </span>
+        </div>
+
+        <!-- Meta -->
+        <div class="grid gap-6 p-6 sm:grid-cols-[1fr_auto] sm:items-end md:p-8">
+          <div>
+            <!-- KPIs -->
+            <div class="mb-5 flex flex-wrap gap-8">
+              <div>
+                <p class="text-[1.6rem] font-bold leading-none tracking-[-0.03em] text-white">87<span class="text-[#00b2eb] text-[1.1rem]">/100</span></p>
+                <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Top score" : "Score máximo"}</p>
+              </div>
+              <div>
+                <p class="text-[1.6rem] font-bold leading-none tracking-[-0.03em] text-white">94<span class="text-[#00b2eb] text-[1.1rem]">%</span></p>
+                <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Accuracy" : "Precisión"}</p>
+              </div>
+              <div>
+                <p class="text-[1.6rem] font-bold leading-none tracking-[-0.03em] text-white">4<span class="text-[#00b2eb] text-[1.1rem]">×</span></p>
+                <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Time saved" : "Tiempo ahorrado"}</p>
+              </div>
+            </div>
+            <!-- Title + desc -->
+            <h3 class="text-[1.3rem] font-semibold leading-tight text-white md:text-[1.5rem]">
+              {isEN ? "Procurement Radar" : "Radar de Licitaciones"}
+            </h3>
+            <p class="mt-2 max-w-2xl text-[0.9rem] leading-[1.7] text-white/55">
+              {isEN
+                ? "Multi-agent system that monitors procurement publications, scores each opportunity 0–100 and generates action-ready reports. Integrated with the client ERP."
+                : "Sistema multi-agente que monitoriza licitaciones públicas, puntúa cada oportunidad de 0 a 100 y genera informes listos para actuar. Integrado con el ERP del cliente."}
+            </p>
+          </div>
+
+          <!-- Tech chips -->
+          <div class="flex flex-wrap items-center gap-2 sm:justify-end">
+            {["Gemini AI", "pgvector", "FastAPI", "Docker"].map((tag, i) => (
+              <span class:list={[
+                "rounded-full px-3 py-1 text-[0.68rem] font-semibold whitespace-nowrap",
+                i === 0 ? "bg-[#00b2eb]/14 text-[#00b2eb] border border-[#00b2eb]/20" : "bg-white/[0.07] text-white/50 border border-white/10",
+              ]}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Card 2: ComPres ───────────────────────────── -->
+      <article class="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
+        <div class="relative aspect-[16/9] overflow-hidden">
+          <img
+            src={analysisUrl}
+            alt=""
+            aria-hidden="true"
+            width="900"
+            height="900"
+            class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          />
+          <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#071729] to-transparent"></div>
+          <span class="absolute left-4 top-4 rounded-full border border-[#00b2eb]/30 bg-[#071729]/70 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#00b2eb] backdrop-blur-sm">
+            {isEN ? "Predictive ML" : "ML Predictivo"}
+          </span>
+        </div>
+        <div class="p-5 md:p-6">
+          <div class="mb-4 flex flex-wrap gap-8">
+            <div>
+              <p class="text-[1.4rem] font-bold leading-none tracking-[-0.03em] text-white">3.2<span class="text-[#00b2eb] text-[1rem]">%</span></p>
+              <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">MAE</p>
+            </div>
+            <div>
+              <p class="text-[1.4rem] font-bold leading-none tracking-[-0.03em] text-white">−31<span class="text-[#00b2eb] text-[1rem]">%</span></p>
+              <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Deviations" : "Desviaciones"}</p>
+            </div>
+          </div>
+          <h3 class="text-[1.1rem] font-semibold leading-snug text-white">
+            {isEN ? "ComPres — Cost Estimation" : "ComPres — Estimación de costes"}
+          </h3>
+          <p class="mt-2 text-[0.85rem] leading-[1.7] text-white/55">
+            {isEN
+              ? "ML model that estimates construction costs by trade with 3.2% MAE. Trained on historical data from real projects."
+              : "Modelo ML que estima costes de construcción por partidas con MAE del 3.2%. Entrenado con datos históricos de proyectos reales."}
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 border-t border-white/[0.08] pt-4">
+            {["LSTM", "CatBoost", "XGBoost"].map((tag, i) => (
+              <span class:list={[
+                "rounded-full px-3 py-1 text-[0.68rem] font-semibold",
+                i === 0 ? "bg-[#00b2eb]/14 text-[#00b2eb] border border-[#00b2eb]/20" : "bg-white/[0.07] text-white/50 border border-white/10",
+              ]}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <!-- ── Card 3: RAG Chatbot ──────────────────────── -->
+      <article class="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
+        <div class="relative aspect-[16/9] overflow-hidden">
+          <img
+            src={mlUrl}
+            alt=""
+            aria-hidden="true"
+            width="900"
+            height="900"
+            class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+          />
+          <div class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#071729] to-transparent"></div>
+          <span class="absolute left-4 top-4 rounded-full border border-[#00b2eb]/30 bg-[#071729]/70 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#00b2eb] backdrop-blur-sm">
+            {isEN ? "RAG Chatbot" : "Chatbot RAG"}
+          </span>
+        </div>
+        <div class="p-5 md:p-6">
+          <div class="mb-4 flex flex-wrap gap-8">
+            <div>
+              <p class="text-[1.4rem] font-bold leading-none tracking-[-0.03em] text-white">12<span class="text-[#00b2eb] text-[1rem]">k</span></p>
+              <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Docs indexed" : "Docs indexados"}</p>
+            </div>
+            <div>
+              <p class="text-[1.4rem] font-bold leading-none tracking-[-0.03em] text-white">&lt;1<span class="text-[#00b2eb] text-[1rem]">s</span></p>
+              <p class="mt-1.5 text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-white/40">{isEN ? "Response" : "Respuesta"}</p>
+            </div>
+          </div>
+          <h3 class="text-[1.1rem] font-semibold leading-snug text-white">
+            {isEN ? "Internal documentation assistant" : "Asistente sobre documentación interna"}
+          </h3>
+          <p class="mt-2 text-[0.85rem] leading-[1.7] text-white/55">
+            {isEN
+              ? "Chatbot that answers questions from your own documentation, manuals and knowledge base. Private, no data in the cloud."
+              : "Chatbot que responde preguntas sobre tu propia documentación, manuales y base de conocimiento. Privado, sin datos en la nube."}
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 border-t border-white/[0.08] pt-4">
+            {["OpenAI", "pgvector", "FastAPI"].map((tag, i) => (
+              <span class:list={[
+                "rounded-full px-3 py-1 text-[0.68rem] font-semibold",
+                i === 0 ? "bg-[#00b2eb]/14 text-[#00b2eb] border border-[#00b2eb]/20" : "bg-white/[0.07] text-white/50 border border-white/10",
+              ]}>
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>

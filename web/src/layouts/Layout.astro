@@ -75,6 +75,14 @@ const hreflangLinks: { hreflang: string; href: string }[] =
   </head>
 
   <body class="m-0 bg-mist font-sans text-ink antialiased">
+    <!-- Reading progress bar -->
+    <div
+      id="scroll-progress"
+      aria-hidden="true"
+      class="pointer-events-none fixed left-0 top-0 h-[3px] w-0 bg-[#00b2eb]"
+      style="z-index:1000;will-change:width;"
+    ></div>
+
     <Navbar locale={locale} />
 
     <main>
@@ -190,6 +198,26 @@ const hreflangLinks: { hreflang: string; href: string }[] =
 
       initScrollTopButton();
       document.addEventListener('astro:page-load', initScrollTopButton);
+
+      // ── Reading progress bar ────────────────────────
+      const initProgressBar = () => {
+        const bar = document.getElementById('scroll-progress');
+        if (!bar || bar.dataset.pbInit) return;
+        bar.dataset.pbInit = 'true';
+
+        const update = () => {
+          const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+          bar.style.width = scrollable > 0
+            ? (window.scrollY / scrollable) * 100 + '%'
+            : '0%';
+        };
+
+        window.addEventListener('scroll', update, { passive: true });
+        update();
+      };
+
+      initProgressBar();
+      document.addEventListener('astro:page-load', initProgressBar);
     </script>
   </body>
 </html>

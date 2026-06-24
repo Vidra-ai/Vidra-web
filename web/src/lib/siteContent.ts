@@ -513,23 +513,11 @@ export const whoWeArePageContent = {
         { title: "Imparcialidad", text: "Recomendamos lo que el negocio necesita, no lo que suena más llamativo en una demo." },
       ],
     },
-    testimonial: {
-      eyebrow: "Palabras de clientes",
-      quote: "Vidra nos ayudó a mejorar de forma significativa nuestro proceso de due diligence técnico, elevando la claridad de las decisiones y la protección ante riesgos.",
-      author: "John Doe",
-      role: "Development Manager, Acme Corp.",
-    },
     people: {
       eyebrow: "Nuestro equipo",
       title: "Expertos en datos, IA y estrategia aplicada.",
       text: "Combinamos perfiles técnicos y estratégicos para diseñar soluciones de IA que puedan integrarse en la operativa real del negocio.",
       cta: "Explorar carreras",
-      cards: [
-        { title: "Careers", text: "Únete a un equipo que trabaja en IA aplicada a problemas reales.", href: "/#contact" },
-        { title: "What we do", text: "Descubre cómo convertimos datos en sistemas operativos y medibles.", href: "/#what-we-do" },
-        { title: "Insights", text: "Lee análisis sobre tendencias, implementación y toma de decisiones." },
-        { title: "Projects", text: "Explora proyectos donde estrategia, datos e ingeniería se encuentran."},
-      ],
       mindsetEyebrow: "Cómo lo construimos",
         mindset: {
         strategy: {
@@ -654,23 +642,11 @@ export const whoWeArePageContent = {
         { title: "Impartiality", text: "We recommend what the business needs, not what sounds most impressive in a demo." },
       ],
     },
-    testimonial: {
-      eyebrow: "Words from our customers",
-      quote: "Vidra has helped to improve our technical due diligence process greatly, increasing our protection on deals and outlining risk decisions clearly.",
-      author: "John Doe",
-      role: "Development Manager, Acme Corp.",
-    },
     people: {
       eyebrow: "Our people",
       title: "A team of rigorous experts, focused on delivering operational and high-impact AI solutions.",
       text: "Our team combines diverse expertise and a collaborative culture, focused on maximizing the performance and applicability of every AI solution for our clients.",
       cta: "Explore careers",
-      cards: [
-        { title: "Careers", text: "Join a team working on AI applied to real operational problems.", href: "/en/#contact" },
-        { title: "What we do", text: "See how we turn data into operational, measurable systems.", href: "/en/#what-we-do" },
-        { title: "Insights", text: "Read analysis on trends, implementation, and decision-making." },
-        { title: "Projects", text: "Explore work where strategy, data, and engineering meet." },
-      ],
       mindsetEyebrow: "How we build it",
         mindset: {
             strategy: {
@@ -834,7 +810,10 @@ export const legalPageContent = {
           },
           {
             heading: "Retención de datos",
-            paragraphs: ["Conservamos los datos personales durante el tiempo necesario para cumplir las finalidades para las que fueron recopilados o según exija la ley."],
+            paragraphs: [
+              "Conservamos los datos personales durante el tiempo necesario para cumplir las finalidades para las que fueron recopilados o según exija la ley.",
+              "Los mensajes enviados al asistente virtual (chatbot) se procesan en tiempo real para generar la respuesta y no se almacenan en nuestros servidores. El historial de conversación se mantiene únicamente en la memoria temporal del navegador durante la sesión activa y se elimina automáticamente al cerrar o recargar la página.",
+            ],
           },
           {
             heading: "Tus derechos (ARCO+)",
@@ -941,7 +920,10 @@ export const legalPageContent = {
           },
           {
             heading: "Data Retention",
-            paragraphs: ["We retain personal data for as long as necessary to fulfill the purposes for which it was collected, or as required by law."],
+            paragraphs: [
+              "We retain personal data for as long as necessary to fulfill the purposes for which it was collected, or as required by law.",
+              "Messages sent to our virtual assistant (chatbot) are processed in real time to generate a response and are not stored on our servers. Conversation history is held only in the browser's temporary memory during the active session and is automatically deleted when the page is closed or refreshed.",
+            ],
           },
           {
             heading: "Your Rights (GDPR)",
@@ -1210,10 +1192,10 @@ export const teamContent = {
       { initials: "JB", name: "Jorge Bernal", role: "Socio", area: "Dirección y operaciones" },
       { initials: "JS", name: "Juan Sánchez", role: "Socio", area: "Dirección comercial" },
       { initials: "IN", name: "Ignacio Navoz", role: "Responsable técnico", area: "Arquitectura y MLOps" },
-      { initials: "JC", name: "Javier Cerón", role: "ML Engineer", area: "Desarrollo e infraestructura" },
-      { initials: "AC", name: "Álvaro Carrera", role: "ML Engineer", area: "Modelos y backend" },
-      { initials: "CD", name: "Carlos Díaz", role: "AI Developer", area: "Frontend y despliegue" },
-      { initials: "GH", name: "Gonzalo Humanes", role: "Data Scientist", area: "Análisis y modelos" },
+      { initials: "JC", name: "Javier Cerón", role: "Ingeniero IA", area: "Desarrollo e infraestructura" },
+      { initials: "AC", name: "Álvaro Carrera", role: "Ingeniero IA", area: "Modelos y backend" },
+      { initials: "CD", name: "Carlos Díaz", role: "Ingeniero IA", area: "Frontend y despliegue" },
+      { initials: "GH", name: "Gonzalo Humanes", role: "Ingeniero IA", area: "Análisis y modelos" },
     ],
   },
   en: {
@@ -1225,10 +1207,10 @@ export const teamContent = {
       { initials: "JB", name: "Jorge Bernal", role: "Partner", area: "Direction & operations" },
       { initials: "JS", name: "Juan Sánchez", role: "Partner", area: "Commercial direction" },
       { initials: "IN", name: "Ignacio Navoz", role: "Technical lead", area: "Architecture & MLOps" },
-      { initials: "JC", name: "Javier Cerón", role: "ML Engineer", area: "Development & infrastructure" },
-      { initials: "AC", name: "Álvaro Carrera", role: "ML Engineer", area: "Models & backend" },
-      { initials: "CD", name: "Carlos Díaz", role: "AI Developer", area: "Frontend & deployment" },
-      { initials: "GH", name: "Gonzalo Humanes", role: "Data Scientist", area: "Analytics & models" },
+      { initials: "JC", name: "Javier Cerón", role: "AI Engineer", area: "Development & infrastructure" },
+      { initials: "AC", name: "Álvaro Carrera", role: "AI Engineer", area: "Models & backend" },
+      { initials: "CD", name: "Carlos Díaz", role: "AI Engineer", area: "Frontend & deployment" },
+      { initials: "GH", name: "Gonzalo Humanes", role: "AI Engineer", area: "Analytics & models" },
     ],
   },
 } as const;

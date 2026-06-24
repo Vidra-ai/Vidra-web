@@ -1,0 +1,119 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900" preserveAspectRatio="xMidYMid slice" width="900" height="900">
+  <defs>
+    <linearGradient id="bg-m" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0d2f4a"/>
+      <stop offset="100%" stop-color="#071729"/>
+    </linearGradient>
+    <linearGradient id="line-pred" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00B2EB" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#00B2EB"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="900" fill="url(#bg-m)"/>
+
+  <!-- Grid -->
+  <g stroke="rgba(255,255,255,0.035)" stroke-width="1">
+    <line x1="0" y1="180" x2="900" y2="180"/>
+    <line x1="0" y1="300" x2="900" y2="300"/>
+    <line x1="0" y1="420" x2="900" y2="420"/>
+    <line x1="0" y1="540" x2="900" y2="540"/>
+    <line x1="0" y1="660" x2="900" y2="660"/>
+    <line x1="150" y1="60" x2="150" y2="900"/>
+    <line x1="300" y1="60" x2="300" y2="900"/>
+    <line x1="450" y1="60" x2="450" y2="900"/>
+    <line x1="600" y1="60" x2="600" y2="900"/>
+    <line x1="750" y1="60" x2="750" y2="900"/>
+  </g>
+
+  <!-- Badge -->
+  <rect x="60" y="130" width="210" height="30" rx="15" fill="rgba(0,178,235,0.12)" stroke="rgba(0,178,235,0.28)" stroke-width="1"/>
+  <text x="165" y="150" fill="#00B2EB" font-size="11" font-family="'Courier New',Consolas,monospace" text-anchor="middle" font-weight="700" letter-spacing="0.14em">MOTOR PREDICTIVO ML</text>
+
+  <!-- Heading -->
+  <text x="60" y="158" fill="rgba(255,255,255,0.92)" font-size="44" font-family="system-ui,-apple-system,sans-serif" font-weight="600" letter-spacing="-0.03em">Machine</text>
+  <text x="60" y="210" fill="rgba(255,255,255,0.92)" font-size="44" font-family="system-ui,-apple-system,sans-serif" font-weight="600" letter-spacing="-0.03em">Learning</text>
+  <text x="60" y="252" fill="rgba(255,255,255,0.42)" font-size="18" font-family="system-ui,-apple-system,sans-serif">Coste real vs. predicción · Conf. interval 95%</text>
+
+  <!-- Chart area axes -->
+  <line x1="80" y1="660" x2="860" y2="660" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+  <line x1="80" y1="290" x2="80" y2="660" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>
+
+  <!-- Y-axis labels -->
+  <text x="68" y="664" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">0</text>
+  <text x="68" y="600" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">50k</text>
+  <text x="68" y="536" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">100k</text>
+  <text x="68" y="472" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">150k</text>
+  <text x="68" y="408" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">200k</text>
+  <text x="68" y="344" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="end">250k</text>
+
+  <!-- X-axis labels -->
+  <text x="150" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Ene</text>
+  <text x="280" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Feb</text>
+  <text x="410" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Mar</text>
+  <text x="540" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Abr</text>
+  <text x="670" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">May</text>
+  <text x="800" y="682" fill="rgba(255,255,255,0.3)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Jun</text>
+
+  <!-- Horizontal guide lines (chart) -->
+  <g stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4,6">
+    <line x1="80" y1="600" x2="860" y2="600"/>
+    <line x1="80" y1="536" x2="860" y2="536"/>
+    <line x1="80" y1="472" x2="860" y2="472"/>
+    <line x1="80" y1="408" x2="860" y2="408"/>
+    <line x1="80" y1="344" x2="860" y2="344"/>
+  </g>
+
+  <!-- Confidence interval band (filled path between upper/lower bounds) -->
+  <path d="M150,430 L280,390 L410,450 L540,380 L670,420 L800,370
+           L800,400 L670,445 L540,410 L410,475 L280,415 L150,455 Z"
+        fill="rgba(0,178,235,0.1)"/>
+
+  <!-- Real line (noisy, white) - actual cost data -->
+  <polyline
+    points="150,448 200,425 250,462 280,408 320,435 370,392 410,455 460,388 510,415 540,398 590,440 630,372 670,435 720,408 760,382 800,395"
+    fill="none"
+    stroke="rgba(255,255,255,0.65)"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+  <!-- Prediction line (smooth, cyan) -->
+  <path d="M150,442 C210,418 260,428 280,400 S360,405 410,462 S490,390 540,390 S620,435 670,430 S760,388 800,385"
+        fill="none"
+        stroke="#00B2EB"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <!-- Data points on real line -->
+  <g fill="rgba(255,255,255,0.75)">
+    <circle cx="150" cy="448" r="4"/>
+    <circle cx="280" cy="408" r="4"/>
+    <circle cx="410" cy="455" r="4"/>
+    <circle cx="540" cy="398" r="4"/>
+    <circle cx="670" cy="435" r="4"/>
+    <circle cx="800" cy="395" r="4"/>
+  </g>
+
+  <!-- Legend -->
+  <line x1="560" y1="310" x2="590" y2="310" stroke="rgba(255,255,255,0.65)" stroke-width="2.5"/>
+  <text x="598" y="315" fill="rgba(255,255,255,0.55)" font-size="13" font-family="'Courier New',monospace">Real</text>
+  <line x1="650" y1="310" x2="680" y2="310" stroke="#00B2EB" stroke-width="2.5"/>
+  <text x="688" y="315" fill="rgba(255,255,255,0.55)" font-size="13" font-family="'Courier New',monospace">Predicción</text>
+
+  <!-- Metric callout -->
+  <rect x="620" y="328" width="200" height="56" rx="10" fill="rgba(0,178,235,0.08)" stroke="rgba(0,178,235,0.2)" stroke-width="1"/>
+  <text x="720" y="350" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.08em">MAE</text>
+  <text x="720" y="374" fill="#00B2EB" font-size="22" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">3.2%</text>
+
+  <!-- Tech tags -->
+  <rect x="60"  y="730" width="130" height="30" rx="15" fill="rgba(0,178,235,0.1)"  stroke="rgba(0,178,235,0.22)" stroke-width="1"/>
+  <text x="125" y="750" fill="#00B2EB" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">CatBoost + LSTM</text>
+
+  <rect x="204" y="730" width="130" height="30" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="269" y="750" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">LightGBM · XGB</text>
+
+  <rect x="348" y="730" width="130" height="30" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <text x="413" y="750" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">FastAPI · Docker</text>
+</svg>

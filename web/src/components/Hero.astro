@@ -1,49 +1,30 @@
 ---
 import { homeContent, type Locale } from "../lib/siteContent";
-import { Image, getImage } from "astro:assets";
 
-import analysisHero from "../assets/analysis.jpg";
-import machineLearning from "../assets/machine-learning.jpg";
-import deepLearning from "../assets/deep-learning.jpg";
+import analysisUrl from "../assets/service-analysis.svg?url";
+import mlUrl from "../assets/service-ml.svg?url";
+import aiUrl from "../assets/service-ai.svg?url";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
 const hero = content.heroSlider;
 const servicesHref = locale === "en" ? "/en/services" : "/services";
 
-const heroImages = {
-  "analysis-hero": analysisHero,
-  "machineLearning-hero": machineLearning,
-  "deepLearning-hero": deepLearning,
-} as const;
+const heroImageUrls: Record<string, string> = {
+  "analysis-hero": analysisUrl,
+  "machineLearning-hero": mlUrl,
+  "deepLearning-hero": aiUrl,
+};
 
-type HeroImageKey = keyof typeof heroImages;
-
-const slides = await Promise.all(
-  hero.slides.map(async (slide) => {
-    const imageKey = slide.imageKey as HeroImageKey;
-    const imageAsset = heroImages[imageKey];
-
-    const optimizedImage = await getImage({
-      src: imageAsset,
-      width: 900,
-      height: 900,
-      format: "webp",
-      quality: 75,
-    });
-
-    return {
-      ...slide,
-      imageAsset,
-      imageSrc: optimizedImage.src,
-    };
-  })
-);
+const slides = hero.slides.map((slide) => ({
+  ...slide,
+  imageSrc: heroImageUrls[slide.imageKey] ?? analysisUrl,
+}));
 
 const initialSlide = slides[0];
 ---
 
-<section class="relative overflow-hidden bg-[#0B2C4A] px-4 pb-10 pt-28 md:px-6 md:pb-16 md:pt-32">
+<section data-nav-theme="light" class="relative overflow-hidden bg-[#0B2C4A] px-4 pb-10 pt-28 md:px-6 md:pb-16 md:pt-32">
   <div class="absolute inset-0 opacity-70" aria-hidden="true">
     <div class="h-full w-full bg-[linear-gradient(rgba(7,23,41,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(7,23,41,0.08)_1px,transparent_1px)] bg-[size:72px_72px]"></div>
   </div>
@@ -101,19 +82,17 @@ const initialSlide = slides[0];
 
       <!-- FIX: rounded-[1.5rem] (era 1rem) — consistente con el token "feature" del sistema -->
       <div class="relative min-h-[560px] overflow-hidden rounded-[1.5rem]">
-        <Image
+        <img
           id="service-image"
-          src={initialSlide.imageAsset}
+          src={initialSlide.imageSrc}
           alt={initialSlide.alt}
-          width={900}
-          height={900}
-          format="webp"
-          quality={75}
+          width="900"
+          height="900"
           class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
           loading="eager"
           decoding="async"
         />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/75 via-[#071729]/10 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#071729]/55 via-[#071729]/5 to-transparent"></div>
         <!-- FIX: py-3.5 para touch target cómodo -->
         <a
           href={servicesHref}
