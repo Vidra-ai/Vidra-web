@@ -54,15 +54,19 @@ const optimizedServices = services.map((service) => ({
                 href={`${serviceBase}/${service.slug}`}
                 class="group flex min-h-[520px] flex-col overflow-hidden rounded-[1.5rem] border border-[#0B2C4A]/10 bg-white shadow-[0_20px_60px_rgba(11,44,74,0.08)] transition duration-500 hover:-translate-y-2 hover:border-transparent hover:bg-[#0B2C4A]"
               >
-                <img
-                  src={service.imageSrc}
-                  alt={locale === "en" ? `${service.title} Service - Vidra` : `Servicio de ${service.title} - Vidra`}
-                  width="640"
-                  height="480"
-                  class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div class="px-4 pt-4">
+                  <div class="overflow-hidden rounded-xl">
+                    <img
+                      src={service.imageSrc}
+                      alt={locale === "en" ? `${service.title} Service - Vidra` : `Servicio de ${service.title} - Vidra`}
+                      width="640"
+                      height="480"
+                      class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </div>
 
                 <div class="flex flex-1 flex-col justify-between p-7">
                   <div>
@@ -70,7 +74,7 @@ const optimizedServices = services.map((service) => ({
                       {service.eyebrow}
                     </p>
 
-                    <h2 class="mt-6 text-[clamp(1.45rem,2.2vw,1.8rem)] font-medium leading-[1.05] tracking-[-0.035em] text-[#0B2C4A] transition group-hover:text-white">
+                    <h2 class="mt-8 text-[clamp(1.45rem,2.2vw,1.8rem)] font-medium leading-[1.05] tracking-[-0.035em] text-[#0B2C4A] transition group-hover:text-white">
                       {service.title}
                     </h2>
 

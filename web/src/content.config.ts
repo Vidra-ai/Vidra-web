@@ -11,7 +11,7 @@ const blog = defineCollection({
     description: z.string(),
     pubDate: z.coerce.date(),
     lang: z.enum(['es', 'en']),
-    category: z.enum(['analytics', 'machine-learning', 'deep-learning']),
+    category: z.enum(['analytics', 'machine-learning', 'deep-learning', 'empresa']),
     translationKey: z.string().optional(),
     image: z.string().optional(),
     noindex: z.boolean().optional(),

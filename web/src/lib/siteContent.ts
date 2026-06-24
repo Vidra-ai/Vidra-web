@@ -1051,6 +1051,7 @@ export const blogPageContent = {
       analytics: "Analytics",
       "machine-learning": "Machine Learning",
       "deep-learning": "Deep Learning",
+      empresa: "Empresa",
     },
     ctaBlock: {
       title: "¿Evaluando una iniciativa similar?",
@@ -1070,6 +1071,7 @@ export const blogPageContent = {
       analytics: "Analytics",
       "machine-learning": "Machine Learning",
       "deep-learning": "Deep Learning",
+      empresa: "Company",
     },
     ctaBlock: {
       title: "Evaluating a similar initiative?",

@@ -40,7 +40,7 @@ const reps = [...logos, ...logos, ...logos, ...logos];
         {reps.map((client) => (
           <div class="marquee-item" aria-hidden="true">
             <div class="logo-card">
-              <img src={client.logo} alt="" />
+              <img src={client.logo} alt="" loading="lazy" decoding="async" />
             </div>
           </div>
         ))}

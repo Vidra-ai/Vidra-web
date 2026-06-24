@@ -4,96 +4,141 @@
       <stop offset="0%" stop-color="#0d2f4a"/>
       <stop offset="100%" stop-color="#071729"/>
     </linearGradient>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="rgba(0,178,235,0.55)"/>
+    <radialGradient id="glow-ai" cx="0.5" cy="0.5" r="0.6">
+      <stop offset="0%" stop-color="#00B2EB" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#00B2EB" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots-ai" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="11" cy="11" r="0.85" fill="rgba(255,255,255,0.048)"/>
+    </pattern>
+    <marker id="arr" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0.5 L0,6.5 L6.5,3.5 z" fill="rgba(0,178,235,0.65)"/>
     </marker>
   </defs>
 
   <rect width="900" height="900" fill="url(#bg-ai)"/>
-
-  <!-- Grid -->
-  <g stroke="rgba(255,255,255,0.032)" stroke-width="1">
-    <line x1="0" y1="180" x2="900" y2="180"/>
-    <line x1="0" y1="360" x2="900" y2="360"/>
-    <line x1="0" y1="540" x2="900" y2="540"/>
-    <line x1="0" y1="720" x2="900" y2="720"/>
-    <line x1="180" y1="0" x2="180" y2="900"/>
-    <line x1="450" y1="0" x2="450" y2="900"/>
-    <line x1="720" y1="0" x2="720" y2="900"/>
-  </g>
+  <rect width="900" height="900" fill="url(#dots-ai)"/>
+  <rect width="900" height="900" fill="url(#glow-ai)"/>
 
   <!-- Badge -->
-  <rect x="60" y="130" width="220" height="30" rx="15" fill="rgba(0,178,235,0.12)" stroke="rgba(0,178,235,0.28)" stroke-width="1"/>
-  <text x="170" y="150" fill="#00B2EB" font-size="11" font-family="'Courier New',Consolas,monospace" text-anchor="middle" font-weight="700" letter-spacing="0.14em">IA GENERATIVA · AGENTES</text>
+  <rect x="60" y="130" width="232" height="28" rx="14" fill="rgba(0,178,235,0.12)" stroke="rgba(0,178,235,0.32)" stroke-width="1"/>
+  <text x="176" y="149" fill="#00B2EB" font-size="10.5" font-family="'Courier New',Consolas,monospace" text-anchor="middle" font-weight="700" letter-spacing="0.14em">IA GENERATIVA · AGENTES</text>
 
   <!-- Heading -->
-  <text x="60" y="158" fill="rgba(255,255,255,0.92)" font-size="44" font-family="system-ui,-apple-system,sans-serif" font-weight="600" letter-spacing="-0.03em">Pipeline</text>
-  <text x="60" y="210" fill="rgba(255,255,255,0.92)" font-size="44" font-family="system-ui,-apple-system,sans-serif" font-weight="600" letter-spacing="-0.03em">RAG Multi-agente</text>
-  <text x="60" y="252" fill="rgba(255,255,255,0.42)" font-size="18" font-family="system-ui,-apple-system,sans-serif">Radar Licitaciones · Vidra IA</text>
+  <text x="60" y="200" fill="rgba(255,255,255,0.96)" font-size="50" font-family="system-ui,-apple-system,sans-serif" font-weight="700" letter-spacing="-0.035em">Pipeline</text>
+  <text x="60" y="253" fill="rgba(255,255,255,0.96)" font-size="50" font-family="system-ui,-apple-system,sans-serif" font-weight="700" letter-spacing="-0.035em">RAG Multi-agente</text>
+  <text x="60" y="277" fill="rgba(255,255,255,0.38)" font-size="14.5" font-family="system-ui,-apple-system,sans-serif" letter-spacing="0.02em">Radar Licitaciones · Vidra IA</text>
 
-  <!-- Pipeline nodes - centered vertically -->
-  <!-- Node 1: Documents -->
-  <rect x="60" y="310" width="148" height="130" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
-  <text x="134" y="352" fill="rgba(255,255,255,0.38)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.08em">FUENTE</text>
-  <text x="134" y="378" fill="rgba(255,255,255,0.88)" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Docs</text>
-  <text x="134" y="402" fill="rgba(255,255,255,0.38)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">PDF · Markdown</text>
-  <text x="134" y="424" fill="rgba(255,255,255,0.25)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">Obsidian · Web</text>
+  <!-- Divider -->
+  <line x1="60" y1="293" x2="840" y2="293" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <!-- Pipeline connector line (background) -->
+  <line x1="60" y1="393" x2="840" y2="393" stroke="rgba(0,178,235,0.1)" stroke-width="2" stroke-dasharray="6,8"/>
+
+  <!-- Node 1: Docs -->
+  <rect x="60" y="308" width="162" height="142" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.11)" stroke-width="1.5"/>
+  <!-- Node number -->
+  <text x="90" y="334" fill="rgba(255,255,255,0.18)" font-size="11" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.08em">01</text>
+  <text x="141" y="355" fill="rgba(255,255,255,0.32)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.09em">FUENTE</text>
+  <text x="141" y="383" fill="rgba(255,255,255,0.9)" font-size="18" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Docs</text>
+  <text x="141" y="405" fill="rgba(255,255,255,0.36)" font-size="11.5" font-family="'Courier New',monospace" text-anchor="middle">PDF · Markdown</text>
+  <text x="141" y="424" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Obsidian · Web</text>
+  <text x="141" y="442" fill="rgba(255,255,255,0.18)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle">Agent 01</text>
 
   <!-- Arrow 1 -->
-  <line x1="210" y1="375" x2="248" y2="375" stroke="rgba(0,178,235,0.5)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="224" y1="379" x2="246" y2="379" stroke="rgba(0,178,235,0.55)" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Node 2: Chunking -->
-  <rect x="252" y="310" width="148" height="130" rx="14" fill="rgba(0,178,235,0.06)" stroke="rgba(0,178,235,0.2)" stroke-width="1.5"/>
-  <text x="326" y="352" fill="rgba(0,178,235,0.6)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.08em">PROCESO</text>
-  <text x="326" y="378" fill="rgba(255,255,255,0.88)" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Chunking</text>
-  <text x="326" y="402" fill="rgba(255,255,255,0.38)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">512 tokens</text>
-  <text x="326" y="424" fill="rgba(255,255,255,0.25)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">overlap: 64</text>
+  <rect x="250" y="308" width="162" height="142" rx="14" fill="rgba(0,178,235,0.06)" stroke="rgba(0,178,235,0.2)" stroke-width="1.5"/>
+  <text x="280" y="334" fill="rgba(0,178,235,0.38)" font-size="11" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.08em">02</text>
+  <text x="331" y="355" fill="rgba(0,178,235,0.55)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.09em">PROCESO</text>
+  <text x="331" y="383" fill="rgba(255,255,255,0.9)" font-size="18" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Chunking</text>
+  <text x="331" y="405" fill="rgba(255,255,255,0.36)" font-size="11.5" font-family="'Courier New',monospace" text-anchor="middle">512 tokens</text>
+  <text x="331" y="424" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">overlap: 64</text>
+  <text x="331" y="442" fill="rgba(0,178,235,0.35)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle">Agent 02</text>
 
   <!-- Arrow 2 -->
-  <line x1="402" y1="375" x2="440" y2="375" stroke="rgba(0,178,235,0.5)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="414" y1="379" x2="436" y2="379" stroke="rgba(0,178,235,0.55)" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- Node 3: Vector DB -->
-  <rect x="444" y="310" width="148" height="130" rx="14" fill="rgba(0,178,235,0.06)" stroke="rgba(0,178,235,0.2)" stroke-width="1.5"/>
-  <text x="518" y="352" fill="rgba(0,178,235,0.6)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.08em">VECTORES</text>
-  <text x="518" y="378" fill="rgba(255,255,255,0.88)" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">pgvector</text>
-  <text x="518" y="402" fill="rgba(255,255,255,0.38)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">cosine sim.</text>
-  <text x="518" y="424" fill="rgba(255,255,255,0.25)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">+ pg_trgm</text>
+  <!-- Node 3: pgvector -->
+  <rect x="440" y="308" width="162" height="142" rx="14" fill="rgba(0,178,235,0.06)" stroke="rgba(0,178,235,0.2)" stroke-width="1.5"/>
+  <text x="470" y="334" fill="rgba(0,178,235,0.38)" font-size="11" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.08em">03</text>
+  <text x="521" y="355" fill="rgba(0,178,235,0.55)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.09em">VECTORES</text>
+  <text x="521" y="383" fill="rgba(255,255,255,0.9)" font-size="18" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">pgvector</text>
+  <text x="521" y="405" fill="rgba(255,255,255,0.36)" font-size="11.5" font-family="'Courier New',monospace" text-anchor="middle">cosine sim.</text>
+  <text x="521" y="424" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">+ pg_trgm</text>
+  <text x="521" y="442" fill="rgba(0,178,235,0.35)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle">Agent 03</text>
 
   <!-- Arrow 3 -->
-  <line x1="594" y1="375" x2="632" y2="375" stroke="rgba(0,178,235,0.5)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="604" y1="379" x2="626" y2="379" stroke="rgba(0,178,235,0.55)" stroke-width="2" marker-end="url(#arr)"/>
 
-  <!-- Node 4: LLM -->
-  <rect x="636" y="310" width="148" height="130" rx="14" fill="rgba(0,178,235,0.06)" stroke="rgba(0,178,235,0.2)" stroke-width="1.5"/>
-  <text x="710" y="352" fill="rgba(0,178,235,0.6)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.08em">GENERACIÓN</text>
-  <text x="710" y="378" fill="rgba(255,255,255,0.88)" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Gemini AI</text>
-  <text x="710" y="402" fill="rgba(255,255,255,0.38)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">multi-agent</text>
-  <text x="710" y="424" fill="rgba(255,255,255,0.25)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">scoring 0–100</text>
+  <!-- Node 4: Gemini AI (highlighted) -->
+  <rect x="630" y="308" width="210" height="142" rx="14" fill="rgba(0,178,235,0.1)" stroke="rgba(0,178,235,0.38)" stroke-width="2"/>
+  <!-- Subtle glow border effect -->
+  <rect x="632" y="310" width="206" height="138" rx="12" fill="none" stroke="rgba(0,178,235,0.12)" stroke-width="4"/>
+  <text x="660" y="334" fill="rgba(0,178,235,0.55)" font-size="11" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.08em">04</text>
+  <text x="735" y="355" fill="rgba(0,178,235,0.7)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.09em">GENERACIÓN</text>
+  <text x="735" y="383" fill="rgba(255,255,255,0.95)" font-size="18" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="700">Gemini AI</text>
+  <text x="735" y="405" fill="rgba(255,255,255,0.42)" font-size="11.5" font-family="'Courier New',monospace" text-anchor="middle">multi-agent</text>
+  <text x="735" y="424" fill="rgba(255,255,255,0.26)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">scoring 0–100</text>
+  <text x="735" y="442" fill="rgba(0,178,235,0.45)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle">Agent 04</text>
 
-  <!-- Arrow 4 (down to output) -->
-  <line x1="710" y1="442" x2="710" y2="478" stroke="rgba(0,178,235,0.5)" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- Vertical arrow down from Gemini -->
+  <line x1="735" y1="452" x2="735" y2="476" stroke="rgba(0,178,235,0.55)" stroke-width="2" marker-end="url(#arr)"/>
 
   <!-- Output node -->
-  <rect x="560" y="484" width="300" height="90" rx="14" fill="rgba(0,178,235,0.1)" stroke="rgba(0,178,235,0.35)" stroke-width="1.5"/>
-  <text x="710" y="516" fill="rgba(0,178,235,0.7)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.1em">RESULTADO</text>
-  <text x="710" y="542" fill="rgba(255,255,255,0.9)" font-size="16" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Informe · Scoring · API</text>
-  <text x="710" y="562" fill="rgba(255,255,255,0.38)" font-size="13" font-family="'Courier New',monospace" text-anchor="middle">Licitación: 87/100 · Alta prioridad</text>
+  <rect x="470" y="482" width="370" height="82" rx="14" fill="rgba(0,178,235,0.09)" stroke="rgba(0,178,235,0.32)" stroke-width="1.5"/>
+  <text x="655" y="508" fill="rgba(0,178,235,0.65)" font-size="10" font-family="'Courier New',monospace" text-anchor="middle" letter-spacing="0.1em">RESULTADO</text>
+  <text x="655" y="532" fill="rgba(255,255,255,0.9)" font-size="15.5" font-family="system-ui,sans-serif" text-anchor="middle" font-weight="600">Informe · Scoring · API</text>
+  <text x="655" y="552" fill="rgba(255,255,255,0.36)" font-size="12" font-family="'Courier New',monospace" text-anchor="middle">Alta prioridad · Tiempo real</text>
 
-  <!-- Agent flow labels -->
-  <text x="134" y="476" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Agent 01</text>
-  <text x="326" y="476" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Agent 02</text>
-  <text x="518" y="476" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Agent 03</text>
-  <text x="710" y="476" fill="rgba(255,255,255,0.22)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Agent 04</text>
+  <!-- Score display (left side, below pipeline) -->
+  <rect x="60" y="482" width="390" height="82" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="100" y="508" fill="rgba(255,255,255,0.3)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.13em">SCORE LICITACIÓN</text>
+  <text x="100" y="548" fill="#00B2EB" font-size="44" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.03em">87</text>
+  <text x="188" y="548" fill="rgba(255,255,255,0.4)" font-size="22" font-family="system-ui,sans-serif" font-weight="400">/ 100</text>
+  <text x="280" y="548" fill="rgba(34,197,94,0.9)" font-size="13" font-family="'Courier New',monospace" font-weight="700">↑ Alta prioridad</text>
+
+  <!-- Divider -->
+  <line x1="60" y1="578" x2="840" y2="578" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <!-- KPI metrics row -->
+  <text x="60" y="602" fill="rgba(255,255,255,0.28)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.12em">PRECISIÓN</text>
+  <text x="60" y="630" fill="rgba(255,255,255,0.9)" font-size="22" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.02em">94 %</text>
+
+  <line x1="188" y1="582" x2="188" y2="642" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <text x="204" y="602" fill="rgba(255,255,255,0.28)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.12em">COBERTURA</text>
+  <text x="204" y="630" fill="rgba(255,255,255,0.9)" font-size="22" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.02em">4 ×</text>
+
+  <line x1="352" y1="582" x2="352" y2="642" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <text x="368" y="602" fill="rgba(255,255,255,0.28)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.12em">LATENCIA</text>
+  <text x="368" y="630" fill="#00B2EB" font-size="22" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.02em">&lt; 1 s</text>
+
+  <line x1="516" y1="582" x2="516" y2="642" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <text x="532" y="602" fill="rgba(255,255,255,0.28)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.12em">DOCS INDEXADOS</text>
+  <text x="532" y="630" fill="rgba(255,255,255,0.9)" font-size="22" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.02em">12 k</text>
+
+  <line x1="702" y1="582" x2="702" y2="642" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+
+  <text x="718" y="602" fill="rgba(255,255,255,0.28)" font-size="9.5" font-family="'Courier New',monospace" font-weight="700" letter-spacing="0.12em">AGENTES</text>
+  <text x="718" y="630" fill="rgba(255,255,255,0.9)" font-size="22" font-family="system-ui,sans-serif" font-weight="700" letter-spacing="-0.02em">4 / RAG</text>
+
+  <!-- Bottom divider -->
+  <line x1="60" y1="650" x2="840" y2="650" stroke="rgba(255,255,255,0.055)" stroke-width="1"/>
 
   <!-- Tech tags -->
-  <rect x="60"  y="730" width="120" height="30" rx="15" fill="rgba(0,178,235,0.1)"  stroke="rgba(0,178,235,0.22)" stroke-width="1"/>
-  <text x="120" y="750" fill="#00B2EB" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">Gemini AI</text>
+  <rect x="60" y="662" width="116" height="26" rx="13" fill="rgba(0,178,235,0.1)" stroke="rgba(0,178,235,0.24)" stroke-width="1"/>
+  <text x="118" y="679" fill="#00B2EB" font-size="10.5" font-family="'Courier New',monospace" text-anchor="middle">Gemini AI</text>
 
-  <rect x="194" y="730" width="120" height="30" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-  <text x="254" y="750" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">pgvector</text>
+  <rect x="188" y="662" width="116" height="26" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+  <text x="246" y="679" fill="rgba(255,255,255,0.38)" font-size="10.5" font-family="'Courier New',monospace" text-anchor="middle">pgvector</text>
 
-  <rect x="328" y="730" width="120" height="30" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-  <text x="388" y="750" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">FastAPI</text>
+  <rect x="316" y="662" width="116" height="26" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+  <text x="374" y="679" fill="rgba(255,255,255,0.38)" font-size="10.5" font-family="'Courier New',monospace" text-anchor="middle">FastAPI</text>
 
-  <rect x="462" y="730" width="120" height="30" rx="15" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-  <text x="522" y="750" fill="rgba(255,255,255,0.45)" font-size="11" font-family="'Courier New',monospace" text-anchor="middle">OpenAI</text>
+  <rect x="444" y="662" width="116" height="26" rx="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.09)" stroke-width="1"/>
+  <text x="502" y="679" fill="rgba(255,255,255,0.38)" font-size="10.5" font-family="'Courier New',monospace" text-anchor="middle">OpenAI</text>
 </svg>

@@ -14,6 +14,12 @@ const allPosts = await getCollection('blog', ({ data }) => {
 const sortedPosts = allPosts.sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const featuredPost = sortedPosts[0] ?? null;
+const remainingPosts = sortedPosts.slice(1);
+const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
+const ftSlug = featuredPost?.id.replace(/\.md$/, '') ?? '';
+const ftUrl = locale === 'en' ? `/en/blog/${ftSlug}/` : `/blog/${ftSlug}/`;
 ---
 
 <Layout title={t.title} description={t.description}>
@@ -33,15 +39,64 @@ const sortedPosts = allPosts.sort(
         </p>
       </header>
 
-      {sortedPosts.length > 0 ? (
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {sortedPosts.map((post) => (
-            <BlogCard post={post} locale={locale} />
-          ))}
-        </div>
-      ) : (
+      {sortedPosts.length === 0 ? (
         <div class="rounded-3xl border-2 border-dashed border-black/10 py-20 text-center">
           <p class="font-medium text-black/50">{t.empty}</p>
+        </div>
+      ) : (
+        <div class="space-y-10">
+          {featuredPost && (
+            <article class="group relative overflow-hidden rounded-3xl border border-black/5 bg-white shadow-[0_20px_60px_rgba(7,23,41,0.06)] transition hover:shadow-[0_30px_80px_rgba(7,23,41,0.1)]">
+              <a href={ftUrl} aria-hidden="true" tabindex="-1" class="absolute inset-0 z-[1]" />
+              <div class="grid md:grid-cols-[1.2fr_0.8fr]">
+                <div class="aspect-video p-3 md:aspect-auto md:min-h-[360px] md:p-4">
+                  <div class="h-full w-full overflow-hidden rounded-2xl">
+                    <img
+                      src={featuredPost.data.image || "/images/blog-placeholder.jpg"}
+                      alt={featuredPost.data.title}
+                      width={1200}
+                      height={675}
+                      loading="eager"
+                      decoding="async"
+                      class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                </div>
+                <div class="flex flex-col justify-between p-8 md:p-10">
+                  <div>
+                    <div class="mb-7 flex flex-wrap items-center gap-3">
+                      <span class="rounded-full border border-[#00B2EB]/25 bg-[#00B2EB]/[0.12] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.15em] text-[#00B2EB]">
+                        {t.categories[featuredPost.data.category]}
+                      </span>
+                      <time class="text-xs font-medium uppercase tracking-widest text-black/40">
+                        {new Intl.DateTimeFormat(dateLocale, { dateStyle: 'long' }).format(featuredPost.data.pubDate)}
+                      </time>
+                    </div>
+                    <h2 class="mb-4 text-2xl font-bold leading-tight text-ink md:text-[1.75rem]">
+                      <a href={ftUrl} class="relative z-[2]">{featuredPost.data.title}</a>
+                    </h2>
+                    <p class="text-base leading-relaxed text-black/60">{featuredPost.data.description}</p>
+                  </div>
+                  <div class="mt-8 border-t border-black/5 pt-5">
+                    <span aria-hidden="true" class="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-ink transition-colors group-hover:text-[#00B2EB]">
+                      {t.readMore}
+                      <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6"/>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          )}
+
+          {remainingPosts.length > 0 && (
+            <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {remainingPosts.map((post) => (
+                <BlogCard post={post} locale={locale} />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
