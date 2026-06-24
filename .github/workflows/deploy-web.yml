@@ -30,7 +30,7 @@ jobs:
         working-directory: web
         run: npm run build
 
-      - name: Deploy via FTP to Cyberneticos
+      - name: Deploy via FTPS to Cyberneticos
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
@@ -38,3 +38,6 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./web/dist/
           server-dir: /domains/vidra-ia.com/public_html/
+          protocol: ftps
+          security: loose
+          timeout: 60000
