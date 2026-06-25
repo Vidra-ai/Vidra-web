@@ -26,6 +26,12 @@ LÍMITES:
 
 _NO_INFO_MARKER = "No tengo información suficiente"
 
+# Tope de caracteres por mensaje de historial enviado al LLM: el historial ya
+# cuenta como input tokens en cada turno, así que sin esto una conversación
+# larga con mensajes de hasta 2000 caracteres (ver schemas.py) puede disparar
+# el coste por petición.
+_MAX_HIST_CHARS = 300
+
 _INJECTION_PATTERNS = re.compile(
     r"ignora\s+(las\s+)?instrucciones|"
     r"olvida\s+(lo\s+que|todo)|"
@@ -73,7 +79,8 @@ def generate_answer(
     messages: list[dict[str, str]] = []
     if historial:
         for m in historial[-10:]:
-            messages.append({"role": _ROL[m.rol], "content": m.contenido})
+            content = m.contenido[:_MAX_HIST_CHARS]
+            messages.append({"role": _ROL[m.rol], "content": content})
     messages.append({"role": "user", "content": current_user_msg})
 
     respuesta = client.generate_with_history(_SYSTEM, messages)
