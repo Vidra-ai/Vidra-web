@@ -15,6 +15,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      actions: write
     outputs:
       tag: ${{ steps.meta.outputs.version }}
     steps:
@@ -44,8 +45,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gist,scope=chatbot
-          cache-to: type=gist,mode=max,scope=chatbot
+          cache-from: type=gha,scope=chatbot
+          cache-to: type=gha,mode=max,scope=chatbot
 
   deploy:
     name: Deploy to vidra-central
