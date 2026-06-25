@@ -53,15 +53,22 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: SSH deploy
-        uses: appleboy/ssh-action@v1
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          host: 178.104.197.240
-          port: 55022
-          username: acarrera
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            cd ~/vidra-chatbot
-            docker compose -f docker-compose.prod.yml pull
-            docker compose -f docker-compose.prod.yml up -d
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Add server to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          echo "[178.104.197.240]:55022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBANV1G7NmHybqvWIyFCqzHPf2shMJSI1fR/Qls3MNYZzzkmuWW0j5lDqn3u0vig0niMK8XLd2Nbi2aj4sN+GwFc=" >> ~/.ssh/known_hosts
+          echo "[178.104.197.240]:55022 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIINRMSK6qkMyP4N7u38n6/8uNbtAZEQa2877idaQ57o7" >> ~/.ssh/known_hosts
+
+      - name: Deploy to vidra-central
+        run: |
+          ssh -p 55022 acarrera@178.104.197.240 "
+            cd ~/vidra-chatbot &&
+            docker compose -f docker-compose.prod.yml pull &&
+            docker compose -f docker-compose.prod.yml up -d &&
             docker image prune -f
+          "
