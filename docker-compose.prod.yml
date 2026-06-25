@@ -19,6 +19,8 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - vidra_chatbot_pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5435:5432"
     networks:
       - chatbot_internal
     healthcheck:
