@@ -9,6 +9,7 @@ export const localeLinks = {
       { label: "Proyectos", href: "/proyectos" },
       { label: "Quiénes somos", href: "/#who-we-are" },
       { label: "Blog", href: "/blog" },
+      { label: "FAQ", href: "/faq" },
       { label: "Contacto", href: "/#contact" },
     ],
     footer: [
@@ -16,6 +17,7 @@ export const localeLinks = {
       { label: "Proyectos", href: "/proyectos" },
       { label: "Quiénes somos", href: "/#who-we-are" },
       { label: "Blog", href: "/blog" },
+      { label: "FAQ", href: "/faq" },
       { label: "Contacto", href: "/contact" },
     ],
   },
@@ -27,6 +29,7 @@ export const localeLinks = {
       { label: "Projects", href: "/en/projects" },
       { label: "Who we are", href: "/en/#who-we-are" },
       { label: "Blog", href: "/en/blog" },
+      { label: "FAQ", href: "/en/faq" },
       { label: "Contact", href: "/en/#contact" },
     ],
     footer: [
@@ -34,6 +37,7 @@ export const localeLinks = {
       { label: "Projects", href: "/en/projects" },
       { label: "Who we are", href: "/en/#who-we-are" },
       { label: "Blog", href: "/en/blog" },
+      { label: "FAQ", href: "/en/faq" },
       { label: "Contact", href: "/en/#contact" },
     ],
   },
@@ -1230,6 +1234,111 @@ export const clientsContent = {
     clients: [
       { name: "Argenia", sector: "Construction & engineering" },
       { name: "Area Construcción", sector: "Construction" },
+    ],
+  },
+} as const;
+
+export const faqContent = {
+  es: {
+    title: "Preguntas frecuentes | Vidra IA",
+    description: "Respuestas a las preguntas más habituales sobre Vidra: servicios de IA, tecnologías, proceso de trabajo y cómo contactarnos.",
+    eyebrow: "Preguntas frecuentes",
+    heading: "Todo lo que necesitas saber",
+    subheading: "Si no encuentras lo que buscas, escríbenos a soporte@vidra-ia.com y te respondemos en 24 h.",
+    cta: "Hablemos de tu proyecto",
+    ctaHref: "/contact",
+    items: [
+      {
+        q: "¿Qué hace Vidra?",
+        a: "Vidra es una empresa de inteligencia artificial fundada en 2024 especializada en el sector construcción e industria. Construimos modelos de machine learning, plataformas IA modulares y pipelines agénticos que operan en producción real — no prototipos. Nuestros proyectos activos incluyen ComPres (estimador de costes con LSTM+CatBoost), Area Hub (plataforma modular para gestión con IA) y el Radar de Licitaciones (detección automática de oportunidades con Gemini AI).",
+      },
+      {
+        q: "¿Cuáles son vuestros servicios?",
+        a: "Ofrecemos cuatro líneas de servicio: (1) Modelos ML predictivos — estimación y predicción con LSTM, CatBoost y LightGBM, desplegados como APIs REST con intervalos de confianza. (2) Pipelines agénticos — flujos automáticos multi-agente con Gemini AI para detección, análisis y scoring autónomo. (3) RAG y chatbots — chatbots sobre documentación propia usando pgvector, búsqueda híbrida y OpenAI. (4) Plataformas IA modulares — hubs de gestión extensibles con React, Vite, FastAPI, Docker y Electron.",
+      },
+      {
+        q: "¿Para qué sectores trabajáis?",
+        a: "Principalmente construcción e industria. Nuestros clientes actuales son Argenia y Area Construcción, dos empresas del sector construcción. La especialización nos permite conocer a fondo los datos, los procesos y los retos específicos de estos sectores.",
+      },
+      {
+        q: "¿Hacéis prototipos o proyectos en producción?",
+        a: "Solo proyectos en producción real. No desarrollamos POCs o demos sin continuidad. Nuestros modelos se despliegan como APIs con intervalos de confianza; nuestros agentes operan de forma autónoma en ciclos semanales reales. Si buscas un prototipo exploratorio sin compromiso de despliegue, probablemente no seamos el socio adecuado.",
+      },
+      {
+        q: "¿Qué tecnologías utilizáis?",
+        a: "En ML predictivo: LSTM, CatBoost, LightGBM. En pipelines agénticos: Gemini AI (multi-agente). En RAG y chatbots: pgvector, búsqueda híbrida, OpenAI. En plataformas: React, Vite, FastAPI, PostgreSQL, Docker, Electron. El backend de nuestras APIs está en FastAPI y los modelos se despliegan en servidores propios o en el entorno del cliente.",
+      },
+      {
+        q: "¿Cuánto cuesta un proyecto?",
+        a: "Todos los proyectos son cerrados y a medida — el coste depende del alcance, los datos disponibles y el nivel de integración requerido. No publicamos tarifas fijas porque no tenemos productos estándar. Para recibir una propuesta, contacta a través del formulario de vidra-ia.com o escríbenos a soporte@vidra-ia.com.",
+      },
+      {
+        q: "¿Cuánto tiempo dura un proyecto típico?",
+        a: "Depende del alcance. Un modelo ML predictivo con datos ya disponibles puede estar en producción en 6–10 semanas (exploración, entrenamiento, validación, despliegue). Una plataforma modular completa requiere varios meses. En la fase de propuesta te damos un desglose detallado de tiempos.",
+      },
+      {
+        q: "¿Cómo es el proceso de trabajo con Vidra?",
+        a: "El proceso tiene cuatro fases: (1) Exploración de datos y definición del problema. (2) Desarrollo y entrenamiento del modelo o sistema. (3) Validación con métricas reales sobre datos del cliente. (4) Despliegue en producción e integración en los sistemas existentes. Trabajamos de forma iterativa y mantenemos comunicación directa con el equipo técnico del cliente.",
+      },
+      {
+        q: "¿Cuántas personas hay en el equipo?",
+        a: "Somos 9 personas con perfiles de ingeniería ML, desarrollo fullstack, diseño y negocio. El equipo técnico incluye ingenieros de IA especializados en modelos predictivos, flujos agénticos, RAG y plataformas modulares.",
+      },
+      {
+        q: "¿Cómo puedo contactar con Vidra?",
+        a: "Puedes usar el formulario de contacto en vidra-ia.com o escribirnos directamente a soporte@vidra-ia.com. También estamos en LinkedIn en linkedin.com/company/vidra-ia. Respondemos en menos de 24 horas en días laborables.",
+      },
+    ],
+  },
+  en: {
+    title: "FAQ | Vidra AI",
+    description: "Answers to the most common questions about Vidra: AI services, technologies, how we work, and how to contact us.",
+    eyebrow: "Frequently asked questions",
+    heading: "Everything you need to know",
+    subheading: "If you can't find what you're looking for, email us at soporte@vidra-ia.com and we'll reply within 24 h.",
+    cta: "Talk about your project",
+    ctaHref: "/en/contact",
+    items: [
+      {
+        q: "What does Vidra do?",
+        a: "Vidra is an artificial intelligence company founded in 2024 specialising in the construction and industrial sectors. We build machine learning models, modular AI platforms, and agentic pipelines that run in real production — not prototypes. Our active projects include ComPres (cost estimator using LSTM+CatBoost), Area Hub (a modular AI management platform), and the Tender Radar (autonomous opportunity detection with Gemini AI).",
+      },
+      {
+        q: "What services do you offer?",
+        a: "We offer four service lines: (1) Predictive ML models — estimation and forecasting with LSTM, CatBoost, and LightGBM, deployed as REST APIs with confidence intervals. (2) Agentic pipelines — autonomous multi-agent workflows using Gemini AI for detection, analysis, and scoring. (3) RAG and chatbots — chatbots built on the client's own documentation using pgvector, hybrid search, and OpenAI. (4) Modular AI platforms — extensible management hubs built with React, Vite, FastAPI, Docker, and Electron.",
+      },
+      {
+        q: "Which sectors do you work with?",
+        a: "Primarily construction and industry. Our current clients are Argenia and Area Construcción, both in the construction sector. This specialisation gives us deep familiarity with sector-specific data, processes, and challenges.",
+      },
+      {
+        q: "Do you build prototypes or production systems?",
+        a: "Production systems only. We don't build POCs or demos with no path to deployment. Our models are delivered as APIs with confidence intervals; our agents run autonomously on real weekly cycles. If you're looking for a pure exploratory prototype with no deployment commitment, we're probably not the right fit.",
+      },
+      {
+        q: "What technologies do you use?",
+        a: "For predictive ML: LSTM, CatBoost, LightGBM. For agentic pipelines: Gemini AI (multi-agent). For RAG and chatbots: pgvector, hybrid search, OpenAI. For platforms: React, Vite, FastAPI, PostgreSQL, Docker, Electron. Our API backends run on FastAPI and models are deployed on dedicated servers or within the client's environment.",
+      },
+      {
+        q: "How much does a project cost?",
+        a: "All projects are fixed-scope and bespoke — the cost depends on the scope, available data, and required level of integration. We don't publish standard pricing because we don't have off-the-shelf products. To receive a proposal, use the contact form at vidra-ia.com or email us at soporte@vidra-ia.com.",
+      },
+      {
+        q: "How long does a typical project take?",
+        a: "It depends on scope. A predictive ML model with data already available can reach production in 6–10 weeks (exploration, training, validation, deployment). A full modular platform takes several months. We provide a detailed timeline breakdown as part of the proposal.",
+      },
+      {
+        q: "What does working with Vidra look like?",
+        a: "The process has four phases: (1) Data exploration and problem definition. (2) Model or system development and training. (3) Validation against real client data with measurable metrics. (4) Production deployment and integration with existing systems. We work iteratively and maintain direct communication with the client's technical team.",
+      },
+      {
+        q: "How many people are on the team?",
+        a: "We are 9 people with backgrounds in ML engineering, fullstack development, design, and business. The technical team includes AI engineers specialising in predictive models, agentic workflows, RAG, and modular platforms.",
+      },
+      {
+        q: "How can I contact Vidra?",
+        a: "You can use the contact form at vidra-ia.com or email us directly at soporte@vidra-ia.com. We're also on LinkedIn at linkedin.com/company/vidra-ia. We reply within 24 hours on business days.",
+      },
     ],
   },
 } as const;
