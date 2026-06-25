@@ -28,6 +28,8 @@ jobs:
 
       - name: Build Astro site
         working-directory: web
+        env:
+          PUBLIC_API_URL: ${{ secrets.PUBLIC_API_URL }}
         run: npm run build
 
       - name: Deploy via FTPS to Cyberneticos
