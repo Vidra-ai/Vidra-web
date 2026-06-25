@@ -1,0 +1,112 @@
+# EJEMPLO de tenant (referencia multi-tenant): consultora de IA para construcción.
+# Copia este archivo para dar de alta un cliente/sector nuevo.
+# NO pongas credenciales aquí: van en variables de entorno (.env).
+#
+# NOTA: en esta integración solo se incluyen los publishers vidra_md y linkedin.
+# Los canales x/instagram/wordpress quedan desactivados (no hay publisher para ellos).
+
+slug: construccion-ia
+name: "Consultora IA Construcción"
+language: es
+locale: es-ES
+
+# --- Identidad de marca y contexto del sector ---
+brand:
+  sector: "Consultoría de Inteligencia Artificial aplicada a la construcción y la ingeniería"
+  audience: >
+    Directores técnicos, CTO, project managers senior, jefes de obra y responsables de
+    digitalización en constructoras, promotoras, estudios de ingeniería y administraciones
+    públicas de infraestructuras. Perfil mixto: técnicos con criterio de negocio.
+  value_proposition: >
+    Investigamos, diseñamos e implementamos sistemas de inteligencia artificial a medida
+    para el sector de la construcción. Desde la prueba de concepto hasta el despliegue en
+    producción: computer vision en obra, modelos predictivos de coste y plazo, automatización
+    documental con LLMs e integración con BIM. Perfil técnico de I+D con capacidad de entrega
+    industrial. Sin hype; solo resultados medibles.
+  tone: >
+    Técnico, preciso y directo. Voz de investigador senior que publica, no de comercial que
+    vende. Estilo: Google AI Blog, NVIDIA Technical Blog, IBM Research, NTT Data Insights.
+    Profundidad sin oscurantismo: el lector técnico aprende algo nuevo; el lector de negocio
+    entiende la implicación. Sin adjetivos vacíos, sin exclamaciones, sin hype.
+  expertise:
+    - "Computer vision e inspección automatizada en obra (detección de EPIs, avance, fisuras)"
+    - "Graph Neural Networks y modelos predictivos de coste y plazo (CPI, SPI)"
+    - "LLMs aplicados a documentación técnica, licitaciones y normativa de construcción"
+    - "Integración BIM-IA: extracción de grafos de tareas, simulación y optimización"
+    - "MLOps y despliegue de modelos en entornos industriales (edge, cloud híbrido)"
+    - "Investigación aplicada: publicaciones en Automation in Construction, AEI, CACAIE"
+
+# --- SEO ---
+seo:
+  primary_keywords:
+    - "inteligencia artificial en construcción"
+    - "IA para constructoras"
+    - "digitalización de obra"
+  secondary_keywords:
+    - "BIM e inteligencia artificial"
+    - "visión artificial en obra"
+    - "predicción de costes construcción IA"
+  internal_links_base: "https://tu-sitio.com/blog"
+  min_words: 900
+  max_words: 1500
+
+# --- Fuentes de descubrimiento de temas (noticias del sector) ---
+sources:
+  # Nivel 1: revistas científicas de impacto Q1/Q2 (JCR/Scimago) — mayor autoridad SEO
+  priority_feeds:
+    # Q1
+    - "https://rss.sciencedirect.com/publication/science/09265805"  # Automation in Construction
+    - "https://rss.sciencedirect.com/publication/science/14740346"  # Advanced Engineering Informatics
+    - "https://onlinelibrary.wiley.com/action/showFeed?jc=14678667&type=etoc&feed=rss"  # Computer-Aided Civil & Infrastructure Engineering
+    # Q2
+    - "https://www.mdpi.com/rss/journal/buildings"                  # Buildings (MDPI)
+    - "https://www.emerald.com/insight/rss/1321-550X"               # Engineering Construction and Architectural Management
+
+  # Nivel 2: medios sectoriales y Google News (fallback)
+  google_news_feeds:
+    - "https://www.construible.es/feed"
+    - "https://www.interempresas.net/Construccion/RSS/"
+    - "https://news.google.com/rss/search?q=inteligencia+artificial+construccion&hl=es&gl=ES&ceid=ES:es"
+    - "https://news.google.com/rss/search?q=BIM+inteligencia+artificial&hl=es&gl=ES&ceid=ES:es"
+    - "https://news.google.com/rss/search?q=digitalizacion+obra+construccion&hl=es&gl=ES&ceid=ES:es"
+
+  keywords_filter:        # solo se consideran noticias que mencionen alguna de estas palabras
+    - "construction"
+    - "building"
+    - "BIM"
+    - "artificial intelligence"
+    - "machine learning"
+    - "construcción"
+    - "inteligencia artificial"
+    - "digitalización"
+
+  # Nivel 3: búsqueda web activa con Claude Haiku si los dos niveles anteriores fallan
+  web_search_fallback: true
+  web_search_queries:
+    - "inteligencia artificial construcción noticias 2026"
+    - "IA constructoras España digitalización obra"
+    - "BIM inteligencia artificial tendencias"
+
+# --- Canales de publicación y su comportamiento ---
+channels:
+  vidra_md:
+    enabled: true       # genera .md directo en el blog Astro (requiere CONTENT_BLOG_DIR)
+  wordpress:
+    enabled: false
+  linkedin:
+    enabled: true
+    format: "post largo con gancho + 3 claves + CTA"
+    hashtags: ["#Construccion", "#InteligenciaArtificial", "#BIM", "#ConstrucTech"]
+  x:
+    enabled: false         # publisher de X no incluido en esta integración
+    format: "hilo de 3-4 tweets"
+    hashtags: ["#IA", "#Construccion", "#ConstrucTech"]
+  instagram:
+    enabled: false         # requiere imagen; activar cuando haya generación visual
+    format: "carrusel"
+
+# --- Programación de la difusión (coordinación web + RRSS) ---
+schedule:
+  publish_web_first: true            # primero la web, luego se enlaza desde RRSS
+  social_delay_minutes: 30           # difundir en RRSS 30 min tras publicar la web
+  cadence: "2 publicaciones / semana"

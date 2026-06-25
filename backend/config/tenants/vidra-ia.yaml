@@ -1,0 +1,102 @@
+# Tenant de Vidra IA — alimenta el blog de la web y el autopost en LinkedIn.
+# REVÍSALO Y AFÍNALO: keywords, fuentes RSS y tono definen el contenido generado.
+# NO pongas credenciales aquí: van en variables de entorno (.env raíz del repo).
+
+slug: vidra-ia
+name: "Vidra IA"
+language: es
+locale: es-ES
+
+# --- Identidad de marca y contexto del sector ---
+brand:
+  sector: "Inteligencia artificial aplicada a la productividad y la automatización para empresas, profesionales y creadores"
+  audience: >
+    Directivos, responsables de operaciones, profesionales y creadores que quieren aplicar
+    IA para automatizar tareas, ganar productividad y tomar mejores decisiones, sin necesidad
+    de montar un equipo técnico propio. Perfil práctico: buscan resultados aplicables, no teoría.
+  value_proposition: >
+    En Vidra IA diseñamos e implantamos soluciones de inteligencia artificial accesibles y
+    útiles: automatización de procesos, asistentes y chatbots con RAG sobre documentación
+    propia, análisis de datos y machine learning a medida. Desde la idea hasta producción,
+    sin hype y con resultados medibles.
+  tone: >
+    Cercano pero riguroso. Claro y práctico: el lector se lleva algo aplicable. Explicamos la
+    tecnología sin jerga innecesaria y siempre conectada a un beneficio concreto de negocio.
+    Sin exclamaciones huecas, sin promesas vacías.
+  expertise:
+    - "Automatización de procesos e integraciones con IA (workflows, agentes)"
+    - "Asistentes y chatbots con RAG sobre documentación propia"
+    - "Análisis de datos y machine learning aplicado a negocio"
+    - "Integración de LLMs en productos y operaciones"
+    - "Despliegue y MLOps en producción (cloud, contenedores)"
+
+# --- SEO ---
+seo:
+  primary_keywords:
+    - "inteligencia artificial para empresas"
+    - "automatización con IA"
+    - "productividad con inteligencia artificial"
+  secondary_keywords:
+    - "chatbot con IA para empresas"
+    - "RAG sobre documentación"
+    - "machine learning aplicado a negocio"
+    - "agentes de IA"
+  internal_links_base: "https://vidra-ia.com/blog"
+  min_words: 900
+  max_words: 1500
+
+# --- Fuentes de descubrimiento de temas (noticias del sector) ---
+sources:
+  # Nivel 1: feeds prioritarios (de momento Google News temáticos; añade medios de
+  # referencia de IA cuando los tengas).
+  priority_feeds:
+    - "https://news.google.com/rss/search?q=inteligencia+artificial+empresas&hl=es&gl=ES&ceid=ES:es"
+    - "https://news.google.com/rss/search?q=automatizacion+IA+productividad&hl=es&gl=ES&ceid=ES:es"
+
+  # Nivel 2: medios y Google News (fallback)
+  google_news_feeds:
+    - "https://news.google.com/rss/search?q=IA+generativa+empresas&hl=es&gl=ES&ceid=ES:es"
+    - "https://news.google.com/rss/search?q=agentes+de+IA+negocio&hl=es&gl=ES&ceid=ES:es"
+    - "https://news.google.com/rss/search?q=chatbot+RAG+empresas&hl=es&gl=ES&ceid=ES:es"
+
+  keywords_filter:        # solo se consideran noticias que mencionen alguna de estas palabras
+    - "artificial intelligence"
+    - "machine learning"
+    - "inteligencia artificial"
+    - "automatización"
+    - "automatizacion"
+    - "productividad"
+    - "IA"
+    - "LLM"
+    - "agentes"
+    - "generativa"
+
+  # Nivel 3: búsqueda web activa con Claude Haiku si los niveles anteriores fallan
+  web_search_fallback: true
+  web_search_queries:
+    - "inteligencia artificial para empresas tendencias 2026"
+    - "automatización con IA casos de uso negocio"
+    - "agentes de IA productividad empresas"
+
+# --- Canales de publicación y su comportamiento ---
+channels:
+  vidra_md:
+    enabled: true       # genera .md directo en el blog Astro (web/src/content/blog)
+  wordpress:
+    enabled: false
+  linkedin:
+    enabled: true
+    format: "post largo con gancho + 3 claves + CTA"
+    hashtags: ["#InteligenciaArtificial", "#IA", "#Automatización", "#Productividad", "#VidraIA"]
+  x:
+    enabled: false      # fuera del alcance de esta funcionalidad
+    format: "hilo de 3-4 tweets"
+    hashtags: ["#IA", "#InteligenciaArtificial"]
+  instagram:
+    enabled: false
+
+# --- Programación de la difusión (coordinación web + RRSS) ---
+schedule:
+  publish_web_first: true            # primero la web, luego se enlaza desde RRSS
+  social_delay_minutes: 30           # difundir en RRSS tras desplegar la web
+  cadence: "1-2 publicaciones / semana"

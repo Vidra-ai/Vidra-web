@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { blogPageContent, type Locale } from '../lib/siteContent';
 
@@ -16,6 +15,8 @@ const slug = post.id.replace(/\.md$/, '');
 const postUrl = `${baseHref}${slug}/`;
 
 const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
+
+const heroSrc = image || '/images/blog/bienvenida-vidra.svg';
 ---
 
 <article class="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-shadow duration-300 hover:shadow-xl hover:shadow-blue/5">
@@ -23,12 +24,13 @@ const dateLocale = locale === 'en' ? 'en-US' : 'es-ES';
   <a href={postUrl} aria-hidden="true" tabindex="-1" class="absolute inset-0 z-[1]"></a>
 
   <div class="aspect-video overflow-hidden">
-    <Image
-      src={image || "/images/blog-placeholder.jpg"}
+    <img
+      src={heroSrc}
       alt={title}
       loading="lazy"
-      width={800}
-      height={450}
+      width="800"
+      height="450"
+      decoding="async"
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
   </div>

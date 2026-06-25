@@ -41,7 +41,9 @@ services:
     volumes:
       - ./backend:/app
       # Carpeta "Información pública" del vault Obsidian (solo lectura).
-      - "${PUBLIC_DOCS_HOST_DIR:-C:/Users/CDiaz/Desktop/MEGA/Vidra-docs/Obsidian-Vidra/01 - Información pública (web - chatbot)}:/vault-publico:ro"
+      # Configura PUBLIC_DOCS_HOST_DIR en .env con tu ruta local al vault.
+      # Si no se configura, se usa vault-publico/ del repo (vacío por defecto).
+      - "${PUBLIC_DOCS_HOST_DIR:-./vault-publico}:/vault-publico:ro"
 
   web:
     image: node:22-slim
