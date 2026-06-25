@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { Image } from 'astro:assets';
 import { blogPageContent, type Locale } from '../../lib/siteContent';
 
 export async function getStaticPaths() {
@@ -109,12 +108,13 @@ const breadcrumbLd = {
 
       {image && (
         <div class="mb-16 aspect-video overflow-hidden rounded-3xl shadow-2xl shadow-blue/5">
-          <Image
+          <img
             src={image}
             alt={title}
-            width={1200}
-            height={675}
+            width="1200"
+            height="675"
             loading="eager"
+            decoding="async"
             class="h-full w-full object-cover"
           />
         </div>

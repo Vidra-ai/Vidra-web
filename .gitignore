@@ -19,6 +19,9 @@ __pycache__/
 # RAG sync state (runtime)
 backend/RAG/.sources_hashes.json
 
+# Motor de contenido: salida en runtime (JSON, histórico, textos sociales)
+backend/content_output/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

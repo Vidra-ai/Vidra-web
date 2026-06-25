@@ -1,9 +1,9 @@
 ---
 import { homeContent, type Locale } from "../lib/siteContent";
 
-import analysisUrl from "../assets/service-analysis.svg?url";
-import mlUrl from "../assets/service-ml.svg?url";
-import aiUrl from "../assets/service-ai.svg?url";
+import analysisUrl from "../assets/analysis-hero.png?url";
+import mlUrl from "../assets/machine-learning-hero.png?url";
+import aiUrl from "../assets/deep-learning-hero.png?url";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];

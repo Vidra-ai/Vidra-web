@@ -11,3 +11,11 @@ pypdf
 python-docx
 openpyxl
 python-multipart
+
+# Motor de contenido (app.content): generación de artículo + autopost RRSS
+anthropic
+openai
+feedparser
+python-slugify
+click
+python-dotenv
