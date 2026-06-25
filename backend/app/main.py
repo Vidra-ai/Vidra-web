@@ -5,10 +5,11 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import time
+import unicodedata
 from collections import deque
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from typing import Annotated
 from urllib.parse import urlparse
 
@@ -83,10 +84,15 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="Chatbot RAG", version="1.0.0", lifespan=lifespan)
 
-# Rate limiting en memoria por IP para el endpoint público /rag/chat. Evita el abuso
-# y el gasto descontrolado en OpenAI. Suficiente para un único contenedor; si se escala
-# a varias réplicas, mover el contador a Redis (vidra_redis).
-_rate_buckets: dict[str, deque[float]] = {}
+# ---------------------------------------------------------------------------
+# Protección de coste: rate limiting (por minuto + diario) y caché.
+# Todo en memoria — suficiente para un contenedor. Si se escala a réplicas,
+# mover los contadores a vidra_redis.
+# ---------------------------------------------------------------------------
+
+_rate_buckets: dict[str, deque[float]] = {}          # sliding window por minuto
+_daily_counts: dict[str, tuple[int, str]] = {}        # (count, fecha ISO) por IP
+_response_cache: dict[str, tuple[str, float]] = {}    # hash(pregunta) -> (respuesta, ts)
 
 
 def _client_ip(request: Request) -> str:
@@ -97,26 +103,72 @@ def _client_ip(request: Request) -> str:
     return request.client.host if request.client else "unknown"
 
 
+def _normalize_question(text: str) -> str:
+    """Normaliza una pregunta para la clave de caché (minúsculas, sin acentos, sin espacios extra)."""
+    text = text.lower().strip()
+    text = "".join(c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn")
+    return " ".join(text.split())
+
+
+def cache_get(question: str, ttl: int) -> str | None:
+    key = hashlib.sha256(_normalize_question(question).encode()).hexdigest()
+    entry = _response_cache.get(key)
+    if entry and time.monotonic() - entry[1] < ttl:
+        return entry[0]
+    return None
+
+
+def cache_set(question: str, response: str) -> None:
+    key = hashlib.sha256(_normalize_question(question).encode()).hexdigest()
+    _response_cache[key] = (response, time.monotonic())
+    # Poda defensiva: máx 2000 entradas (evita memory leak en producción larga).
+    if len(_response_cache) > 2000:
+        oldest = sorted(_response_cache.items(), key=lambda x: x[1][1])[:200]
+        for k, _ in oldest:
+            _response_cache.pop(k, None)
+
+
 @app.middleware("http")
 async def rate_limit_chat(request: Request, call_next):
     if request.method == "POST" and request.url.path == "/rag/chat":
         settings = get_settings()
         now = time.monotonic()
-        window = settings.chat_rate_window
+        today = date.today().isoformat()
         ip = _client_ip(request)
+
+        # --- Límite por minuto (sliding window) ---
         bucket = _rate_buckets.setdefault(ip, deque())
-        while bucket and now - bucket[0] > window:
+        while bucket and now - bucket[0] > settings.chat_rate_window:
             bucket.popleft()
         if len(bucket) >= settings.chat_rate_limit:
             return JSONResponse(
                 status_code=429,
                 content={"detail": "Demasiadas solicitudes. Inténtalo de nuevo en unos segundos."},
+                headers={"Retry-After": str(settings.chat_rate_window)},
             )
         bucket.append(now)
-        # Poda defensiva: evita crecimiento ilimitado del diccionario de IPs.
-        if len(_rate_buckets) > 10000:
+
+        # --- Límite diario ---
+        count, day = _daily_counts.get(ip, (0, today))
+        if day != today:
+            count = 0  # nuevo día, resetear
+        if count >= settings.chat_daily_limit:
+            return JSONResponse(
+                status_code=429,
+                content={"detail": "Has alcanzado el límite diario del asistente. Vuelve mañana."},
+                headers={"Retry-After": "86400"},
+            )
+        _daily_counts[ip] = (count + 1, today)
+
+        # Poda defensiva de ambas estructuras.
+        if len(_rate_buckets) > 10_000:
             for k in [k for k, v in _rate_buckets.items() if not v]:
                 _rate_buckets.pop(k, None)
+        if len(_daily_counts) > 10_000:
+            stale = [k for k, (_, d) in _daily_counts.items() if d != today]
+            for k in stale[:5000]:
+                _daily_counts.pop(k, None)
+
     return await call_next(request)
 
 
@@ -267,7 +319,15 @@ def sync_public(_session: Annotated[Session, Depends(get_db)]) -> dict:
 
 @app.post("/rag/chat", response_model=ChatResponse)
 def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> ChatResponse:
-    client = get_llm_client(get_settings())
+    settings = get_settings()
+
+    # Caché solo para preguntas sin historial (respuesta reproducible).
+    if not req.historial:
+        cached = cache_get(req.pregunta, settings.chat_cache_ttl)
+        if cached is not None:
+            return ChatResponse(respuesta=cached, fuentes=[], sin_informacion=False)
+
+    client = get_llm_client(settings)
 
     retrieval_query = req.pregunta
     if req.historial:
@@ -281,4 +341,9 @@ def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> 
     for f in result.fuentes:
         if len(f.chunk_texto) > _CHUNK_PREVIEW_LEN:
             f.chunk_texto = f.chunk_texto[:_CHUNK_PREVIEW_LEN] + "…"
+
+    # Cachear solo si la respuesta tiene información real.
+    if not req.historial and not result.sin_informacion:
+        cache_set(req.pregunta, result.respuesta)
+
     return result

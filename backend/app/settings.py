@@ -25,8 +25,12 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:4322,http://localhost:4321,https://vidra-ia.com"
 
     # Rate limiting del endpoint público /rag/chat (por IP, ventana deslizante).
-    chat_rate_limit: int = 20
-    chat_rate_window: int = 60
+    chat_rate_limit: int = 20       # máx requests por ventana (por minuto)
+    chat_rate_window: int = 60      # tamaño de la ventana en segundos
+    chat_daily_limit: int = 100     # máx requests por IP por día natural
+
+    # Caché de respuestas para preguntas idénticas (evita pagar dos veces).
+    chat_cache_ttl: int = 3600      # segundos que dura una entrada en caché (1h)
 
     # Carpeta de Obsidian "Información pública" montada en el contenedor (solo lectura).
     # Vacío = desactivado. La sincronización incremental re-embebe solo los .md que cambian.
