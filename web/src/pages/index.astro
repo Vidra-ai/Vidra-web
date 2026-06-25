@@ -1,4 +1,4 @@
----
+﻿---
 import BaseLayout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import ProcessTimeline from "../components/ProcessTimeline.astro";
@@ -27,13 +27,13 @@ const orgSchema = {
   "@id": `${siteOrigin}/#organization`,
   "name": "Vidra",
   "url": siteOrigin,
-  "logo": { "@type": "ImageObject", "url": `${siteOrigin}/favicon.svg` },
+  "logo": { "@type": "ImageObject", "url": `${siteOrigin}/favicon.png` },
   "description": locale === 'en'
     ? "AI consulting for strategy, delivery, and measurable business impact."
-    : "Consultoría de inteligencia artificial para estrategia, implantación y resultados empresariales medibles.",
+    : "ConsultorÃ­a de inteligencia artificial para estrategia, implantaciÃ³n y resultados empresariales medibles.",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Calle Américo Vespucio, 5, B-2, 2ª planta",
+    "streetAddress": "Calle AmÃ©rico Vespucio, 5, B-2, 2Âª planta",
     "addressLocality": "Sevilla",
     "postalCode": "41092",
     "addressCountry": "ES",
@@ -41,7 +41,7 @@ const orgSchema = {
   "telephone": "+34955023256",
   "email": "contacto@vidra-ia.com",
   "areaServed": "ES",
-  "knowsAbout": ["Inteligencia Artificial", "Machine Learning", "Deep Learning", "Análisis de Datos"],
+  "knowsAbout": ["Inteligencia Artificial", "Machine Learning", "Deep Learning", "AnÃ¡lisis de Datos"],
 };
 
 const focusAreas = content.whatWeDo.areas.map((area) => ({
@@ -77,7 +77,7 @@ const focusAreas = content.whatWeDo.areas.map((area) => ({
           {focusAreas.map((area, index) => (
             <a
               href={locale === "en" ? "/en/services" : "/services"}
-              aria-label={`Saber más sobre el servicio de ${area.title}`}
+              aria-label={`Saber mÃ¡s sobre el servicio de ${area.title}`}
               data-reveal="up"
               style={`--reveal-delay: ${index * 90}ms`}
               class="group relative block min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[#071729] shadow-[0_20px_50px_rgba(7,23,41,0.12)] transition duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(7,23,41,0.18)] md:[direction:ltr]"
@@ -111,7 +111,7 @@ const focusAreas = content.whatWeDo.areas.map((area) => ({
                   </div>
 
                   <span class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-white text-base font-medium leading-none text-[#071729] transition duration-500 group-hover:scale-110 group-hover:bg-[#00B2EB]">
-                    →
+                    â†’
                   </span>
                 </div>
               </div>
@@ -220,7 +220,7 @@ const focusAreas = content.whatWeDo.areas.map((area) => ({
             </span>
 
             <span class="grid h-16 w-16 place-items-center rounded-full bg-white text-3xl text-[#0B2C4A] transition duration-500 group-hover:scale-110 group-hover:bg-[#00B2EB]">
-              →
+              â†’
             </span>
           </div>
         </div>
