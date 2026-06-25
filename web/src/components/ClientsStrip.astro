@@ -7,6 +7,7 @@ const content = clientsContent[locale as Locale];
 const logos = [
   { name: 'Argenia', logo: '/clients/logo-argenia.png' },
   { name: 'Area Construcción', logo: '/clients/logo-area.png' },
+  { name: 'Garmel Instalaciones', logo: '/clients/logo-garmel.jpg' },
 ];
 
 // 4 repetitions per set so the strip fills any viewport width
@@ -147,9 +148,9 @@ const reps = [...logos, ...logos, ...logos, ...logos];
     .marquee-item[aria-hidden="true"] {
       display: none;
     }
-    /* From the real set, only show the first N logos (logos.length = 2 × 4 reps = 8;
-       we only want the first 2 unique ones) */
-    .marquee-item:nth-child(n + 3):not([aria-hidden]) {
+    /* From the real set, only show the first N logos (logos.length = 3 × 4 reps = 12;
+       we only want the first 3 unique ones) */
+    .marquee-item:nth-child(n + 4):not([aria-hidden]) {
       display: none;
     }
     .logo-card {

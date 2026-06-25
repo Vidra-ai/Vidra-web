@@ -1227,6 +1227,7 @@ export const clientsContent = {
     clients: [
       { name: "Argenia", sector: "Construcción e ingeniería" },
       { name: "Area Construcción", sector: "Construcción" },
+      { name: "Garmel Instalaciones", sector: "Instalaciones" },
     ],
   },
   en: {
@@ -1234,6 +1235,7 @@ export const clientsContent = {
     clients: [
       { name: "Argenia", sector: "Construction & engineering" },
       { name: "Area Construcción", sector: "Construction" },
+      { name: "Garmel Instalaciones", sector: "Installations" },
     ],
   },
 } as const;
