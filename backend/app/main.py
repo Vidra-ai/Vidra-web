@@ -29,6 +29,8 @@ from app.rag.retriever import retrieve
 from app.rag.schemas import (
     ChatRequest,
     ChatResponse,
+    ChatResponsePublic,
+    ChatSourcePublic,
     DocumentMeta,
     RagSourceIn,
     RagSourceOut,
@@ -82,7 +84,15 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
         task.cancel()
 
 
-app = FastAPI(title="Chatbot RAG", version="1.0.0", lifespan=lifespan)
+_docs_enabled = get_settings().api_docs_enabled
+app = FastAPI(
+    title="Chatbot RAG",
+    version="1.0.0",
+    lifespan=lifespan,
+    docs_url="/docs" if _docs_enabled else None,
+    redoc_url="/redoc" if _docs_enabled else None,
+    openapi_url="/openapi.json" if _docs_enabled else None,
+)
 
 # ---------------------------------------------------------------------------
 # Protección de coste: rate limiting (por minuto + diario) y caché.
@@ -126,6 +136,18 @@ def cache_set(question: str, response: str) -> None:
         oldest = sorted(_response_cache.items(), key=lambda x: x[1][1])[:200]
         for k, _ in oldest:
             _response_cache.pop(k, None)
+
+
+@app.middleware("http")
+async def security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Server"] = "vidra"
+    return response
 
 
 @app.middleware("http")
@@ -317,15 +339,15 @@ def sync_public(_session: Annotated[Session, Depends(get_db)]) -> dict:
     return sync_public_docs()
 
 
-@app.post("/rag/chat", response_model=ChatResponse)
-def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> ChatResponse:
+@app.post("/rag/chat", response_model=ChatResponsePublic)
+def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> ChatResponsePublic:
     settings = get_settings()
 
     # Caché solo para preguntas sin historial (respuesta reproducible).
     if not req.historial:
         cached = cache_get(req.pregunta, settings.chat_cache_ttl)
         if cached is not None:
-            return ChatResponse(respuesta=cached, fuentes=[], sin_informacion=False)
+            return ChatResponsePublic(respuesta=cached, fuentes=[], sin_informacion=False)
 
     client = get_llm_client(settings)
 
@@ -338,12 +360,12 @@ def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> 
     fuentes = retrieve(session, retrieval_query, req.top_k)
     result = generate_answer(req.pregunta, fuentes, client, req.historial)
 
-    for f in result.fuentes:
-        if len(f.chunk_texto) > _CHUNK_PREVIEW_LEN:
-            f.chunk_texto = f.chunk_texto[:_CHUNK_PREVIEW_LEN] + "…"
-
     # Cachear solo si la respuesta tiene información real.
     if not req.historial and not result.sin_informacion:
         cache_set(req.pregunta, result.respuesta)
 
-    return result
+    return ChatResponsePublic(
+        respuesta=result.respuesta,
+        fuentes=[ChatSourcePublic(titulo=f.titulo, seccion=f.seccion) for f in result.fuentes],
+        sin_informacion=result.sin_informacion,
+    )

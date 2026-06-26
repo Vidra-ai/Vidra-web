@@ -43,6 +43,19 @@ class ChatResponse(BaseModel):
     sin_informacion: bool
 
 
+class ChatSourcePublic(BaseModel):
+    """Versión pública de ChatSource — omite campos internos (doc_id, chunk_texto, similaridad)."""
+    titulo: str
+    seccion: str | None = None
+
+
+class ChatResponsePublic(BaseModel):
+    """Schema de respuesta del endpoint público /rag/chat."""
+    respuesta: str
+    fuentes: list[ChatSourcePublic]
+    sin_informacion: bool
+
+
 class RagSourceIn(BaseModel):
     url: HttpUrl
     titulo: str

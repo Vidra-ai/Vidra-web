@@ -39,6 +39,10 @@ class Settings(BaseSettings):
     # Si True, solo se indexan notas con frontmatter `visibilidad: publico` (ADR-005).
     public_docs_require_public_flag: bool = True
 
+    # Documentación interactiva (/docs, /redoc, /openapi.json). Desactivada por defecto
+    # en producción. Activar solo en entorno local (API_DOCS_ENABLED=true en .env).
+    api_docs_enabled: bool = False
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]

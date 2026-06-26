@@ -1,24 +1,48 @@
-# Security headers
-Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-Header always set X-Frame-Options "SAMEORIGIN"
-Header always set X-Content-Type-Options "nosniff"
-Header always set Referrer-Policy "strict-origin-when-cross-origin"
-Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+# ── Cabeceras de seguridad HTTP (VID-004) ──────────────────────────────────
+<IfModule mod_headers.c>
+    # HSTS: forzar HTTPS durante 1 año
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 
-# Caching: hashed assets get max TTL
-<FilesMatch "\.(css|js|woff2|woff|ttf|svg|png|jpg|jpeg|gif|ico|webp)$">
-  Header set Cache-Control "public, max-age=31536000, immutable"
-</FilesMatch>
+    # Evitar clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
 
-# HTML: always revalidate
-<FilesMatch "\.html$">
-  Header set Cache-Control "no-cache, must-revalidate"
-</FilesMatch>
+    # Evitar MIME sniffing
+    Header always set X-Content-Type-Options "nosniff"
 
-# Charset
+    # Limitar información de referrer a terceros
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Denegar acceso a hardware no necesario
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+    # Content-Security-Policy
+    # - script-src: inline necesario (Astro is:inline) + Google reCAPTCHA/Analytics
+    # - style-src:  inline necesario (Tailwind) + Google Fonts
+    # - font-src:   Google Fonts CDN
+    # - connect-src: API RAG del chatbot
+    # - img-src:    data: para favicons inline
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.vidra-ia.com; img-src 'self' data:; frame-src 'none'; object-src 'none'; base-uri 'self';"
+</IfModule>
+
+# ── Caché de assets estáticos ───────────────────────────────────────────────
+<IfModule mod_headers.c>
+    # Assets con hash en nombre (Astro build): caché máxima, inmutable
+    <FilesMatch "\.(css|js|woff2|woff|ttf|svg|png|jpg|jpeg|gif|ico|webp)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML: siempre revalidar
+    <FilesMatch "\.html$">
+        Header set Cache-Control "no-cache, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ── Charset por defecto ────────────────────────────────────────────────────
 AddDefaultCharset UTF-8
 
-# Redirect HTTP to HTTPS
-RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# ── Redirección HTTP → HTTPS ───────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>

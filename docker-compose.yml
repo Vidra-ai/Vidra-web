@@ -34,6 +34,7 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ADMIN_API_KEY: ${ADMIN_API_KEY:-}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4322,http://localhost:4321}
+      API_DOCS_ENABLED: ${API_DOCS_ENABLED:-true}
       PUBLIC_DOCS_DIR: /vault-publico
       PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-10}
     ports:

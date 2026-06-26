@@ -44,6 +44,7 @@ services:
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       ADMIN_API_KEY: ${ADMIN_API_KEY}
       CORS_ORIGINS: ${CORS_ORIGINS:-https://vidra-ia.com}
+      API_DOCS_ENABLED: "false"
       # Sincronización de la carpeta pública del vault (vacío = desactivada hasta que
       # el vault esté disponible en el servidor; ver tarea "Obsidian bare repo").
       PUBLIC_DOCS_DIR: ${PUBLIC_DOCS_DIR:-}
