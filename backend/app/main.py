@@ -141,11 +141,10 @@ def cache_set(question: str, response: str) -> None:
 @app.middleware("http")
 async def security_headers(request: Request, call_next):
     response = await call_next(request)
-    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "DENY"
-    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
-    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    # En producción nginx añade HSTS, X-Frame-Options, X-Content-Type-Options,
+    # Referrer-Policy y Permissions-Policy; aquí solo corregimos el header Server
+    # para ocultar uvicorn. Si el middleware añadiera los mismos headers que nginx,
+    # aparecerían duplicados en la respuesta (valor1,valor2), lo que rompe HSTS.
     response.headers["Server"] = "vidra"
     return response
 
