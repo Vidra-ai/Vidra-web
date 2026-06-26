@@ -1,0 +1,3 @@
+# Dependencias de desarrollo y testing
+# httpx ya está en requirements.txt (cliente HTTP síncrono para los tests)
+pytest>=8.0
