@@ -24,7 +24,9 @@ jobs:
         run: pip install -r backend/requirements.txt -r backend/requirements-dev.txt
 
       - name: Run pytest
-        run: pytest backend/tests/ -v --tb=short
+        # --ignore=test_ssh.py: SSH tests require TEST_SSH=1 and network access to Hetzner
+        # -m "not slow": rate limit tests need 60s cooldown between runs (run manually)
+        run: pytest backend/tests/ -v --tb=short -m "not slow" --ignore=backend/tests/test_ssh.py
 
   # ── Playwright: E2E contra vidra-ia.com ────────────────────────────────────
   test-web:
