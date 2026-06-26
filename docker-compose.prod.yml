@@ -34,6 +34,7 @@ services:
     build: ./backend
     container_name: vidra_chatbot_api
     restart: unless-stopped
+    user: "1003:1003"
     depends_on:
       db:
         condition: service_healthy
