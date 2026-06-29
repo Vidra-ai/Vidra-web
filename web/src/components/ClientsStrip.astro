@@ -5,9 +5,9 @@ const { locale = 'es' } = Astro.props;
 const content = clientsContent[locale as Locale];
 
 const logos = [
-  { name: 'Argenia', logo: '/clients/logo-argenia.png' },
-  { name: 'Area Construcción', logo: '/clients/logo-area.png' },
-  { name: 'Garmel Instalaciones', logo: '/clients/logo-garmel.jpg' },
+  { name: 'Argenia', logo: '/clients/logo-argenia.png', url: 'https://grupoargenia.com/' },
+  { name: 'Area Construcción', logo: '/clients/logo-area.png', url: 'https://www.areaconstruccion.com/' },
+  { name: 'Garmel Instalaciones', logo: '/clients/logo-garmel.jpg', url: 'https://garmel.es/' },
 ];
 
 // 4 repetitions per set so the strip fills any viewport width
@@ -31,9 +31,9 @@ const reps = [...logos, ...logos, ...logos, ...logos];
         <!-- Set A: real content -->
         {reps.map((client) => (
           <div class="marquee-item">
-            <div class="logo-card">
+            <a href={client.url} target="_blank" rel="noopener noreferrer" class="logo-card" aria-label={client.name}>
               <img src={client.logo} alt={client.name} loading="lazy" decoding="async" />
-            </div>
+            </a>
           </div>
         ))}
 
@@ -94,11 +94,12 @@ const reps = [...logos, ...logos, ...logos, ...logos];
     align-items: center;
     justify-content: center;
     padding: 0 36px;
-    cursor: default;
   }
 
   /* ── Logo card ──────────────────────────────────── */
   .logo-card {
+    text-decoration: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
