@@ -52,10 +52,15 @@ const faqSchema = {
                 </svg>
               </span>
             </summary>
-            <div class="px-7 pb-6">
-              <p class="text-[0.95rem] leading-7 text-white/65">
-                {item.a}
-              </p>
+            <div class="px-7 pb-6 space-y-2.5">
+              {item.a.split('\n\n').map((block, idx) => (
+                <p class:list={[
+                  "text-[0.95rem] leading-7 text-white/65",
+                  idx > 0 && "pl-4 border-l border-[#00b2eb]/30"
+                ]}>
+                  {block}
+                </p>
+              ))}
             </div>
           </details>
         ))}

@@ -1256,7 +1256,7 @@ export const faqContent = {
       },
       {
         q: "¿Cuáles son vuestros servicios?",
-        a: "Ofrecemos cuatro líneas de servicio: (1) Modelos ML predictivos — estimación y predicción con LSTM, CatBoost y LightGBM, desplegados como APIs REST con intervalos de confianza. (2) Pipelines agénticos — flujos automáticos multi-agente con Gemini AI para detección, análisis y scoring autónomo. (3) RAG y chatbots — chatbots sobre documentación propia usando pgvector, búsqueda híbrida y OpenAI. (4) Plataformas IA modulares — hubs de gestión extensibles con React, Vite, FastAPI, Docker y Electron.",
+        a: "Ofrecemos cuatro líneas de servicio:\n\nModelos ML predictivos: estimación y predicción con LSTM, CatBoost y LightGBM, desplegados como APIs REST con intervalos de confianza.\n\nPipelines agénticos: flujos automáticos multi-agente con Gemini AI para detección, análisis y scoring autónomo.\n\nRAG y chatbots: chatbots sobre documentación propia usando pgvector, búsqueda híbrida y OpenAI.\n\nPlataformas IA modulares: hubs de gestión extensibles con React, Vite, FastAPI, Docker y Electron.",
       },
       {
         q: "¿Para qué sectores trabajáis?",
@@ -1268,7 +1268,7 @@ export const faqContent = {
       },
       {
         q: "¿Qué tecnologías utilizáis?",
-        a: "En ML predictivo: LSTM, CatBoost, LightGBM. En pipelines agénticos: Gemini AI (multi-agente). En RAG y chatbots: pgvector, búsqueda híbrida, OpenAI. En plataformas: React, Vite, FastAPI, PostgreSQL, Docker, Electron. El backend de nuestras APIs está en FastAPI y los modelos se despliegan en servidores propios o en el entorno del cliente.",
+        a: "ML predictivo: LSTM, CatBoost, LightGBM.\n\nPipelines agénticos: Gemini AI (multi-agente).\n\nRAG y chatbots: pgvector, búsqueda híbrida, OpenAI.\n\nPlataformas: React, Vite, FastAPI, PostgreSQL, Docker, Electron.\n\nEl backend de nuestras APIs está en FastAPI y los modelos se despliegan en servidores propios o en el entorno del cliente.",
       },
       {
         q: "¿Cuánto cuesta un proyecto?",
@@ -1280,7 +1280,7 @@ export const faqContent = {
       },
       {
         q: "¿Cómo es el proceso de trabajo con Vidra?",
-        a: "El proceso tiene cuatro fases: (1) Exploración de datos y definición del problema. (2) Desarrollo y entrenamiento del modelo o sistema. (3) Validación con métricas reales sobre datos del cliente. (4) Despliegue en producción e integración en los sistemas existentes. Trabajamos de forma iterativa y mantenemos comunicación directa con el equipo técnico del cliente.",
+        a: "El proceso tiene cuatro fases:\n\nExploración de datos y definición del problema.\n\nDesarrollo y entrenamiento del modelo o sistema.\n\nValidación con métricas reales sobre datos del cliente.\n\nDespliegue en producción e integración en los sistemas existentes.\n\nTrabajamos de forma iterativa y mantenemos comunicación directa con el equipo técnico del cliente.",
       },
       {
         q: "¿Cuántas personas hay en el equipo?",
@@ -1307,7 +1307,7 @@ export const faqContent = {
       },
       {
         q: "What services do you offer?",
-        a: "We offer four service lines: (1) Predictive ML models — estimation and forecasting with LSTM, CatBoost, and LightGBM, deployed as REST APIs with confidence intervals. (2) Agentic pipelines — autonomous multi-agent workflows using Gemini AI for detection, analysis, and scoring. (3) RAG and chatbots — chatbots built on the client's own documentation using pgvector, hybrid search, and OpenAI. (4) Modular AI platforms — extensible management hubs built with React, Vite, FastAPI, Docker, and Electron.",
+        a: "We offer four service lines:\n\nPredictive ML models: estimation and forecasting with LSTM, CatBoost, and LightGBM, deployed as REST APIs with confidence intervals.\n\nAgentic pipelines: autonomous multi-agent workflows using Gemini AI for detection, analysis, and scoring.\n\nRAG and chatbots: chatbots built on the client's own documentation using pgvector, hybrid search, and OpenAI.\n\nModular AI platforms: extensible management hubs built with React, Vite, FastAPI, Docker, and Electron.",
       },
       {
         q: "Which sectors do you work with?",
@@ -1319,7 +1319,7 @@ export const faqContent = {
       },
       {
         q: "What technologies do you use?",
-        a: "For predictive ML: LSTM, CatBoost, LightGBM. For agentic pipelines: Gemini AI (multi-agent). For RAG and chatbots: pgvector, hybrid search, OpenAI. For platforms: React, Vite, FastAPI, PostgreSQL, Docker, Electron. Our API backends run on FastAPI and models are deployed on dedicated servers or within the client's environment.",
+        a: "Predictive ML: LSTM, CatBoost, LightGBM.\n\nAgentic pipelines: Gemini AI (multi-agent).\n\nRAG and chatbots: pgvector, hybrid search, OpenAI.\n\nPlatforms: React, Vite, FastAPI, PostgreSQL, Docker, Electron.\n\nOur API backends run on FastAPI and models are deployed on dedicated servers or within the client's environment.",
       },
       {
         q: "How much does a project cost?",
@@ -1331,7 +1331,7 @@ export const faqContent = {
       },
       {
         q: "What does working with Vidra look like?",
-        a: "The process has four phases: (1) Data exploration and problem definition. (2) Model or system development and training. (3) Validation against real client data with measurable metrics. (4) Production deployment and integration with existing systems. We work iteratively and maintain direct communication with the client's technical team.",
+        a: "The process has four phases:\n\nData exploration and problem definition.\n\nModel or system development and training.\n\nValidation against real client data with measurable metrics.\n\nProduction deployment and integration with existing systems.\n\nWe work iteratively and maintain direct communication with the client's technical team.",
       },
       {
         q: "How many people are on the team?",
