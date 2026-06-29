@@ -385,10 +385,13 @@ const breadcrumbSchema = {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle("is-visible", entry.isIntersecting);
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
         });
       },
-      { threshold: 0.16 }
+      { threshold: 0.16, rootMargin: "-88px 0px 0px 0px" }
     );
 
     revealItems.forEach((item) => observer.observe(item));
