@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import { whoWeArePageContent, type Locale } from "../lib/siteContent";
-import analysisUrl from "../assets/service-analysis.svg?url";
+import analysisMeta from "../assets/service-analysis.svg";
 
 import TeamSection from '../components/TeamSection.astro';
 import ClientsStrip from '../components/ClientsStrip.astro';
@@ -37,8 +38,8 @@ const peopleMindsetItems = [
   content.people.mindset.partnership,
 ];
 
-const heroImages: Record<string, string> = {
-  analysis: analysisUrl,
+const heroImages: Record<string, typeof analysisMeta> = {
+  analysis: analysisMeta,
 };
 
 const siteOrigin = 'https://vidra-ia.com';
@@ -103,9 +104,11 @@ const breadcrumbSchema = {
 
       <div class="mt-16 grid gap-5 lg:grid-cols-[1fr_0.8fr]">
         <div class="overflow-hidden rounded-[2rem] bg-[#0B2C4A] shadow-[0_28px_90px_rgba(11,44,74,0.18)]">
-          <img
-            src={heroImages[content.hero.imageKey] ?? analysisUrl}
+          <Image
+            src={heroImages[content.hero.imageKey] ?? analysisMeta}
             alt={content.hero.imageAlt}
+            width={900}
+            height={620}
             class="h-[420px] w-full object-cover md:h-[620px]"
             loading="eager"
             decoding="async"

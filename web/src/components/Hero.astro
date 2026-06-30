@@ -1,27 +1,29 @@
 ---
+import { Image } from "astro:assets";
 import { homeContent, type Locale } from "../lib/siteContent";
 
-import analysisUrl from "../assets/analysis-hero.png?url";
-import mlUrl from "../assets/machine-learning-hero.png?url";
-import aiUrl from "../assets/deep-learning-hero.png?url";
+import analysisMeta from "../assets/analysis-hero.png";
+import mlMeta from "../assets/machine-learning-hero.png";
+import aiMeta from "../assets/deep-learning-hero.png";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
 const hero = content.heroSlider;
 const servicesHref = locale === "en" ? "/en/services" : "/services";
 
-const heroImageUrls: Record<string, string> = {
-  "analysis-hero": analysisUrl,
-  "machineLearning-hero": mlUrl,
-  "deepLearning-hero": aiUrl,
+const heroImageMetas: Record<string, typeof analysisMeta> = {
+  "analysis-hero": analysisMeta,
+  "machineLearning-hero": mlMeta,
+  "deepLearning-hero": aiMeta,
 };
 
 const slides = hero.slides.map((slide) => ({
   ...slide,
-  imageSrc: heroImageUrls[slide.imageKey] ?? analysisUrl,
+  imageSrc: (heroImageMetas[slide.imageKey] ?? analysisMeta).src,
 }));
 
 const initialSlide = slides[0];
+const initialMeta = heroImageMetas[hero.slides[0].imageKey] ?? analysisMeta;
 ---
 
 <section data-nav-theme="light" class="relative overflow-hidden bg-[#0B2C4A] px-4 pb-10 pt-28 md:px-6 md:pb-16 md:pt-32">
@@ -82,12 +84,12 @@ const initialSlide = slides[0];
 
       <!-- FIX: rounded-[1.5rem] (era 1rem) — consistente con el token "feature" del sistema -->
       <div class="relative min-h-[560px] overflow-hidden rounded-[1.5rem]">
-        <img
+        <Image
           id="service-image"
-          src={initialSlide.imageSrc}
+          src={initialMeta}
           alt={initialSlide.alt}
-          width="900"
-          height="900"
+          width={900}
+          height={900}
           class="absolute inset-0 h-full w-full object-cover transition-opacity duration-300"
           loading="eager"
           decoding="async"
@@ -117,7 +119,7 @@ const initialSlide = slides[0];
     const nextButton = document.getElementById("service-next");
     const progress = document.getElementById("service-progress");
     const image = document.getElementById("service-image");
-    const fillDuration = 3000;
+    const fillDuration = 6000;
     const fadeDuration = 350;
     let fillTimeoutId = undefined;
     let fadeTimeoutId = undefined;

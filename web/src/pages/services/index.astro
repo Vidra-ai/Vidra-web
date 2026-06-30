@@ -1,25 +1,26 @@
 ---
 import BaseLayout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import { serviceContent, type Locale } from "../../lib/siteContent";
 
-import analysisUrl from "../../assets/service-analysis.svg?url";
-import mlUrl from "../../assets/service-ml.svg?url";
-import aiUrl from "../../assets/service-ai.svg?url";
+import analysisMeta from "../../assets/service-analysis.svg";
+import mlMeta from "../../assets/service-ml.svg";
+import aiMeta from "../../assets/service-ai.svg";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = serviceContent[locale];
 const services = content.services;
 const serviceBase = locale === "en" ? "/en/services" : "/services";
 
-const serviceImageUrls: Record<string, string> = {
-  analysis: analysisUrl,
-  machineLearning: mlUrl,
-  deepLearning: aiUrl,
+const serviceImageMetas: Record<string, typeof analysisMeta> = {
+  analysis: analysisMeta,
+  machineLearning: mlMeta,
+  deepLearning: aiMeta,
 };
 
 const optimizedServices = services.map((service) => ({
   ...service,
-  imageSrc: serviceImageUrls[service.imageKey] ?? analysisUrl,
+  imageSrc: serviceImageMetas[service.imageKey] ?? analysisMeta,
 }));
 ---
 
@@ -49,20 +50,20 @@ const optimizedServices = services.map((service) => ({
           </p>
 
           <div class="mt-16 grid gap-5 md:grid-cols-3">
-            {optimizedServices.map((service) => (
+            {optimizedServices.map((service, i) => (
               <a
                 href={`${serviceBase}/${service.slug}`}
                 class="group flex min-h-[520px] flex-col overflow-hidden rounded-[1.5rem] border border-[#0B2C4A]/10 bg-white shadow-[0_20px_60px_rgba(11,44,74,0.08)] transition duration-500 hover:-translate-y-2 hover:border-transparent hover:bg-[#0B2C4A]"
               >
                 <div class="px-4 pt-4">
                   <div class="overflow-hidden rounded-xl">
-                    <img
+                    <Image
                       src={service.imageSrc}
                       alt={locale === "en" ? `${service.title} Service - Vidra` : `Servicio de ${service.title} - Vidra`}
-                      width="640"
-                      height="480"
+                      width={640}
+                      height={480}
                       class="aspect-[4/3] w-full object-cover transition duration-700 group-hover:scale-105"
-                      loading="lazy"
+                      loading="eager"
                       decoding="async"
                     />
                   </div>

@@ -1,10 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { blogPageContent, type Locale } from '../lib/siteContent';
 
-const { post, locale } = Astro.props as {
+const { post, locale, eager = false } = Astro.props as {
   post: CollectionEntry<'blog'>;
   locale: Locale;
+  eager?: boolean;
 };
 
 const { title, description, pubDate, category, image } = post.data;
@@ -21,15 +23,15 @@ const heroSrc = image || '/images/blog/bienvenida-vidra.svg';
 
 <article class="group relative flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-black/5 bg-white transition-shadow duration-300 hover:shadow-xl hover:shadow-blue/5">
   <!-- Stretched link covers the full card; the title link (z-[2]) stays above it for keyboard users -->
-  <a href={postUrl} aria-hidden="true" tabindex="-1" class="absolute inset-0 z-[1]"></a>
+  <a href={postUrl} aria-label={title} class="absolute inset-0 z-[1]"></a>
 
   <div class="aspect-video overflow-hidden">
-    <img
+    <Image
       src={heroSrc}
       alt={title}
-      loading="lazy"
-      width="800"
-      height="450"
+      loading={eager ? "eager" : "lazy"}
+      width={800}
+      height={450}
       decoding="async"
       class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
@@ -47,7 +49,7 @@ const heroSrc = image || '/images/blog/bienvenida-vidra.svg';
     </div>
 
     <h3 class="mb-3 text-lg font-bold leading-tight text-ink transition-colors duration-200 group-hover:text-blue md:text-xl">
-      <a href={postUrl} class="relative z-[2]">{title}</a>
+      <a href={postUrl} aria-hidden="true" tabindex="-1" class="relative z-[2]">{title}</a>
     </h3>
 
     <p class="mb-6 line-clamp-3 text-sm leading-relaxed text-black/60">

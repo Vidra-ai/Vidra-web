@@ -2,21 +2,22 @@
 import BaseLayout from "../layouts/Layout.astro";
 import Hero from "../components/Hero.astro";
 import ProcessTimeline from "../components/ProcessTimeline.astro";
+import { Image } from "astro:assets";
 import { homeContent, type Locale } from "../lib/siteContent";
 import ClientsStrip from '../components/ClientsStrip.astro';
 import ProjectsShowcase from '../components/ProjectsShowcase.astro';
 
-import analysisUrl from "../assets/analysis-hero.png?url";
-import mlUrl from "../assets/machine-learning-hero.png?url";
-import aiUrl from "../assets/deep-learning-hero.png?url";
+import analysisMeta from "../assets/analysis-hero.png";
+import mlMeta from "../assets/machine-learning-hero.png";
+import aiMeta from "../assets/deep-learning-hero.png";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = homeContent[locale];
 
-const areaImageUrls: Record<string, string> = {
-  analysis: analysisUrl,
-  machineLearning: mlUrl,
-  deepLearning: aiUrl,
+const areaImageMetas: Record<string, typeof analysisMeta> = {
+  analysis: analysisMeta,
+  machineLearning: mlMeta,
+  deepLearning: aiMeta,
 };
 
 const siteOrigin = 'https://vidra-ia.com';
@@ -46,7 +47,7 @@ const orgSchema = {
 
 const focusAreas = content.whatWeDo.areas.map((area) => ({
   ...area,
-  imageSrc: areaImageUrls[area.imageKey] ?? analysisUrl,
+  imageSrc: areaImageMetas[area.imageKey] ?? analysisMeta,
 }));
 ---
 
@@ -82,11 +83,11 @@ const focusAreas = content.whatWeDo.areas.map((area) => ({
               style={`--reveal-delay: ${index * 90}ms`}
               class="group relative block min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[#071729] shadow-[0_20px_50px_rgba(7,23,41,0.12)] transition duration-700 hover:-translate-y-2 hover:shadow-[0_30px_80px_rgba(7,23,41,0.18)] md:[direction:ltr]"
             >
-              <img
+              <Image
                 src={area.imageSrc}
                 alt={`Imagen representativa de ${area.title}`}
-                width="900"
-                height="900"
+                width={900}
+                height={900}
                 class="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"

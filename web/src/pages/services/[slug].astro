@@ -1,17 +1,18 @@
 ---
 import BaseLayout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
 import { serviceContent, type Locale } from "../../lib/siteContent";
 
-import analysisUrl from "../../assets/service-analysis.svg?url";
-import mlUrl from "../../assets/service-ml.svg?url";
-import aiUrl from "../../assets/service-ai.svg?url";
+import analysisMeta from "../../assets/service-analysis.svg";
+import mlMeta from "../../assets/service-ml.svg";
+import aiMeta from "../../assets/service-ai.svg";
 
 const locale: Locale = Astro.url.pathname.startsWith("/en") ? "en" : "es";
 const content = serviceContent[locale];
-const heroImageUrls: Record<string, string> = {
-  "analysis-hero": analysisUrl,
-  "machineLearning-hero": mlUrl,
-  "deepLearning-hero": aiUrl,
+const heroImageMetas: Record<string, typeof analysisMeta> = {
+  "analysis-hero": analysisMeta,
+  "machineLearning-hero": mlMeta,
+  "deepLearning-hero": aiMeta,
 };
 
 export const getStaticPaths = () => {
@@ -109,9 +110,11 @@ const breadcrumbSchema = {
 
           <div class="lg:pt-2">
             <div class="overflow-hidden rounded-[2rem] bg-[#0B2C4A] p-4 shadow-[0_28px_80px_rgba(11,44,74,0.18)]">
-              <img
-                src={heroImageUrls[service.heroImageKey] ?? analysisUrl}
+              <Image
+                src={heroImageMetas[service.heroImageKey] ?? analysisMeta}
                 alt={locale === "en" ? `Main image for ${service.title} service` : `Imagen principal del servicio ${service.title}`}
+                width={900}
+                height={675}
                 class="aspect-[4/3] w-full rounded-[1.4rem] object-cover"
                 loading="eager"
                 decoding="async"

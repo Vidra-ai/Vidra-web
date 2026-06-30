@@ -1,8 +1,9 @@
 ---
+import { Image } from "astro:assets";
 import type { Locale } from "../lib/siteContent";
-import analysisUrl from "../assets/service-analysis.svg?url";
-import mlUrl from "../assets/service-ml.svg?url";
-import aiUrl from "../assets/service-ai.svg?url";
+import analysisMeta from "../assets/service-analysis.svg";
+import mlMeta from "../assets/service-ml.svg";
+import aiMeta from "../assets/service-ai.svg";
 
 interface Props {
   locale?: Locale;
@@ -33,12 +34,12 @@ const isEN = locale === "en";
       <article class="group lg:col-span-2 overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
         <!-- Image area: tall crop, sharp render -->
         <div class="relative overflow-hidden" style="aspect-ratio:21/9;">
-          <img
-            src={aiUrl}
+          <Image
+            src={aiMeta}
             alt=""
             aria-hidden="true"
-            width="900"
-            height="900"
+            width={900}
+            height={900}
             loading="lazy"
             decoding="async"
             class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
@@ -97,12 +98,12 @@ const isEN = locale === "en";
       <!-- ── Card 2: ComPres ───────────────────────────── -->
       <article class="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
         <div class="relative aspect-[16/9] overflow-hidden">
-          <img
-            src={analysisUrl}
+          <Image
+            src={analysisMeta}
             alt=""
             aria-hidden="true"
-            width="900"
-            height="900"
+            width={900}
+            height={900}
             loading="lazy"
             decoding="async"
             class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
@@ -147,12 +148,12 @@ const isEN = locale === "en";
       <!-- ── Card 3: RAG Chatbot ──────────────────────── -->
       <article class="group overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0B2C4A]/30 transition duration-300 hover:border-[#00b2eb]/35">
         <div class="relative aspect-[16/9] overflow-hidden">
-          <img
-            src={mlUrl}
+          <Image
+            src={mlMeta}
             alt=""
             aria-hidden="true"
-            width="900"
-            height="900"
+            width={900}
+            height={900}
             loading="lazy"
             decoding="async"
             class="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
