@@ -1,0 +1,22 @@
+{
+  "name": "Vidra IA",
+  "short_name": "Vidra",
+  "description": "AI consulting for strategy, delivery, and measurable business impact.",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#002a7f",
+  "background_color": "#002a7f",
+  "display": "standalone",
+  "start_url": "/"
+}
