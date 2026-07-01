@@ -33,6 +33,8 @@ services:
       LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ADMIN_API_KEY: ${ADMIN_API_KEY:-}
+      VIDRA_API_URL: ${VIDRA_API_URL:-http://vidra_api_core:8000}
+      VIDRA_API_KEY: ${VIDRA_API_KEY:-}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:4322,http://localhost:4321}
       API_DOCS_ENABLED: ${API_DOCS_ENABLED:-true}
       PUBLIC_DOCS_DIR: /vault-publico
@@ -45,6 +47,9 @@ services:
       # Configura PUBLIC_DOCS_HOST_DIR en .env con tu ruta local al vault.
       # Si no se configura, se usa vault-publico/ del repo (vacío por defecto).
       - "${PUBLIC_DOCS_HOST_DIR:-./vault-publico}:/vault-publico:ro"
+    networks:
+      - default
+      - vidra_internal
 
   web:
     image: node:22-slim
@@ -64,3 +69,7 @@ services:
 
 volumes:
   pgdata:
+
+networks:
+  vidra_internal:
+    external: true

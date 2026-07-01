@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-small"
     embedding_dim: int = 1536
     admin_api_key: str = ""
+    vidra_api_url: str = "http://vidra_api_core:8000"
+    vidra_api_key: str = ""
 
     # Orígenes permitidos para CORS (separados por comas). En producción debe ser
     # el dominio público de la web, nunca "*" cuando se usan credenciales.

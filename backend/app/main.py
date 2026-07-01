@@ -24,6 +24,7 @@ from app.db import get_db, init_db
 from app.llm import get_llm_client
 from app.models import RagDocument, RagSource
 from app.rag.chat import generate_answer
+from app.vidra_tracker import VidraTracker
 from app.rag.ingest import ingest_document
 from app.rag.retriever import retrieve
 from app.rag.schemas import (
@@ -349,6 +350,7 @@ def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> 
             return ChatResponsePublic(respuesta=cached, fuentes=[], sin_informacion=False)
 
     client = get_llm_client(settings)
+    tracker = VidraTracker(base_url=settings.vidra_api_url, api_key=settings.vidra_api_key)
 
     retrieval_query = req.pregunta
     if req.historial:
@@ -357,7 +359,14 @@ def rag_chat(req: ChatRequest, session: Annotated[Session, Depends(get_db)]) -> 
             retrieval_query = " ".join(prev_user) + " " + req.pregunta
 
     fuentes = retrieve(session, retrieval_query, req.top_k)
-    result = generate_answer(req.pregunta, fuentes, client, req.historial)
+
+    with tracker.task_sync("chatbot", metadata={"pregunta": req.pregunta[:200]}) as task:
+        result = generate_answer(req.pregunta, fuentes, client, req.historial)
+        if task and not result.sin_informacion:
+            task.log_usage(
+                provider=settings.llm_provider,
+                model=settings.llm_model,
+            )
 
     # Cachear solo si la respuesta tiene información real.
     if not req.historial and not result.sin_informacion:

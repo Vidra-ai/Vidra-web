@@ -23,6 +23,7 @@ services:
       - "127.0.0.1:5435:5432"
     networks:
       - chatbot_internal
+      - vidra_internal
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -44,11 +45,14 @@ services:
       LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
       ADMIN_API_KEY: ${ADMIN_API_KEY}
+      VIDRA_API_URL: ${VIDRA_API_URL:-http://vidra_api_core:8000}
+      VIDRA_API_KEY: ${VIDRA_API_KEY:-}
       CORS_ORIGINS: ${CORS_ORIGINS:-https://vidra-ia.com}
       API_DOCS_ENABLED: "false"
-      # Sincronización de la carpeta pública del vault (vacío = desactivada hasta que
-      # el vault esté disponible en el servidor; ver tarea "Obsidian bare repo").
-      PUBLIC_DOCS_DIR: ${PUBLIC_DOCS_DIR:-}
+      # Sincronización de la carpeta pública del vault Obsidian. El host la mantiene
+      # actualizada vía rclone+MEGA (cron) en PUBLIC_DOCS_HOST_DIR; el backend re-embebe
+      # solo los .md que cambian. Vacío = desactivada.
+      PUBLIC_DOCS_DIR: ${PUBLIC_DOCS_DIR:-/vault-publico}
       PUBLIC_DOCS_SYNC_INTERVAL: ${PUBLIC_DOCS_SYNC_INTERVAL:-30}
     # Producción: sin --reload, con proxy headers (para X-Forwarded-For / rate limit).
     # 1 worker basta: los endpoints síncronos usan el threadpool de Starlette para la
@@ -62,16 +66,19 @@ services:
     volumes:
       # Documentación RAG persistente (no se hornea en la imagen).
       - ./backend/RAG:/app/RAG
-      # Carpeta "Información pública" del vault Obsidian (solo lectura). Descomenta y
-      # ajusta la ruta del host cuando el vault esté disponible en el servidor; además
-      # define PUBLIC_DOCS_DIR=/vault-publico en el .env.
-      # - "${PUBLIC_DOCS_HOST_DIR}:/vault-publico:ro"
+      # Carpeta "Información pública" del vault Obsidian (solo lectura). El host la
+      # sincroniza desde MEGA vía rclone+cron. PUBLIC_DOCS_HOST_DIR se define en el .env
+      # del servidor (ej. /opt/vidra/apps/chatbot/vault-publico).
+      - "${PUBLIC_DOCS_HOST_DIR:-./vault-publico}:/vault-publico:ro"
     networks:
       - chatbot_internal
+      - vidra_internal
 
 networks:
   chatbot_internal:
     name: vidra_chatbot_internal
+  vidra_internal:
+    external: true
 
 volumes:
   vidra_chatbot_pgdata:
