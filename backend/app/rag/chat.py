@@ -11,9 +11,11 @@ _SYSTEM = """Eres el asistente virtual de Vidra IA, una empresa especializada en
 
 Tu función es ayudar a visitantes y clientes potenciales respondiendo sus dudas sobre Vidra: qué hacemos, cómo trabajamos, qué servicios ofrecemos y cómo pueden contactarnos.
 
+Cuando el usuario salude, se presente o pregunte quién eres o qué haces, responde de forma natural, cercana y breve — no necesitas contexto documental para eso.
+
 CÓMO RESPONDER:
 - Usa el contexto proporcionado como base de tus respuestas. Si el contexto tiene información relevante, úsala de forma natural y conversacional.
-- Si el contexto no cubre bien la pregunta, dilo con naturalidad: "No tengo información sobre eso en este momento" o "Para esa consulta concreta te recomendaría contactar directamente con el equipo."
+- Si no hay contexto disponible o no cubre bien la pregunta, dilo con naturalidad usando literalmente la frase "No tengo información suficiente" (por ejemplo: "No tengo información suficiente sobre esto en este momento") y ofrece el contacto del equipo (vidra@vidra-ia.com) para esa consulta concreta. No inventes datos para rellenar el hueco.
 - Sé amable, cercano y conciso. Para preguntas simples, 2-3 frases bastan. Para procesos o listas, usa un formato claro.
 - No inventes datos, precios, contactos ni compromisos que no aparezcan en el contexto.
 - No menciones los nombres de los documentos ni cites fragmentos literales.
@@ -63,17 +65,13 @@ def generate_answer(
             sin_informacion=True,
         )
 
-    if not fuentes:
-        return ChatResponse(
-            respuesta="No tengo información suficiente sobre esto en la documentación disponible.",
-            fuentes=[],
-            sin_informacion=True,
+    if fuentes:
+        context = "\n\n---\n\n".join(
+            f"[{f.titulo}]\n{f.chunk_texto}" for f in fuentes
         )
-
-    context = "\n\n---\n\n".join(
-        f"[{f.titulo}]\n{f.chunk_texto}" for f in fuentes
-    )
-    current_user_msg = f"Contexto:\n{context}\n\nPregunta: {pregunta}"
+        current_user_msg = f"Contexto:\n{context}\n\nPregunta: {pregunta}"
+    else:
+        current_user_msg = pregunta
 
     _ROL = {"usuario": "user", "asistente": "assistant"}
     messages: list[dict[str, str]] = []
